@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper
+        namespace="com.zimuka.peers.mapper.UserCardMapper">
+    <resultMap id="UserCardMapperResultMap"
+               type="com.zimuka.peers.dao.UserCard">
+        <id column="card_id" property="cardId"/>
+        <result column="user_id" property="userId"/>
+        <result column="app_id" property="appId"/>
+        <result column="img" property="img"/>
+        <result column="wechat_num" property="wechatNum"/>
+        <result column="company" property="company"/>
+        <result column="industry" property="industry"/>
+        <result column="city" property="city"/>
+        <result column="phone" property="phone"/>
+        <result column="email" property="email"/>
+        <result column="synopsis" property="synopsis"/>
+        <result column="demand" property="demand"/>
+        <result column="resources" property="resources"/>
+        <result column="give_like_num" property="giveLikeNum"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_time" property="createTime"/>
+        <result column="up_time" property="upTime"/>
+        <result column="prepare" property="prepare"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        card_id, user_id, app_id, img, wechat_num, company, industry, city, phone, email, synopsis,
+        demand, resources, give_like_num, del_flag, create_time, up_time, prepare
+    </sql>
+
+    <insert id="save" parameterType="com.zimuka.peers.dao.UserCard" useGeneratedKeys="true" keyProperty="id">
+        insert into user_card
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="appId != null">
+                app_id,
+            </if>
+            <if test="img != null">
+                img,
+            </if>
+            <if test="wechatNum != null">
+                wechat_num,
+            </if>
+            <if test="company != null">
+                company,
+            </if>
+            <if test="industry != null">
+                industry,
+            </if>
+            <if test="city != null">
+                city,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="synopsis != null ">
+                synopsis,
+            </if>
+            <if test="demand != null">
+                demand,
+            </if>
+            <if test="resources != null">
+                resources,
+            </if>
+            <if test="giveLikeNum != null">
+                give_like_num,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="upTime != null">
+                up_time,
+            </if>
+            <if test="prepare != null">
+                prepare,
+            </if>
+            create_time
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId},
+            </if>
+            <if test="appId != null">
+                #{appId},
+            </if>
+            <if test="img != null">
+                #{img},
+            </if>
+            <if test="wechatNum != null">
+                #{wechatNum},
+            </if>
+            <if test="company != null">
+                #{company},
+            </if>
+            <if test="industry != null">
+                #{industry},
+            </if>
+            <if test="city != null">
+                #{city},
+            </if>
+            <if test="phone != null">
+                #{phone},
+            </if>
+            <if test="email != null">
+                #{email},
+            </if>
+            <if test="synopsis != null ">
+                #{synopsis},
+            </if>
+            <if test="demand != null">
+                #{demand},
+            </if>
+            <if test="resources != null">
+                #{resources},
+            </if>
+            <if test="giveLikeNum != null">
+                #{giveLikeNum},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag},
+            </if>
+            <if test="upTime != null">
+                #{upTime},
+            </if>
+            <if test="prepare != null">
+                #{prepare},
+            </if>
+            now()
+        </trim>
+    </insert>
+
+    <update id="updateCardByUser" parameterType="com.zimuka.peers.dao.UserCard">
+        update user_card
+        <set>
+            <if test="img != null">
+                img=#{img},
+            </if>
+            <if test="wechatNum != null">
+                wechat_num=#{wechatNum},
+            </if>
+            <if test="company != null">
+                company=#{company},
+            </if>
+            <if test="industry != null">
+                industry=#{industry},
+            </if>
+            <if test="city != null">
+                city=#{city},
+            </if>
+            <if test="phone != null">
+                phone=#{phone},
+            </if>
+            <if test="email != null">
+                email=#{email},
+            </if>
+            <if test="synopsis != null ">
+                synopsis=#{synopsis},
+            </if>
+            <if test="demand != null">
+                demand=#{demand},
+            </if>
+            <if test="resources != null">
+                resources=#{resources},
+            </if>
+            <if test="giveLikeNum != null">
+                give_like_num=#{giveLikeNum},
+            </if>
+            <if test="delFlag != null">
+                del_flag=#{delFlag},
+            </if>
+            <if test="prepare != null">
+                prepare=#{prepare},
+            </if>
+            up_time=now()
+        </set>
+        where user_id=#{userId}
+    </update>
+    
+    <select id="findOneById" resultMap="UserCardMapperResultMap">
+        select 
+        <include refid="Base_Column_List"/>
+        from user_card
+        where user_id=#{userId}
+    </select>
+
+</mapper>

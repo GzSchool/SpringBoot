@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper
+        namespace="com.zimuka.peers.mapper.UserGroupMapper">
+    <resultMap id="UserGroupMapperResultMap"
+               type="com.zimuka.peers.dao.UserGroup">
+        <id column="user_id" property="UserId"/>
+        <result column="group_id" property="groupId"/>
+        <result column="app_id" property="appId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="up_time" property="upTime"/>
+        <result column="prepare" property="prepare"/>
+    </resultMap>
+
+</mapper>
