@@ -10,10 +10,13 @@ public class UserGroup {
     private String groupId;
 
     /* 用户ID */
-    private Integer UserId;
+    private Integer userId;
 
     /* 小程序ID */
     private String appId;
+
+    /* 删除标识（1-未删除，2-已删除）默认未删除 */
+    private Integer delFlag;
 
     /* 创建时间 */
     private Date createTime;
@@ -33,11 +36,11 @@ public class UserGroup {
     }
 
     public Integer getUserId() {
-        return UserId;
+        return userId;
     }
 
     public void setUserId(Integer userId) {
-        UserId = userId;
+        this.userId = userId;
     }
 
     public String getAppId() {
@@ -46,6 +49,14 @@ public class UserGroup {
 
     public void setAppId(String appId) {
         this.appId = appId;
+    }
+
+    public Integer getDelFlag() {
+        return delFlag;
+    }
+
+    public void setDelFlag(Integer delFlag) {
+        this.delFlag = delFlag;
     }
 
     public Date getCreateTime() {
@@ -70,5 +81,15 @@ public class UserGroup {
 
     public void setPrepare(String prepare) {
         this.prepare = prepare;
+    }
+
+    private String openId;
+
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
     }
 }

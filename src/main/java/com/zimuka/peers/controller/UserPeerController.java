@@ -1,5 +1,6 @@
 package com.zimuka.peers.controller;
 
+import com.zimuka.peers.dao.UserPeer;
 import com.zimuka.peers.dto.AjaxResultDTO;
 import com.zimuka.peers.dto.UserPeerDTO;
 import com.zimuka.peers.exception.PeerProjectException;
@@ -66,6 +67,21 @@ public class UserPeerController {
         } catch(Exception e) {
             logger.error("【操作名片异常】：", e);
             return AjaxResultDTO.failed("操作名片异常");
+        }
+    }
+
+    @RequestMapping("/findUserPeerByParam")
+    @ResponseBody
+    public AjaxResultDTO findUserPeerByParam(UserPeer userPeer, HttpServletResponse response) {
+        try {
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            List<UserPeer> userPeerList = userPeerService.findUserPeerByParam(userPeer);
+            return AjaxResultDTO.success(userPeerList);
+        } catch(PeerProjectException ppe) {
+            return AjaxResultDTO.failed(ppe.getMessage());
+        } catch (Exception e){
+            logger.error("【查询名片ByParam异常】：{}", e);
+            return AjaxResultDTO.failed("查询名片异常");
         }
     }
 }

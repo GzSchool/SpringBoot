@@ -20,14 +20,14 @@
    <select id="findAllById" resultType="com.zimuka.peers.dto.UserPeerDTO">
        select u.username, uc.img, uc.wechat_num, uc.company, uc.industry, uc.city, uc.phone, uc.email, uc.synopsis, uc.demand, uc.resources
        from user_card uc, user_peer up, user u
-       where up.user_id = #{userId} AND uc.card_id=up.peer_card_id AND uc.user_id=u.id AND up.del_flag!=2
+       where up.user_id = #{userId} and uc.card_id=up.peer_card_id and uc.user_id=u.id and up.del_flag!=2
    </select>
     
     <select id="findAllByParam" parameterType="String" resultType="com.zimuka.peers.dto.UserPeerDTO">
-        SELECT u.username, uc.img, uc.wechat_num, uc.company, uc.industry, uc.city, uc.phone, uc.email, uc.synopsis, uc.demand, uc.resources
-        FROM user_card uc, user u
-        WHERE CONCAT(uc.company, uc.industry, uc.city, uc.wechat_num, u.username)
-        LIKE CONCAT('%',#{param},'%' )  AND uc.user_id=u.id order by convert(u.username using gbk) ASC
+        select u.username, uc.img, uc.wechat_num, uc.company, uc.industry, uc.city, uc.phone, uc.email, uc.synopsis, uc.demand, uc.resources
+        from user_card uc, user u
+        where CONCAT(uc.company, uc.industry, uc.city, uc.wechat_num, u.username)
+        like CONCAT('%',#{param},'%' )  and uc.user_id=u.id order by convert(u.username using gbk) ASC
     </select>
 
     <insert id="savePeerCard" parameterType="com.zimuka.peers.dao.UserPeer" useGeneratedKeys="true" keyProperty="id">
@@ -82,6 +82,34 @@
         select <include refid="Base_Column_List"/>
         from user_peer
         where user_id=#{userId} and peer_card_id=#{peerCardId}
+    </select>
+
+    <select id="findUserPeerByParam" parameterType="com.zimuka.peers.dao.UserPeer" resultMap="UserPeerMapperResultMap">
+        select <include refid="Base_Column_List"/>
+        from user_peer
+        <where>
+            <if test="null != userId">
+                and user_id=#{userId}
+            </if>
+            <if test="null != peerCardId">
+                and peer_card_id=#{peerCardId}
+            </if>
+            <if test="null != saveFlag">
+                and save_flag=#{saveFlag}
+            </if>
+            <if test="null != delFlag">
+                and del_flag=#{delFlag}
+            </if>
+            <if test="null != createTime">
+                and create_time=#{createTime}
+            </if>
+            <if test="null != upTime">
+                and up_time=#{upTime}
+            </if>
+            <if test="null != prepare">
+                and prepare=#{prepare}
+            </if>
+        </where>
     </select>
 
 </mapper>

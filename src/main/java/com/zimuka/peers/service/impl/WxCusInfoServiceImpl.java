@@ -1,16 +1,18 @@
 package com.zimuka.peers.service.impl;
 
+import com.zimuka.peers.configBeans.MiniAppBean;
 import com.zimuka.peers.dao.User;
 import com.zimuka.peers.dto.AuthorizeDTO;
 import com.zimuka.peers.exception.PeerProjectException;
 import com.zimuka.peers.mapper.UserMapper;
-import com.zimuka.peers.service.UserService;
 import com.zimuka.peers.service.WxCusInfoService;
 import com.zimuka.peers.utils.WxTemplateUtil;
 import com.zimuka.peers.vo.WechatOpenId;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -21,10 +23,10 @@ public class WxCusInfoServiceImpl implements WxCusInfoService {
     private static final Logger logger = LoggerFactory.getLogger(WxCusInfoServiceImpl.class);
 
     @Resource
-    private UserService userService;
-
-    @Resource
     private UserMapper userMapper;
+
+    @Autowired
+    private MiniAppBean miniAppBean;
 
     @Override
     public AuthorizeDTO get3rdsession(String code) {
@@ -35,25 +37,33 @@ public class WxCusInfoServiceImpl implements WxCusInfoService {
 
         AuthorizeDTO authorizeDTO = new AuthorizeDTO();
 
-        //获取AppId和AppSecret
-        String AppId = "wx34fefa15f676d944";
-        String AppSecret = "f4ce303b50267dc17dc69ae083ae3a98";
-        logger.info("【获取AppId】：" + AppId);
-        logger.info("【获取AppSecret】：" + AppSecret);
-        WechatOpenId wechatOpenId = WxTemplateUtil.getOpenIdAndSessionKey(AppId, AppSecret, code);
+        //传入AppId和AppSecret 获取 openId和sessionKey
+        WechatOpenId wechatOpenId = WxTemplateUtil.getOpenIdAndSessionKey(miniAppBean.getAppId(), miniAppBean.getAppSecret(), code);
         logger.info("【获取openId】：" + wechatOpenId.getOpenId());
         logger.info("【获取sessionKey】：" + wechatOpenId.getSessionKey());
 
+        String openSession = DigestUtils.md5Hex(wechatOpenId.getOpenId() + wechatOpenId.getSessionKey());
+
         User checkUser = userMapper.findOneByOpenId(wechatOpenId.getOpenId());
+        User saveUser;
         if (null == checkUser) {
-            User saveUser = new User();
+            saveUser = new User();
             saveUser.setOpenid(wechatOpenId.getOpenId());
-            userService.saveUser(saveUser);
+            saveUser.setSessionKey(wechatOpenId.getSessionKey());
+            saveUser.setOpenSession(openSession);
+            userMapper.saveUser(saveUser);
 
             authorizeDTO.setOpenId(wechatOpenId.getOpenId());
+            authorizeDTO.setOpenSession(openSession);
             return authorizeDTO;
         } else {
+            saveUser = new User();
+            saveUser.setSessionKey(wechatOpenId.getSessionKey());
+            saveUser.setOpenSession(openSession);
+            userMapper.updateUser(saveUser);
+
             authorizeDTO.setOpenId(wechatOpenId.getOpenId());
+            authorizeDTO.setOpenSession(openSession);
             return authorizeDTO;
         }
     }

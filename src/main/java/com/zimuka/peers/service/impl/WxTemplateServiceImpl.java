@@ -1,11 +1,13 @@
 package com.zimuka.peers.service.impl;
 
+import com.zimuka.peers.configBeans.MiniAppBean;
 import com.zimuka.peers.dto.TemplateData;
 import com.zimuka.peers.dto.WechatTemplate;
 import com.zimuka.peers.service.WxTemplateService;
 import com.zimuka.peers.utils.WxTemplateUtil;
 import com.zimuka.peers.vo.AccessToken;
 import net.sf.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -14,6 +16,9 @@ import java.util.Map;
 
 @Service
 public class WxTemplateServiceImpl implements WxTemplateService {
+
+    @Autowired
+    private MiniAppBean miniAppBean;
 
     //TODO  消息模板
     @Override
@@ -30,10 +35,7 @@ public class WxTemplateServiceImpl implements WxTemplateService {
         data.put("keyword1", new TemplateData("消息模板推送","#173177"));
         wechatTemplate.setData(data);
 
-        String AppId = "";
-        String AppSecret = "";
-
-        AccessToken accessToken = WxTemplateUtil.getAccessToken(AppId, AppSecret);
+        AccessToken accessToken = WxTemplateUtil.getAccessToken(miniAppBean.getAppId(), miniAppBean.getAppSecret());
 
         JSONObject jsonObject = WxTemplateUtil.sendTmplMsg(wechatTemplate, accessToken.getAccessToken());
 

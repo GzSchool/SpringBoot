@@ -10,6 +10,9 @@ public class UserCard {
     /* 名片ID */
     private Integer cardId;
 
+    /* 群组ID */
+    private String groupId;
+
     /* 用户ID*/
     private Integer userId;
 
@@ -213,5 +216,13 @@ public class UserCard {
 
     public void setOpenId(String openId) {
         this.openId = openId;
+    }
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
 }

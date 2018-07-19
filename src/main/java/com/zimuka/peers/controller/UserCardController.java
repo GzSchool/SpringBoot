@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @RestController
 @RequestMapping("/userCard")
@@ -47,6 +48,21 @@ public class UserCardController {
         } catch(Exception e) {
             logger.error("【查询用户名片异常】：{}", e);
             return AjaxResultDTO.failed("查询用户名片异常");
+        }
+    }
+
+    @RequestMapping("/findCardByParam")
+    @ResponseBody
+    public AjaxResultDTO findCardByParam(UserCard userCard, HttpServletResponse response) {
+        try {
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            List<UserCard> userCardList = userCardService.findUserCardByParam(userCard);
+            return AjaxResultDTO.success(userCardList);
+        } catch(PeerProjectException ppe) {
+            return AjaxResultDTO.failed(ppe.getMessage());
+        } catch(Exception e) {
+            logger.error("【查询名片异常】：{}", e);
+            return AjaxResultDTO.failed("查询名片异常");
         }
     }
 }

@@ -10,7 +10,7 @@ public class AuthorizeDTO {
 	
 	private String openId;
 	
-	//private String openSession;
+	private String openSession;
 
 	//private Integer id;
 
@@ -22,14 +22,14 @@ public class AuthorizeDTO {
 		this.openId = openId;
 	}
 
-//	public String getOpenSession() {
-//		return openSession;
-//	}
-//
-//	public void setOpenSession(String openSession) {
-//		this.openSession = openSession;
-//	}
-//
+	public String getOpenSession() {
+		return openSession;
+	}
+
+	public void setOpenSession(String openSession) {
+		this.openSession = openSession;
+	}
+
 //	public Integer getId() {
 //		return id;
 //	}

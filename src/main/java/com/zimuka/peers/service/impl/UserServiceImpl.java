@@ -7,6 +7,7 @@ import com.zimuka.peers.service.UserService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -26,5 +27,13 @@ public class UserServiceImpl implements UserService {
         if (1 != rows) {
             throw new PeerProjectException("添加用户失败");
         }
+    }
+
+    @Override
+    public List<User> findUserByParam(User user) {
+
+        List<User> userList = userMapper.findUserByParam(user);
+
+        return userList;
     }
 }

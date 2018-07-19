@@ -6,6 +6,8 @@
                type="com.zimuka.peers.dao.User">
         <id column="id" property="id"/>
         <result column="openid" property="openid"/>
+        <result column="session_key" property="sessionKey"/>
+        <result column="open_session" property="openSession"/>
         <result column="username" property="username"/>
         <result column="create_time" property="createTime"/>
         <result column="up_time" property="upTime"/>
@@ -13,7 +15,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-      id, openid, username, create_time, up_time, prepare
+      id, openid, session_key, open_session, username, create_time, up_time, prepare
     </sql>
     
     <select id="findOneById" resultMap="UserMapperResultMap">
@@ -28,6 +30,12 @@
             <if test="openid != null">
                 openid,
             </if>
+            <if test="sessionKey != null">
+                session_key,
+            </if>
+            <if test="openSession != null">
+                open_session,
+            </if>
             <if test="username != null">
                 username,
             </if>
@@ -39,6 +47,12 @@
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="openid != null">
                 #{openid},
+            </if>
+            <if test="sessionKey != null">
+                #{sessionKey},
+            </if>
+            <if test="openSession != null">
+                #{openSession},
             </if>
             <if test="username != null">
                 #{username},
@@ -55,6 +69,54 @@
         <include refid="Base_Column_List"/>
         from user
         where openid = #{openid}
+    </select>
+
+    <update id="updateUser" parameterType="com.zimuka.peers.dao.User">
+        update user
+        <set>
+            <if test="null != openid">
+                openid=#{openid},
+            </if>
+            <if test="null != sessionKey">
+                session_key=#{sessionKey},
+            </if>
+            <if test="null != openSession">
+                open_session=#{openSession},
+            </if>
+            <if test="null != username">
+                username=#{username},
+            </if>
+            <if test="null != prepare">
+                prepare=#{prepare},
+            </if>
+            up_time=now()
+        </set>
+        where id=#{id}
+    </update>
+
+    <select id="findUserByParam" parameterType="com.zimuka.peers.dao.User" resultMap="UserMapperResultMap">
+        select <include refid="Base_Column_List"/>
+        from user
+        <where>
+            <if test="null != id and id != ''">
+                and id=#{id}
+            </if>
+            <if test="null != openid and openid != ''">
+                and openid=#{openid}
+            </if>
+            <if test="null != sessionKey and sessionKey != ''">
+                and session_key=#{sessionKey}
+            </if>
+            <if test="null != openSession and openSession != ''">
+                and open_session=#{openSession}
+            </if>
+            <if test="null != username and username != ''">
+                and username=#{username}
+            </if>
+            <if test="null != prepare and prepare != ''">
+                and prepare=#{prepare}
+            </if>
+        </where>
     </select>
 
 </mapper>

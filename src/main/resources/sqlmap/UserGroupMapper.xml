@@ -4,12 +4,121 @@
         namespace="com.zimuka.peers.mapper.UserGroupMapper">
     <resultMap id="UserGroupMapperResultMap"
                type="com.zimuka.peers.dao.UserGroup">
-        <id column="user_id" property="UserId"/>
+        <id column="user_id" property="userId"/>
         <result column="group_id" property="groupId"/>
         <result column="app_id" property="appId"/>
+        <result column="del_flag" property="delFlag"/>
         <result column="create_time" property="createTime"/>
         <result column="up_time" property="upTime"/>
         <result column="prepare" property="prepare"/>
     </resultMap>
+    <sql id="Base_Column_List">
+        user_id, group_id, app_id, del_flag, create_time, up_time, prepare
+    </sql>
 
+    <insert id="save" parameterType="com.zimuka.peers.dao.UserGroup" useGeneratedKeys="true" keyProperty="id">
+        insert into user_group
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="null != userId">
+                user_id,
+            </if>
+            <if test="null != groupId">
+                group_id,
+            </if>
+            <if test="null != appId">
+                app_id,
+            </if>
+            <if test="null != delFlag">
+                del_flag,
+            </if>
+            <if test="null != createTime">
+                create_time,
+            </if>
+            <if test="null != upTime">
+                up_time
+            </if>
+            <if test="null != prepare">
+                prepare
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="null != userId">
+                #{userId},
+            </if>
+            <if test="null != groupId">
+                #{groupId},
+            </if>
+            <if test="null != appId">
+                #{appId},
+            </if>
+            <if test="null != delFlag">
+                #{delFlag},
+            </if>
+            <if test="null != createTime">
+                #{createTime},
+            </if>
+            <if test="null != upTime">
+                #{upTime},
+            </if>
+            <if test="null != prepare">
+                #{prepare},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.zimuka.peers.dao.UserGroup">
+        update user_group
+        <set>
+            <if test="null != appId">
+                app_id=#{appId},
+            </if>
+            <if test="null != delFlag">
+                del_flag=#{delFlag},
+            </if>
+            <if test="null != createTime">
+                create_time=#{createTime},
+            </if>
+            <if test="null != upTime">
+                up_time=#{upTime},
+            </if>
+            <if test="null != prepare">
+                prepare=#{prepare},
+            </if>
+        </set>
+        where user_id=#{userId} and group_id=#{groupId}
+    </update>
+
+    <select id="findOneById" resultMap="com.zimuka.peers.dao.UserGroup">
+        select <include refid="Base_Column_List"/>
+        from user_group
+        where user_id=#{userId} and group_id=#{groupId}
+    </select>
+
+    <select id="findAllByUserGroup" parameterType="com.zimuka.peers.dao.UserGroup" resultMap="UserGroupMapperResultMap">
+        select <include refid="Base_Column_List"/>
+        from user_group
+        <where>
+            <if test="null != userId">
+                and user_id=#{userId}
+            </if>
+            <if test="null != groupId">
+                and group_id=#{groupId}
+            </if>
+            <if test="null != appId">
+                and app_id=#{appId}
+            </if>
+            <if test="null != delFlag">
+                and del_flag=#{delFlag}
+            </if>
+            <if test="null != createTime">
+                and create_time=#{createTime}
+            </if>
+            <if test="null != upTime">
+                and up_time=#{upTime}
+            </if>
+            <if test="null != prepare">
+                and prepare=#{prepare}
+            </if>
+        </where>
+    </select>
 </mapper>

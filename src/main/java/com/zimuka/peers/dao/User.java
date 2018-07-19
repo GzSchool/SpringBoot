@@ -10,8 +10,14 @@ public class User {
     /* 用户ID */
     private Integer id;
 
-    /* 用户标识 */
+    /* 用户openId */
     private String openid;
+
+    /* 会话密钥 */
+    private String sessionKey;
+
+    /* 用户标识（openId + sessionKey后加密处理） */
+    private String openSession;
 
     /* 用户名称 */
     private String username;
@@ -24,6 +30,22 @@ public class User {
 
     /* 预留字段 */
     private String prepare;
+
+    public String getSessionKey() {
+        return sessionKey;
+    }
+
+    public void setSessionKey(String sessionKey) {
+        this.sessionKey = sessionKey;
+    }
+
+    public String getOpenSession() {
+        return openSession;
+    }
+
+    public void setOpenSession(String openSession) {
+        this.openSession = openSession;
+    }
 
     public Integer getId() {
         return id;

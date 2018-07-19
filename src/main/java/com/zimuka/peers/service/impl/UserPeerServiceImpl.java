@@ -91,4 +91,18 @@ public class UserPeerServiceImpl implements UserPeerService {
             }
         }
     }
+
+    @Override
+    public List<UserPeer> findUserPeerByParam(UserPeer userPeer) {
+
+        User checkUser = userMapper.findOneByOpenId(userPeer.getOpenId());
+        if (null == checkUser) {
+            throw new PeerProjectException("用户未注册");
+        }
+        userPeer.setUserId(checkUser.getId());
+
+        List<UserPeer> userPeerList = userPeerMapper.findUserPeerByParam(userPeer);
+
+        return userPeerList;
+    }
 }

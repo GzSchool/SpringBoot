@@ -18,4 +18,6 @@ public interface UserPeerMapper {
 
     UserPeer findOneById(@Param("userId") Integer userId,
                          @Param("peerCardId") Integer peerCardId);
+
+    List<UserPeer> findUserPeerByParam(UserPeer userPeer);
 }

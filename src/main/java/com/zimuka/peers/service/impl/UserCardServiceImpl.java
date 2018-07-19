@@ -11,6 +11,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class UserCardServiceImpl implements UserCardService {
@@ -72,6 +73,20 @@ public class UserCardServiceImpl implements UserCardService {
             throw new PeerProjectException("添加我的信息");
         }
         return userCard;
+    }
+
+    @Override
+    public List<UserCard> findUserCardByParam(UserCard userCard) {
+
+        User checkUser = userMapper.findOneByOpenId(userCard.getOpenId());
+        if (null == checkUser) {
+            throw new PeerProjectException("用户未注册");
+        }
+        userCard.setUserId(checkUser.getId());
+
+        List<UserCard> userCardList = userCardMapper.findCardByParam(userCard);
+
+        return userCardList;
     }
 
 }

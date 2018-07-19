@@ -5,6 +5,7 @@
     <resultMap id="UserCardMapperResultMap"
                type="com.zimuka.peers.dao.UserCard">
         <id column="card_id" property="cardId"/>
+        <result column="group_id" property="groupId"/>
         <result column="user_id" property="userId"/>
         <result column="app_id" property="appId"/>
         <result column="img" property="img"/>
@@ -25,7 +26,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        card_id, user_id, app_id, img, wechat_num, company, industry, city, phone, email, synopsis,
+        card_id, group_id, user_id, app_id, img, wechat_num, company, industry, city, phone, email, synopsis,
         demand, resources, give_like_num, del_flag, create_time, up_time, prepare
     </sql>
 
@@ -34,6 +35,9 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="userId != null">
                 user_id,
+            </if>
+            <if test="groupId != null">
+                group_id,
             </if>
             <if test="appId != null">
                 app_id,
@@ -85,6 +89,9 @@
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="userId != null">
                 #{userId},
+            </if>
+            <if test="groupId != null">
+                #{groupId},
             </if>
             <if test="appId != null">
                 #{appId},
@@ -138,6 +145,9 @@
     <update id="updateCardByUser" parameterType="com.zimuka.peers.dao.UserCard">
         update user_card
         <set>
+            <if test="groupId != null">
+                group_id=#{groupId},
+            </if>
             <if test="img != null">
                 img=#{img},
             </if>
@@ -183,10 +193,67 @@
     </update>
     
     <select id="findOneById" resultMap="UserCardMapperResultMap">
-        select 
-        <include refid="Base_Column_List"/>
+        select <include refid="Base_Column_List"/>
         from user_card
         where user_id=#{userId}
+    </select>
+
+    <select id="findCardByParam" parameterType="com.zimuka.peers.dao.UserCard" resultMap="UserCardMapperResultMap">
+        select <include refid="Base_Column_List"/>
+        from user_card
+        <where>
+            <if test="cardId != null">
+                and card_id=#{cardId}
+            </if>
+            <if test="groupId != null">
+                and group_id=#{groupId}
+            </if>
+            <if test="userId != null">
+                and user_id=#{userId}
+            </if>
+            <if test="null != appId">
+                and app_id=#{appId}
+            </if>
+            <if test="img != null">
+                and img=#{img}
+            </if>
+            <if test="wechatNum != null">
+                and wechat_num=#{wechatNum}
+            </if>
+            <if test="company != null">
+                and company=#{company}
+            </if>
+            <if test="industry != null">
+                and industry=#{industry}
+            </if>
+            <if test="city != null">
+                and city=#{city}
+            </if>
+            <if test="phone != null">
+                and phone=#{phone}
+            </if>
+            <if test="email != null">
+                and email=#{email}
+            </if>
+            <if test="synopsis != null ">
+                and synopsis=#{synopsis}
+            </if>
+            <if test="demand != null">
+                and demand=#{demand}
+            </if>
+            <if test="resources != null">
+                and resources=#{resources}
+            </if>
+            <if test="giveLikeNum != null">
+                and give_like_num=#{giveLikeNum}
+            </if>
+            <if test="delFlag != null">
+                and del_flag=#{delFlag}
+            </if>
+            <if test="prepare != null">
+                and prepare=#{prepare}
+            </if>
+        </where>
     </select>
 
 </mapper>
