@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/user")
@@ -22,7 +23,8 @@ public class UserController {
 
     @RequestMapping("findOneById")
     @ResponseBody
-    public AjaxResultDTO findOneById(Integer id) {
+    public AjaxResultDTO findOneById(Integer id, HttpServletResponse response) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
         User user = userService.findOneById(id);
         logger.info("查询id:" + id);
         return AjaxResultDTO.success(user);

@@ -6,5 +6,5 @@ public interface UserCardService {
 
     void saveOrUpdate(UserCard userCard);
 
-    UserCard findOneByUser(Integer userId);
+    UserCard findOneByUser(String openId);
 }

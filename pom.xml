@@ -114,6 +114,13 @@
             <classifier>jdk15</classifier>
         </dependency>
 
+        <!-- 微信小程序授权SDK -->
+        <dependency>
+            <groupId>com.github.binarywang</groupId>
+            <artifactId>weixin-java-miniapp</artifactId>
+            <version>2.9.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>

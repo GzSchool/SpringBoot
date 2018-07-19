@@ -13,4 +13,75 @@
         <result column="prepare" property="prepare"/>
     </resultMap>
 
+    <sql id="Base_Column_List">
+        user_id, peer_card_id, save_flag, del_flag, create_time, up_time, prepare
+    </sql>
+
+   <select id="findAllById" resultType="com.zimuka.peers.dto.UserPeerDTO">
+       select u.username, uc.img, uc.wechat_num, uc.company, uc.industry, uc.city, uc.phone, uc.email, uc.synopsis, uc.demand, uc.resources
+       from user_card uc, user_peer up, user u
+       where up.user_id = #{userId} AND uc.card_id=up.peer_card_id AND uc.user_id=u.id AND up.del_flag!=2
+   </select>
+    
+    <select id="findAllByParam" parameterType="String" resultType="com.zimuka.peers.dto.UserPeerDTO">
+        SELECT u.username, uc.img, uc.wechat_num, uc.company, uc.industry, uc.city, uc.phone, uc.email, uc.synopsis, uc.demand, uc.resources
+        FROM user_card uc, user u
+        WHERE CONCAT(uc.company, uc.industry, uc.city, uc.wechat_num, u.username)
+        LIKE CONCAT('%',#{param},'%' )  AND uc.user_id=u.id order by convert(u.username using gbk) ASC
+    </select>
+
+    <insert id="savePeerCard" parameterType="com.zimuka.peers.dao.UserPeer" useGeneratedKeys="true" keyProperty="id">
+        insert into user_peer
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="null != userId">
+                user_id,
+            </if>
+            <if test="null != peerCardId">
+                peer_card_id,
+            </if>
+            <if test="null != prepare">
+                prepare,
+            </if>
+            create_time,
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="null != userId">
+                #{userId},
+            </if>
+            <if test="null != peerCardId">
+                #{peerCardId},
+            </if>
+            <if test="null != prepare">
+                #{prepare},
+            </if>
+            now()
+        </trim>
+    </insert>
+
+    <update id="updateByUserId" parameterType="com.zimuka.peers.dao.UserPeer">
+        update user_peer
+        <set>
+            <if test="null != peerCardId">
+                peer_card_id=#{peerCardId},
+            </if>
+            <if test="null != saveFlag">
+                save_flag=#{saveFlag},
+            </if>
+            <if test="null != delFlag">
+                del_flag=#{delFlag},
+            </if>
+            <if test="null != prepare">
+                prepare=#{prepare},
+            </if>
+            up_time=now()
+        </set>
+        where user_id=#{userId} and peer_card_id=#{peerCardId}
+    </update>
+
+    <select id="findOneById" resultMap="UserPeerMapperResultMap">
+        select <include refid="Base_Column_List"/>
+        from user_peer
+        where user_id=#{userId} and peer_card_id=#{peerCardId}
+    </select>
+
 </mapper>

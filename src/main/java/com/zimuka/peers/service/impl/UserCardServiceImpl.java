@@ -1,8 +1,10 @@
 package com.zimuka.peers.service.impl;
 
+import com.zimuka.peers.dao.User;
 import com.zimuka.peers.dao.UserCard;
 import com.zimuka.peers.exception.PeerProjectException;
 import com.zimuka.peers.mapper.UserCardMapper;
+import com.zimuka.peers.mapper.UserMapper;
 import com.zimuka.peers.service.UserCardService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -16,6 +18,9 @@ public class UserCardServiceImpl implements UserCardService {
     @Resource
     private UserCardMapper userCardMapper;
 
+    @Resource
+    private UserMapper userMapper;
+
     @Override
     public void saveOrUpdate(UserCard userCard) {
 
@@ -23,11 +28,16 @@ public class UserCardServiceImpl implements UserCardService {
             throw new PeerProjectException("必填字段不可为空");
         }
 
-        if (null == userCard.getUserId() || "".equals(userCard.getUserId())) {
+        if (null == userCard.getOpenId() || "".equals(userCard.getOpenId())) {
             throw new PeerProjectException("用户未注册");
         }
 
-        UserCard checkUserCard = userCardMapper.findOneById(userCard.getUserId());
+        User user = userMapper.findOneByOpenId(userCard.getOpenId());
+        if (null == user) {
+            throw new PeerProjectException("用户未注册");
+        }
+
+        UserCard checkUserCard = userCardMapper.findOneById(user.getId());
         UserCard saveUserCard = new UserCard();
         int rows;
         if (null == checkUserCard) {
@@ -46,9 +56,18 @@ public class UserCardServiceImpl implements UserCardService {
     }
 
     @Override
-    public UserCard findOneByUser(Integer userId) {
+    public UserCard findOneByUser(String openId) {
 
-        UserCard userCard = userCardMapper.findOneById(userId);
+        if (StringUtils.isEmpty(openId)) {
+            throw new PeerProjectException("openId不能为空");
+        }
+
+        User user = userMapper.findOneByOpenId(openId);
+        if (null == user) {
+            throw new PeerProjectException("用户未注册");
+        }
+
+        UserCard userCard = userCardMapper.findOneById(user.getId());
         if (null == userCard) {
             throw new PeerProjectException("添加我的信息");
         }

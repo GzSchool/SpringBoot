@@ -12,10 +12,49 @@
         <result column="prepare" property="prepare"/>
     </resultMap>
 
+    <sql id="Base_Column_List">
+      id, openid, username, create_time, up_time, prepare
+    </sql>
+    
     <select id="findOneById" resultMap="UserMapperResultMap">
 		select *
 		from user
 		where id=#{id}
 	</select>
+
+    <insert id="saveUser" parameterType="com.zimuka.peers.dao.User" useGeneratedKeys="true" keyProperty="id">
+        insert into user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="openid != null">
+                openid,
+            </if>
+            <if test="username != null">
+                username,
+            </if>
+            <if test="prepare != null">
+                prepare,
+            </if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="openid != null">
+                #{openid},
+            </if>
+            <if test="username != null">
+                #{username},
+            </if>
+            <if test="prepare != null">
+                #{prepare},
+            </if>
+            now()
+        </trim>
+    </insert>
+
+    <select id="findOneByOpenId" parameterType="String" resultMap="UserMapperResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        where openid = #{openid}
+    </select>
 
 </mapper>
