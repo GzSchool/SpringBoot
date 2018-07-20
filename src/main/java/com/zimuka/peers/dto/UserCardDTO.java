@@ -1,67 +1,62 @@
-package com.zimuka.peers.dao;
+package com.zimuka.peers.dto;
 
-import java.util.Date;
+public class UserCardDTO {
 
-/**
- * 用户名片表
- */
-public class UserCard {
-
-    /* 名片ID */
     private Integer cardId;
 
-    /* 用户ID*/
     private Integer userId;
 
-    /* 小程序ID*/
-    private String appId;
+    private String username;
 
-    /* 用户头像地址*/
     private String img;
 
-    /* 用户微信号*/
     private String wechatNum;
 
-    /* 公司名称*/
     private String company;
 
-    /* 行业名称*/
-    private  String industry;
+    private String industry;
 
-    /* 城市*/
     private String city;
 
-    /* 电话*/
     private String phone;
 
-    /* 邮箱*/
     private String email;
 
-    /* 简介*/
     private String synopsis;
 
-    /* 需求*/
     private String demand;
 
-    /* 资源*/
     private String resources;
 
-    /* 点赞次数*/
     private Integer giveLikeNum;
 
-    /* 删除标识（1-可用，2-不可用，默认可用）*/
     private Integer delFlag;
 
-    /* 创建时间*/
-    private Date createTime;
-
-    /* 修改时间*/
-    private  Date upTime;
-
-    /* 预留字段*/
     private String prepare;
 
-    private String openId;
+    public Integer getGiveLikeNum() {
+        return giveLikeNum;
+    }
+
+    public void setGiveLikeNum(Integer giveLikeNum) {
+        this.giveLikeNum = giveLikeNum;
+    }
+
+    public Integer getDelFlag() {
+        return delFlag;
+    }
+
+    public void setDelFlag(Integer delFlag) {
+        this.delFlag = delFlag;
+    }
+
+    public String getPrepare() {
+        return prepare;
+    }
+
+    public void setPrepare(String prepare) {
+        this.prepare = prepare;
+    }
 
     public Integer getCardId() {
         return cardId;
@@ -79,12 +74,12 @@ public class UserCard {
         this.userId = userId;
     }
 
-    public String getAppId() {
-        return appId;
+    public String getUsername() {
+        return username;
     }
 
-    public void setAppId(String appId) {
-        this.appId = appId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getImg() {
@@ -166,53 +161,4 @@ public class UserCard {
     public void setResources(String resources) {
         this.resources = resources;
     }
-
-    public Integer getGiveLikeNum() {
-        return giveLikeNum;
-    }
-
-    public void setGiveLikeNum(Integer giveLikeNum) {
-        this.giveLikeNum = giveLikeNum;
-    }
-
-    public Integer getDelFlag() {
-        return delFlag;
-    }
-
-    public void setDelFlag(Integer delFlag) {
-        this.delFlag = delFlag;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpTime() {
-        return upTime;
-    }
-
-    public void setUpTime(Date upTime) {
-        this.upTime = upTime;
-    }
-
-    public String getPrepare() {
-        return prepare;
-    }
-
-    public void setPrepare(String prepare) {
-        this.prepare = prepare;
-    }
-
-    public String getOpenId() {
-        return openId;
-    }
-
-    public void setOpenId(String openId) {
-        this.openId = openId;
-    }
-
 }

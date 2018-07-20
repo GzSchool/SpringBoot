@@ -5,7 +5,6 @@
     <resultMap id="UserCardMapperResultMap"
                type="com.zimuka.peers.dao.UserCard">
         <id column="card_id" property="cardId"/>
-        <result column="group_id" property="groupId"/>
         <result column="user_id" property="userId"/>
         <result column="app_id" property="appId"/>
         <result column="img" property="img"/>
@@ -26,7 +25,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        card_id, group_id, user_id, app_id, img, wechat_num, company, industry, city, phone, email, synopsis,
+        card_id, user_id, app_id, img, wechat_num, company, industry, city, phone, email, synopsis,
         demand, resources, give_like_num, del_flag, create_time, up_time, prepare
     </sql>
 
@@ -35,9 +34,6 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="userId != null">
                 user_id,
-            </if>
-            <if test="groupId != null">
-                group_id,
             </if>
             <if test="appId != null">
                 app_id,
@@ -89,9 +85,6 @@
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="userId != null">
                 #{userId},
-            </if>
-            <if test="groupId != null">
-                #{groupId},
             </if>
             <if test="appId != null">
                 #{appId},
@@ -145,9 +138,6 @@
     <update id="updateCardByUser" parameterType="com.zimuka.peers.dao.UserCard">
         update user_card
         <set>
-            <if test="groupId != null">
-                group_id=#{groupId},
-            </if>
             <if test="img != null">
                 img=#{img},
             </if>
@@ -192,10 +182,11 @@
         where user_id=#{userId}
     </update>
     
-    <select id="findOneById" resultMap="UserCardMapperResultMap">
-        select <include refid="Base_Column_List"/>
-        from user_card
-        where user_id=#{userId}
+    <select id="findOneById" resultType="com.zimuka.peers.dto.UserCardDTO">
+        select uc.card_id, uc.user_id, uc.img, uc.wechat_num, uc.company, uc.industry, uc.city, uc.phone, uc.email, uc.synopsis,
+        uc.demand, uc.resources, uc.give_like_num, uc.del_flag, uc.prepare, u.username
+        from user_card uc, user u
+        where user_id=#{userId} and uc.user_id=u.id
     </select>
 
     <select id="findCardByParam" parameterType="com.zimuka.peers.dao.UserCard" resultMap="UserCardMapperResultMap">
@@ -204,9 +195,6 @@
         <where>
             <if test="cardId != null">
                 and card_id=#{cardId}
-            </if>
-            <if test="groupId != null">
-                and group_id=#{groupId}
             </if>
             <if test="userId != null">
                 and user_id=#{userId}

@@ -1,13 +1,16 @@
 package com.zimuka.peers.service.impl;
 
+import com.zimuka.peers.configBeans.MiniAppBean;
 import com.zimuka.peers.dao.User;
 import com.zimuka.peers.dao.UserCard;
+import com.zimuka.peers.dto.UserCardDTO;
 import com.zimuka.peers.exception.PeerProjectException;
 import com.zimuka.peers.mapper.UserCardMapper;
 import com.zimuka.peers.mapper.UserMapper;
 import com.zimuka.peers.service.UserCardService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -21,6 +24,9 @@ public class UserCardServiceImpl implements UserCardService {
 
     @Resource
     private UserMapper userMapper;
+
+    @Autowired
+    private MiniAppBean miniAppBean;
 
     @Override
     public void saveOrUpdate(UserCard userCard) {
@@ -38,16 +44,20 @@ public class UserCardServiceImpl implements UserCardService {
             throw new PeerProjectException("用户未注册");
         }
 
-        UserCard checkUserCard = userCardMapper.findOneById(user.getId());
+        UserCardDTO checkUserCard = userCardMapper.findOneById(user.getId());
         UserCard saveUserCard = new UserCard();
         int rows;
         if (null == checkUserCard) {
+            userCard.setUserId(user.getId());
+            userCard.setAppId(miniAppBean.getAppId());
             BeanUtils.copyProperties(userCard, saveUserCard);
             rows = userCardMapper.save(saveUserCard);
             if (1 != rows) {
                 throw new PeerProjectException("保存名片失败");
             }
         } else {
+            userCard.setUserId(user.getId());
+            userCard.setAppId(miniAppBean.getAppId());
             BeanUtils.copyProperties(userCard, saveUserCard);
             rows = userCardMapper.updateCardByUser(saveUserCard);
             if (1 != rows) {
@@ -57,7 +67,7 @@ public class UserCardServiceImpl implements UserCardService {
     }
 
     @Override
-    public UserCard findOneByUser(String openId) {
+    public UserCardDTO findOneByUser(String openId) {
 
         if (StringUtils.isEmpty(openId)) {
             throw new PeerProjectException("openId不能为空");
@@ -68,11 +78,11 @@ public class UserCardServiceImpl implements UserCardService {
             throw new PeerProjectException("用户未注册");
         }
 
-        UserCard userCard = userCardMapper.findOneById(user.getId());
-        if (null == userCard) {
+        UserCardDTO userCardDTO = userCardMapper.findOneById(user.getId());
+        if (null == userCardDTO) {
             throw new PeerProjectException("添加我的信息");
         }
-        return userCard;
+        return userCardDTO;
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.zimuka.peers.controller;
 
 import com.zimuka.peers.dao.UserCard;
 import com.zimuka.peers.dto.AjaxResultDTO;
+import com.zimuka.peers.dto.UserCardDTO;
 import com.zimuka.peers.exception.PeerProjectException;
 import com.zimuka.peers.service.UserCardService;
 import org.slf4j.Logger;
@@ -41,8 +42,8 @@ public class UserCardController {
     public AjaxResultDTO findOne(String openId, HttpServletResponse response) {
         try {
             response.setHeader("Access-Control-Allow-Origin", "*");
-            UserCard userCard = userCardService.findOneByUser(openId);
-            return AjaxResultDTO.success(userCard);
+            UserCardDTO userCardDTO = userCardService.findOneByUser(openId);
+            return AjaxResultDTO.success(userCardDTO);
         } catch(PeerProjectException ppe) {
             return AjaxResultDTO.failed(ppe.getMessage());
         } catch(Exception e) {
