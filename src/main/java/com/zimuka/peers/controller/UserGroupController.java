@@ -2,6 +2,7 @@ package com.zimuka.peers.controller;
 
 import com.zimuka.peers.dao.UserGroup;
 import com.zimuka.peers.dto.AjaxResultDTO;
+import com.zimuka.peers.dto.CardsOnGroupDTO;
 import com.zimuka.peers.exception.PeerProjectException;
 import com.zimuka.peers.service.UserGroupService;
 import org.slf4j.Logger;
@@ -33,23 +34,23 @@ public class UserGroupController {
         } catch(PeerProjectException ppe) {
             return AjaxResultDTO.failed(ppe.getMessage());
         } catch(Exception e) {
-            logger.error("【修改群列表异常】：{}", e);
-            return AjaxResultDTO.failed("修改群列表异常");
+            logger.error("【群绑定异常】：{}", e);
+            return AjaxResultDTO.failed("群分享异常");
         }
     }
 
-    @RequestMapping("/findAllByUserGroup")
+    @RequestMapping("/findGroupCards")
     @ResponseBody
-    public AjaxResultDTO findAllByUserGroup(UserGroup userGroup, HttpServletResponse response) {
+    public AjaxResultDTO findGroupCards(String openId, String groupId, HttpServletResponse response) {
         try {
             response.setHeader("Access-Control-Allow-Origin", "*");
-            List<UserGroup> userGroupList = userGroupService.findAllByUserGroup(userGroup);
-            return AjaxResultDTO.success(userGroupList);
+            List<CardsOnGroupDTO> cardsOnGroupDTOS = userGroupService.findCardsOnGroupByOpenId(openId, groupId);
+            return AjaxResultDTO.success(cardsOnGroupDTOS);
         } catch(PeerProjectException ppe) {
             return AjaxResultDTO.failed(ppe.getMessage());
         } catch(Exception e) {
-            logger.error("【查询群组异常】：{}", e);
-            return AjaxResultDTO.failed("查询群组异常");
+            logger.error("【查询群名片列表异常】：{}", e);
+            return AjaxResultDTO.failed("查询群名片列表异常");
         }
     }
 }

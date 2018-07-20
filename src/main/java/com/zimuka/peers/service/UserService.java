@@ -1,14 +1,8 @@
 package com.zimuka.peers.service;
 
-import com.zimuka.peers.dao.User;
-
-import java.util.List;
+import com.zimuka.peers.dto.AuthorizeDTO;
 
 public interface UserService {
 
-    User findOneById(Integer id);
-
-    void saveUser(User user);
-
-    List<User> findUserByParam(User user);
+    AuthorizeDTO get3rdsession(String code);
 }

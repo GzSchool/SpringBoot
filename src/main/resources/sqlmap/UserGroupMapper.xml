@@ -4,26 +4,26 @@
         namespace="com.zimuka.peers.mapper.UserGroupMapper">
     <resultMap id="UserGroupMapperResultMap"
                type="com.zimuka.peers.dao.UserGroup">
-        <id column="user_id" property="userId"/>
-        <result column="group_id" property="groupId"/>
+        <id column="group_id" property="groupId"/>
+        <result column="open_id" property="openId"/>
         <result column="app_id" property="appId"/>
         <result column="del_flag" property="delFlag"/>
-        <result column="create_time" property="createTime"/>
+        <result column="ct_time" property="ctTime"/>
         <result column="up_time" property="upTime"/>
         <result column="prepare" property="prepare"/>
     </resultMap>
     <sql id="Base_Column_List">
-        user_id, group_id, app_id, del_flag, create_time, up_time, prepare
+        group_id, open_id, app_id, del_flag, ct_time, up_time, prepare
     </sql>
 
     <insert id="save" parameterType="com.zimuka.peers.dao.UserGroup" useGeneratedKeys="true" keyProperty="id">
         insert into user_group
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="null != userId">
-                user_id,
-            </if>
             <if test="null != groupId">
                 group_id,
+            </if>
+            <if test="null != openId">
+                open_id,
             </if>
             <if test="null != appId">
                 app_id,
@@ -31,8 +31,8 @@
             <if test="null != delFlag">
                 del_flag,
             </if>
-            <if test="null != createTime">
-                create_time,
+            <if test="null != ctTime">
+                ct_time,
             </if>
             <if test="null != upTime">
                 up_time
@@ -42,11 +42,11 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="null != userId">
-                #{userId},
-            </if>
             <if test="null != groupId">
                 #{groupId},
+            </if>
+            <if test="null != openId">
+                #{openId},
             </if>
             <if test="null != appId">
                 #{appId},
@@ -54,8 +54,8 @@
             <if test="null != delFlag">
                 #{delFlag},
             </if>
-            <if test="null != createTime">
-                #{createTime},
+            <if test="null != ctTime">
+                #{ctTime},
             </if>
             <if test="null != upTime">
                 #{upTime},
@@ -75,8 +75,8 @@
             <if test="null != delFlag">
                 del_flag=#{delFlag},
             </if>
-            <if test="null != createTime">
-                create_time=#{createTime},
+            <if test="null != ctTime">
+                ct_time=#{ctTime},
             </if>
             <if test="null != upTime">
                 up_time=#{upTime},
@@ -85,24 +85,24 @@
                 prepare=#{prepare},
             </if>
         </set>
-        where user_id=#{userId} and group_id=#{groupId}
+        where open_id=#{openId} and group_id=#{groupId}
     </update>
 
     <select id="findOneById" resultMap="UserGroupMapperResultMap">
         select <include refid="Base_Column_List"/>
         from user_group
-        where user_id=#{userId} and group_id=#{groupId}
+        where open_id=#{openId} and group_id=#{groupId}
     </select>
 
-    <select id="findAllByUserGroup" parameterType="com.zimuka.peers.dao.UserGroup" resultMap="UserGroupMapperResultMap">
+    <select id="findUserGroupByParam" parameterType="com.zimuka.peers.dao.UserGroup" resultMap="UserGroupMapperResultMap">
         select <include refid="Base_Column_List"/>
         from user_group
         <where>
-            <if test="null != userId">
-                and user_id=#{userId}
-            </if>
             <if test="null != groupId">
                 and group_id=#{groupId}
+            </if>
+            <if test="null != openId">
+                and open_id=#{openId}
             </if>
             <if test="null != appId">
                 and app_id=#{appId}
@@ -110,8 +110,8 @@
             <if test="null != delFlag">
                 and del_flag=#{delFlag}
             </if>
-            <if test="null != createTime">
-                and create_time=#{createTime}
+            <if test="null != ctTime">
+                and ct_time=#{ctTime}
             </if>
             <if test="null != upTime">
                 and up_time=#{upTime}
@@ -120,5 +120,19 @@
                 and prepare=#{prepare}
             </if>
         </where>
+    </select>
+
+    <select id="findUsersByGroupId" resultMap="UserGroupMapperResultMap">
+        select <include refid="Base_Column_List"/>
+        from user_group
+        where group_id=#{groupId} and open_id != #{openId}
+    </select>
+
+    <select id="findCardsOnGroupByOpenId" resultType="com.zimuka.peers.dto.CardsOnGroupDTO">
+        select uc.username as username, uc.user_wechat as userWechat, uc.user_company as userCompany, uc.user_industry as userIndustry,
+         uc.user_city as userCity, uc.user_job as userJob, uc.user_img as userImg, uc.user_phone as userPhone, uc.user_email as userEmail,
+          uc.synopsis as synopsis, uc.demand as demand, uc.resources as resources, uc.give_like_num as giveLikeNum, up.save_flag as saveFlag
+        from user_peer up, user_card uc
+        where up.open_id=#{openId} and up.group_id=#{groupId} and up.card_id=uc.id
     </select>
 </mapper>

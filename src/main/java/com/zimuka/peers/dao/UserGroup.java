@@ -2,29 +2,20 @@ package com.zimuka.peers.dao;
 
 import java.util.Date;
 
-/**
- * 用户群组关联表
- */
 public class UserGroup {
-    /* 群组ID */
+
     private String groupId;
 
-    /* 用户ID */
-    private Integer userId;
+    private String openId;
 
-    /* 小程序ID */
     private String appId;
 
-    /* 删除标识（1-未删除，2-已删除）默认未删除 */
     private Integer delFlag;
 
-    /* 创建时间 */
-    private Date createTime;
+    private Date ctTime;
 
-    /* 修改时间 */
     private Date upTime;
 
-    /* 预留字段 */
     private String prepare;
 
     public String getGroupId() {
@@ -35,12 +26,12 @@ public class UserGroup {
         this.groupId = groupId;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public String getOpenId() {
+        return openId;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setOpenId(String openId) {
+        this.openId = openId;
     }
 
     public String getAppId() {
@@ -59,12 +50,12 @@ public class UserGroup {
         this.delFlag = delFlag;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public Date getCtTime() {
+        return ctTime;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setCtTime(Date ctTime) {
+        this.ctTime = ctTime;
     }
 
     public Date getUpTime() {
@@ -81,15 +72,5 @@ public class UserGroup {
 
     public void setPrepare(String prepare) {
         this.prepare = prepare;
-    }
-
-    private String openId;
-
-    public String getOpenId() {
-        return openId;
-    }
-
-    public void setOpenId(String openId) {
-        this.openId = openId;
     }
 }

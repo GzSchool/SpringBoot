@@ -2,46 +2,56 @@ package com.zimuka.peers.dao;
 
 import java.util.Date;
 
-/**
- * 用户同行关联表
- */
 public class UserPeer {
 
-    /* 用户ID */
-    private Integer userId;
+    private String openId;
 
-    /* 同行名片ID */
-    private Integer peerCardId;
+    private Integer cardId;
 
-    /* 保存状态(1-保存，2-未保存，默认未保存) */
+    private String groupId;
+
+    private Integer shareFlag;
+
     private Integer saveFlag;
 
-    /* 删除标识(1-未删除，2-已删除) */
     private Integer delFlag;
 
-    /* 创建时间 */
-    private Date createTime;
+    private Date ctTime;
 
-    /* 修改时间 */
     private Date upTime;
 
-    /* 预留字段*/
     private String prepare;
 
-    public Integer getUserId() {
-        return userId;
+    public String getOpenId() {
+        return openId;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setOpenId(String openId) {
+        this.openId = openId;
     }
 
-    public Integer getPeerCardId() {
-        return peerCardId;
+    public Integer getCardId() {
+        return cardId;
     }
 
-    public void setPeerCardId(Integer peerCardId) {
-        this.peerCardId = peerCardId;
+    public void setCardId(Integer cardId) {
+        this.cardId = cardId;
+    }
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
+
+    public Integer getShareFlag() {
+        return shareFlag;
+    }
+
+    public void setShareFlag(Integer shareFlag) {
+        this.shareFlag = shareFlag;
     }
 
     public Integer getSaveFlag() {
@@ -60,12 +70,12 @@ public class UserPeer {
         this.delFlag = delFlag;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public Date getCtTime() {
+        return ctTime;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setCtTime(Date ctTime) {
+        this.ctTime = ctTime;
     }
 
     public Date getUpTime() {
@@ -82,15 +92,5 @@ public class UserPeer {
 
     public void setPrepare(String prepare) {
         this.prepare = prepare;
-    }
-
-    private String openId;
-
-    public String getOpenId() {
-        return openId;
-    }
-
-    public void setOpenId(String openId) {
-        this.openId = openId;
     }
 }

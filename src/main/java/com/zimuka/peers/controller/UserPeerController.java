@@ -1,11 +1,10 @@
 package com.zimuka.peers.controller;
 
+import com.zimuka.peers.dao.UserCard;
 import com.zimuka.peers.dao.UserPeer;
 import com.zimuka.peers.dto.AjaxResultDTO;
-import com.zimuka.peers.dto.UserPeerDTO;
 import com.zimuka.peers.exception.PeerProjectException;
 import com.zimuka.peers.service.UserPeerService;
-import com.zimuka.peers.vo.UserPeerSaveVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,63 +24,45 @@ public class UserPeerController {
     @Resource
     private UserPeerService userPeerService;
 
-    @RequestMapping("/findAll")
-    @ResponseBody
-    public AjaxResultDTO findAll(String openId, HttpServletResponse response) {
-        try {
-            response.setHeader("Access-Control-Allow-Origin", "*");
-            List<UserPeerDTO> userPeerDTOS = userPeerService.findAll(openId);
-            return AjaxResultDTO.success(userPeerDTOS);
-        } catch(PeerProjectException ppe) {
-            return AjaxResultDTO.failed(ppe.getMessage());
-        } catch(Exception e) {
-            logger.error("【查询已有同行信息异常】：", e);
-            return AjaxResultDTO.failed("查询已有同行信息异常");
-        }
-    }
-
-    @RequestMapping("/findAllByParam")
-    @ResponseBody
-    public AjaxResultDTO findAllByParam(String param, HttpServletResponse response) {
-        try {
-            response.setHeader("Access-Control-Allow-Origin", "*");
-            List<UserPeerDTO> userPeerDTOS = userPeerService.findAllByParam(param);
-            return AjaxResultDTO.success(userPeerDTOS);
-        } catch(PeerProjectException ppe) {
-            return AjaxResultDTO.failed(ppe.getMessage());
-        } catch(Exception e) {
-            logger.error("【搜索名片异常】：", e);
-            return AjaxResultDTO.failed("搜索名片异常");
-        }
-    }
-
+    /**
+     * 保存同行名片，修改保存名片
+     * @param userPeer
+     * @param response
+     * @return
+     */
     @RequestMapping("/saveOrUpdate")
     @ResponseBody
-    public AjaxResultDTO saveOrUpdate(UserPeerSaveVO userPeerSaveVO, HttpServletResponse response) {
+    public AjaxResultDTO saveOrUpdate(UserPeer userPeer, HttpServletResponse response) {
         try {
             response.setHeader("Access-Control-Allow-Origin", "*");
-            userPeerService.saveOrUpdate(userPeerSaveVO);
+            userPeerService.saveOrUpdate(userPeer);
             return AjaxResultDTO.success();
         } catch(PeerProjectException ppe) {
             return AjaxResultDTO.failed(ppe.getMessage());
         } catch(Exception e) {
-            logger.error("【操作名片异常】：", e);
-            return AjaxResultDTO.failed("操作名片异常");
+            logger.error("【修改用户同行名片异常】：{}", e);
+            return AjaxResultDTO.failed("修改用户同行名片异常");
         }
     }
 
-    @RequestMapping("/findUserPeerByParam")
+    /**
+     * 查询用户名片夹
+     * @param openId
+     * @param response
+     * @return
+     */
+    @RequestMapping("/findAllByOpenId")
     @ResponseBody
-    public AjaxResultDTO findUserPeerByParam(UserPeer userPeer, HttpServletResponse response) {
+    public AjaxResultDTO findAllByOpenId(String openId, HttpServletResponse response) {
         try {
             response.setHeader("Access-Control-Allow-Origin", "*");
-            List<UserPeer> userPeerList = userPeerService.findUserPeerByParam(userPeer);
-            return AjaxResultDTO.success(userPeerList);
+            List<UserCard> userCardList = userPeerService.findAllByOpenId(openId);
+            return AjaxResultDTO.success(userCardList);
         } catch(PeerProjectException ppe) {
             return AjaxResultDTO.failed(ppe.getMessage());
-        } catch (Exception e){
-            logger.error("【查询名片ByParam异常】：{}", e);
-            return AjaxResultDTO.failed("查询名片异常");
+        } catch(Exception e) {
+            logger.error("【查询用户名片夹异常】：{}", e);
+            return AjaxResultDTO.failed("查询名片夹异常");
         }
     }
 }

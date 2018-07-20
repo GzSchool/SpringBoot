@@ -1,10 +1,9 @@
 package com.zimuka.peers.controller;
 
-import com.zimuka.peers.dao.User;
 import com.zimuka.peers.dto.AjaxResultDTO;
+import com.zimuka.peers.dto.AuthorizeDTO;
 import com.zimuka.peers.exception.PeerProjectException;
 import com.zimuka.peers.service.UserService;
-import org.aspectj.weaver.loadtime.Aj;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -24,27 +22,24 @@ public class UserController {
     @Resource
     private UserService userService;
 
-    @RequestMapping("findOneById")
+    /**
+     * 用户授权，保存用户信息
+     * @param code
+     * @param response
+     * @return
+     */
+    @RequestMapping("/userAuthor")
     @ResponseBody
-    public AjaxResultDTO findOneById(Integer id, HttpServletResponse response) {
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        User user = userService.findOneById(id);
-        logger.info("查询id:" + id);
-        return AjaxResultDTO.success(user);
-    }
-
-    @RequestMapping("/findUserByParam")
-    @ResponseBody
-    public AjaxResultDTO findUserByParam(User user, HttpServletResponse response) {
+    public AjaxResultDTO userAuthor(String code, HttpServletResponse response) {
         try {
             response.setHeader("Access-Control-Allow-Origin", "*");
-            List<User> userList = userService.findUserByParam(user);
-            return AjaxResultDTO.success(userList);
+            AuthorizeDTO authorizeDTO = userService.get3rdsession(code);
+            return AjaxResultDTO.success(authorizeDTO);
         } catch(PeerProjectException ppe) {
             return AjaxResultDTO.failed(ppe.getMessage());
         } catch(Exception e) {
-            logger.error("【查询用户异常】：{}", e);
-            return AjaxResultDTO.failed("查询用户异常");
+            logger.error("【用户授权异常】：{}", e);
+            return AjaxResultDTO.failed("用户授权异常");
         }
     }
 }

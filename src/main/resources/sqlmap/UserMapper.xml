@@ -5,77 +5,73 @@
     <resultMap id="UserMapperResultMap"
                type="com.zimuka.peers.dao.User">
         <id column="id" property="id"/>
-        <result column="openid" property="openid"/>
+        <result column="open_id" property="openId"/>
         <result column="session_key" property="sessionKey"/>
         <result column="open_session" property="openSession"/>
-        <result column="username" property="username"/>
-        <result column="create_time" property="createTime"/>
+        <result column="ct_time" property="ctTime"/>
         <result column="up_time" property="upTime"/>
         <result column="prepare" property="prepare"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-      id, openid, session_key, open_session, username, create_time, up_time, prepare
+      id, open_id, session_key, open_session, ct_time, up_time, prepare
     </sql>
-    
-    <select id="findOneById" resultMap="UserMapperResultMap">
-		select *
-		from user
-		where id=#{id}
-	</select>
 
-    <insert id="saveUser" parameterType="com.zimuka.peers.dao.User" useGeneratedKeys="true" keyProperty="id">
+    <insert id="save" parameterType="com.zimuka.peers.dao.User" useGeneratedKeys="true" keyProperty="id">
         insert into user
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="openid != null">
-                openid,
+            <if test="null != openId">
+                open_id,
             </if>
-            <if test="sessionKey != null">
+            <if test="null != sessionKey">
                 session_key,
             </if>
-            <if test="openSession != null">
+            <if test="null != openSession">
                 open_session,
             </if>
-            <if test="username != null">
-                username,
+            <if test="null != ctTime">
+                ct_time,
             </if>
-            <if test="prepare != null">
+            <if test="null != upTime">
+                up_time
+            </if>
+            <if test="null != prepare">
                 prepare,
             </if>
-            create_time
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="openid != null">
-                #{openid},
+            <if test="null != openId">
+                #{openId},
             </if>
-            <if test="sessionKey != null">
+            <if test="null != sessionKey">
                 #{sessionKey},
             </if>
-            <if test="openSession != null">
+            <if test="null != openSession">
                 #{openSession},
             </if>
-            <if test="username != null">
-                #{username},
+            <if test="null != ctTime">
+                #{ctTime},
             </if>
-            <if test="prepare != null">
-                #{prepare},
+            <if test="null != upTime">
+                #{upTime},
             </if>
-            now()
+            <if test="null != prepare">
+                prepare,
+            </if>
         </trim>
     </insert>
 
     <select id="findOneByOpenId" parameterType="String" resultMap="UserMapperResultMap">
-        select
-        <include refid="Base_Column_List"/>
+        select <include refid="Base_Column_List"/>
         from user
-        where openid = #{openid}
+        where open_id = #{openId}
     </select>
 
-    <update id="updateUser" parameterType="com.zimuka.peers.dao.User">
+    <update id="update" parameterType="com.zimuka.peers.dao.User">
         update user
         <set>
-            <if test="null != openid">
-                openid=#{openid},
+            <if test="null != openId">
+                open_id=#{openId},
             </if>
             <if test="null != sessionKey">
                 session_key=#{sessionKey},
@@ -83,13 +79,15 @@
             <if test="null != openSession">
                 open_session=#{openSession},
             </if>
-            <if test="null != username">
-                username=#{username},
+            <if test="null != ctTime">
+                ct_time=#{ctTime},
+            </if>
+            <if test="null != upTime">
+                up_time=#{upTime},
             </if>
             <if test="null != prepare">
                 prepare=#{prepare},
             </if>
-            up_time=now()
         </set>
         where id=#{id}
     </update>
@@ -98,22 +96,25 @@
         select <include refid="Base_Column_List"/>
         from user
         <where>
-            <if test="null != id and id != ''">
+            <if test="null != id">
                 and id=#{id}
             </if>
-            <if test="null != openid and openid != ''">
-                and openid=#{openid}
+            <if test="null != openId">
+                and open_id=#{openId}
             </if>
-            <if test="null != sessionKey and sessionKey != ''">
+            <if test="null != sessionKey">
                 and session_key=#{sessionKey}
             </if>
-            <if test="null != openSession and openSession != ''">
+            <if test="null != openSession">
                 and open_session=#{openSession}
             </if>
-            <if test="null != username and username != ''">
-                and username=#{username}
+            <if test="null != ctTime">
+                and ct_time=#{ctTime}
             </if>
-            <if test="null != prepare and prepare != ''">
+            <if test="null != upTime">
+                and up_time=#{upTime}
+            </if>
+            <if test="null != prepare">
                 and prepare=#{prepare}
             </if>
         </where>

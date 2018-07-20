@@ -2,34 +2,37 @@ package com.zimuka.peers.dao;
 
 import java.util.Date;
 
-/**
- * 用户表
- */
 public class User {
 
-    /* 用户ID */
     private Integer id;
 
-    /* 用户openId */
-    private String openid;
+    private String openId;
 
-    /* 会话密钥 */
     private String sessionKey;
 
-    /* 用户标识（openId + sessionKey后加密处理） */
     private String openSession;
 
-    /* 用户名称 */
-    private String username;
+    private Date ct_time;
 
-    /* 创建时间 */
-    private Date createTime;
+    private Date up_time;
 
-    /* 修改时间 */
-    private Date upTime;
-
-    /* 预留字段 */
     private String prepare;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
+    }
 
     public String getSessionKey() {
         return sessionKey;
@@ -47,44 +50,20 @@ public class User {
         this.openSession = openSession;
     }
 
-    public Integer getId() {
-        return id;
+    public Date getCt_time() {
+        return ct_time;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setCt_time(Date ct_time) {
+        this.ct_time = ct_time;
     }
 
-    public String getOpenid() {
-        return openid;
+    public Date getUp_time() {
+        return up_time;
     }
 
-    public void setOpenid(String openid) {
-        this.openid = openid;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpTime() {
-        return upTime;
-    }
-
-    public void setUpTime(Date upTime) {
-        this.upTime = upTime;
+    public void setUp_time(Date up_time) {
+        this.up_time = up_time;
     }
 
     public String getPrepare() {

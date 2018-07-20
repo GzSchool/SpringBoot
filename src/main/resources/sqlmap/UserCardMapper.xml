@@ -4,244 +4,295 @@
         namespace="com.zimuka.peers.mapper.UserCardMapper">
     <resultMap id="UserCardMapperResultMap"
                type="com.zimuka.peers.dao.UserCard">
-        <id column="card_id" property="cardId"/>
-        <result column="user_id" property="userId"/>
+        <id column="id" property="id"/>
+        <result column="open_id" property="openId"/>
         <result column="app_id" property="appId"/>
-        <result column="img" property="img"/>
-        <result column="wechat_num" property="wechatNum"/>
-        <result column="company" property="company"/>
-        <result column="industry" property="industry"/>
-        <result column="city" property="city"/>
-        <result column="phone" property="phone"/>
-        <result column="email" property="email"/>
+        <result column="username" property="username"/>
+        <result column="user_wechat" property="userWechat"/>
+        <result column="user_company" property="userCompany"/>
+        <result column="user_industry" property="userIndustry"/>
+        <result column="user_city" property="userCity"/>
+        <result column="user_job" property="userJob"/>
+        <result column="user_img" property="userImg"/>
+        <result column="user_phone" property="userPhone"/>
+        <result column="user_email" property="userEmail"/>
         <result column="synopsis" property="synopsis"/>
         <result column="demand" property="demand"/>
         <result column="resources" property="resources"/>
         <result column="give_like_num" property="giveLikeNum"/>
         <result column="del_flag" property="delFlag"/>
-        <result column="create_time" property="createTime"/>
+        <result column="ct_time" property="ctTime"/>
         <result column="up_time" property="upTime"/>
         <result column="prepare" property="prepare"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        card_id, user_id, app_id, img, wechat_num, company, industry, city, phone, email, synopsis,
-        demand, resources, give_like_num, del_flag, create_time, up_time, prepare
+        id, open_id, app_id, username, user_wechat, user_company, user_industry, user_city, user_job, user_img, user_phone, user_email,
+        synopsis, demand, resources, give_like_num, del_flag, ct_time, up_time, prepare
     </sql>
 
     <insert id="save" parameterType="com.zimuka.peers.dao.UserCard" useGeneratedKeys="true" keyProperty="id">
         insert into user_card
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="userId != null">
-                user_id,
+            <if test="null != openId">
+                open_id,
             </if>
-            <if test="appId != null">
+            <if test="null != appId">
                 app_id,
             </if>
-            <if test="img != null">
-                img,
+            <if test="null != username">
+                username,
             </if>
-            <if test="wechatNum != null">
-                wechat_num,
+            <if test="null != userWechat">
+                user_wechat,
             </if>
-            <if test="company != null">
-                company,
+            <if test="null != userCompany">
+                user_company,
             </if>
-            <if test="industry != null">
-                industry,
+            <if test="null != userIndustry">
+                user_industry,
             </if>
-            <if test="city != null">
-                city,
+            <if test="null != userCity">
+                user_city,
             </if>
-            <if test="phone != null">
-                phone,
+            <if test="null != userJob">
+                user_job,
             </if>
-            <if test="email != null">
-                email,
+            <if test="null != userImg">
+                user_img,
             </if>
-            <if test="synopsis != null ">
+            <if test="null != userPhone">
+                user_phone,
+            </if>
+            <if test="null != userEmail">
+                user_email,
+            </if>
+            <if test="null != synopsis">
                 synopsis,
             </if>
-            <if test="demand != null">
+            <if test="null != demand">
                 demand,
             </if>
-            <if test="resources != null">
+            <if test="null != resources">
                 resources,
             </if>
-            <if test="giveLikeNum != null">
+            <if test="null != giveLikeNum">
                 give_like_num,
             </if>
-            <if test="delFlag != null">
+            <if test="null != delFlag">
                 del_flag,
             </if>
-            <if test="upTime != null">
+            <if test="null != ctTime">
+                ct_time,
+            </if>
+            <if test="null != upTime">
                 up_time,
             </if>
-            <if test="prepare != null">
+            <if test="null != prepare">
                 prepare,
             </if>
-            create_time
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
-            <if test="userId != null">
-                #{userId},
+            <if test="null != openId">
+                #{openId},
             </if>
-            <if test="appId != null">
+            <if test="null != appId">
                 #{appId},
             </if>
-            <if test="img != null">
-                #{img},
+            <if test="null != username">
+                #{username},
             </if>
-            <if test="wechatNum != null">
-                #{wechatNum},
+            <if test="null != userWechat">
+                #{userWechat},
             </if>
-            <if test="company != null">
-                #{company},
+            <if test="null != userCompany">
+                #{userCompany},
             </if>
-            <if test="industry != null">
-                #{industry},
+            <if test="null != userIndustry">
+                #{userIndustry},
             </if>
-            <if test="city != null">
-                #{city},
+            <if test="null != userCity">
+                #{userCity},
             </if>
-            <if test="phone != null">
-                #{phone},
+            <if test="null != userJob">
+                #{userJob},
             </if>
-            <if test="email != null">
-                #{email},
+            <if test="null != userImg">
+                #{userImg},
             </if>
-            <if test="synopsis != null ">
+            <if test="null != userPhone">
+                #{userPhone},
+            </if>
+            <if test="null != userEmail">
+                #{userEmail},
+            </if>
+            <if test="null != synopsis">
                 #{synopsis},
             </if>
-            <if test="demand != null">
+            <if test="null != demand">
                 #{demand},
             </if>
-            <if test="resources != null">
+            <if test="null != resources">
                 #{resources},
             </if>
-            <if test="giveLikeNum != null">
+            <if test="null != giveLikeNum">
                 #{giveLikeNum},
             </if>
-            <if test="delFlag != null">
+            <if test="null != delFlag">
                 #{delFlag},
             </if>
-            <if test="upTime != null">
+            <if test="null != ctTime">
+                #{ctTime},
+            </if>
+            <if test="null != upTime">
                 #{upTime},
             </if>
-            <if test="prepare != null">
+            <if test="null != prepare">
                 #{prepare},
             </if>
-            now()
         </trim>
     </insert>
 
-    <update id="updateCardByUser" parameterType="com.zimuka.peers.dao.UserCard">
+    <update id="update" parameterType="com.zimuka.peers.dao.UserCard">
         update user_card
         <set>
-            <if test="img != null">
-                img=#{img},
+            <if test="null != appId">
+                app_id=#{appId},
             </if>
-            <if test="wechatNum != null">
-                wechat_num=#{wechatNum},
+            <if test="null != username">
+                username=#{username},
             </if>
-            <if test="company != null">
-                company=#{company},
+            <if test="null != userWechat">
+                user_wechat=#{userWechat},
             </if>
-            <if test="industry != null">
-                industry=#{industry},
+            <if test="null != userCompany">
+                user_company=#{userCompany},
             </if>
-            <if test="city != null">
-                city=#{city},
+            <if test="null != userIndustry">
+                user_industry=#{userIndustry},
             </if>
-            <if test="phone != null">
-                phone=#{phone},
+            <if test="null != userCity">
+                user_city=#{userCity},
             </if>
-            <if test="email != null">
-                email=#{email},
+            <if test="null != userJob">
+                user_job=#{userJob},
             </if>
-            <if test="synopsis != null ">
+            <if test="null != userImg">
+                user_img=#{userImg},
+            </if>
+            <if test="null != userPhone">
+                user_phone=#{userPhone},
+            </if>
+            <if test="null != userEmail">
+                user_email=#{userEmail},
+            </if>
+            <if test="null != synopsis">
                 synopsis=#{synopsis},
             </if>
-            <if test="demand != null">
+            <if test="null != demand">
                 demand=#{demand},
             </if>
-            <if test="resources != null">
+            <if test="null != resources">
                 resources=#{resources},
             </if>
-            <if test="giveLikeNum != null">
+            <if test="null != giveLikeNum">
                 give_like_num=#{giveLikeNum},
             </if>
-            <if test="delFlag != null">
+            <if test="null != delFlag">
                 del_flag=#{delFlag},
             </if>
-            <if test="prepare != null">
+            <if test="null != ctTime">
+                ct_time=#{ctTime},
+            </if>
+            <if test="null != upTime">
+                up_time=#{upTime},
+            </if>
+            <if test="null != prepare">
                 prepare=#{prepare},
             </if>
-            up_time=now()
         </set>
-        where user_id=#{userId}
+        where open_id=#{openId} and id=#{id}
     </update>
-    
-    <select id="findOneById" resultType="com.zimuka.peers.dto.UserCardDTO">
-        select uc.card_id, uc.user_id, uc.img, uc.wechat_num, uc.company, uc.industry, uc.city, uc.phone, uc.email, uc.synopsis,
-        uc.demand, uc.resources, uc.give_like_num, uc.del_flag, uc.prepare, u.username
-        from user_card uc, user u
-        where user_id=#{userId} and uc.user_id=u.id
+
+
+    <select id="findOneByOpenId" resultMap="UserCardMapperResultMap">
+        select <include refid="Base_Column_List"/>
+        from user_card
+        where open_id=#{openId}
     </select>
 
     <select id="findCardByParam" parameterType="com.zimuka.peers.dao.UserCard" resultMap="UserCardMapperResultMap">
         select <include refid="Base_Column_List"/>
         from user_card
         <where>
-            <if test="cardId != null">
-                and card_id=#{cardId}
+            <if test="null != id">
+                and id=#{openId}
             </if>
-            <if test="userId != null">
-                and user_id=#{userId}
+            <if test="null != openId">
+                and open_id=#{openId}
             </if>
             <if test="null != appId">
                 and app_id=#{appId}
             </if>
-            <if test="img != null">
-                and img=#{img}
+            <if test="null != username">
+                and username=#{username}
             </if>
-            <if test="wechatNum != null">
-                and wechat_num=#{wechatNum}
+            <if test="null != userWechat">
+                and user_wechat=#{userWechat}
             </if>
-            <if test="company != null">
-                and company=#{company}
+            <if test="null != userCompany">
+                and user_company=#{userCompany}
             </if>
-            <if test="industry != null">
-                and industry=#{industry}
+            <if test="null != userIndustry">
+                and user_industry=#{userIndustry}
             </if>
-            <if test="city != null">
-                and city=#{city}
+            <if test="null != userCity">
+                and user_city=#{userCity}
             </if>
-            <if test="phone != null">
-                and phone=#{phone}
+            <if test="null != userJob">
+                and user_job=#{userJob}
             </if>
-            <if test="email != null">
-                and email=#{email}
+            <if test="null != userImg">
+                and user_img=#{userImg}
             </if>
-            <if test="synopsis != null ">
+            <if test="null != userPhone">
+                and user_phone=#{userPhone}
+            </if>
+            <if test="null != userEmail">
+                and user_email=#{userEmail}
+            </if>
+            <if test="null != synopsis">
                 and synopsis=#{synopsis}
             </if>
-            <if test="demand != null">
+            <if test="null != demand">
                 and demand=#{demand}
             </if>
-            <if test="resources != null">
+            <if test="null != resources">
                 and resources=#{resources}
             </if>
-            <if test="giveLikeNum != null">
+            <if test="null != giveLikeNum">
                 and give_like_num=#{giveLikeNum}
             </if>
-            <if test="delFlag != null">
+            <if test="null != delFlag">
                 and del_flag=#{delFlag}
             </if>
-            <if test="prepare != null">
+            <if test="null != ctTime">
+                and ct_time=#{ctTime}
+            </if>
+            <if test="null != upTime">
+                and up_time=#{upTime}
+            </if>
+            <if test="null != prepare">
                 and prepare=#{prepare}
             </if>
         </where>
+    </select>
+
+    <select id="findAllByParam" parameterType="String" resultMap="UserCardMapperResultMap">
+        select <include refid="Base_Column_List"/>
+        from user_card
+        where CONCAT(username, user_wechat, user_company, user_industry, user_city, user_job)
+        like CONCAT('%',#{param},'%' ) order by convert(username using gbk) ASC
     </select>
 
 </mapper>
