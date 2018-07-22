@@ -53,4 +53,19 @@ public class UserGroupController {
             return AjaxResultDTO.failed("查询群名片列表异常");
         }
     }
+
+    @RequestMapping("/findUserGroupByParam")
+    @ResponseBody
+    public AjaxResultDTO findUserGroupByParam(UserGroup userGroup, HttpServletResponse response) {
+        try {
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            List<UserGroup> userGroupList = userGroupService.findUserGroupByParam(userGroup);
+            return AjaxResultDTO.success(userGroupList);
+        } catch(PeerProjectException ppe) {
+            return AjaxResultDTO.failed(ppe.getMessage());
+        } catch(Exception e) {
+            logger.error("【查询群列表异常】：{}", e);
+            return AjaxResultDTO.failed("查询群列表异常");
+        }
+    }
 }

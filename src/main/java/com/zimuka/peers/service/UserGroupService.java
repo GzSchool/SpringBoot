@@ -10,4 +10,6 @@ public interface UserGroupService {
     void saveOrUpdate(UserGroup userGroup);
 
     List<CardsOnGroupDTO> findCardsOnGroupByOpenId(String openId, String groupId);
+
+    List<UserGroup> findUserGroupByParam(UserGroup userGroup);
 }
