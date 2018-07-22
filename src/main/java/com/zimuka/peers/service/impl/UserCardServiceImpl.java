@@ -7,7 +7,12 @@ import com.zimuka.peers.exception.PeerProjectException;
 import com.zimuka.peers.mapper.UserCardMapper;
 import com.zimuka.peers.mapper.UserMapper;
 import com.zimuka.peers.service.UserCardService;
+import com.zimuka.peers.service.WxTemplateService;
+import com.zimuka.peers.utils.DateUtil;
+import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +24,8 @@ import java.util.List;
 @Service
 public class UserCardServiceImpl implements UserCardService {
 
+    private static final Logger logger = LoggerFactory.getLogger(UserCardServiceImpl.class);
+
     @Resource
     private UserCardMapper userCardMapper;
 
@@ -28,8 +35,12 @@ public class UserCardServiceImpl implements UserCardService {
     @Autowired
     private MiniAppBean miniAppBean;
 
+    @Resource
+    private WxTemplateService wxTemplateService;
+
     @Override
     public void saveOrUpdate(UserCard userCard) {
+
         if (StringUtils.isEmpty(userCard.getUserWechat()) || StringUtils.isEmpty(userCard.getUserCompany()) || StringUtils.isEmpty(userCard.getUserCity()) || StringUtils.isEmpty(userCard.getUserJob()) || StringUtils.isEmpty(userCard.getUserIndustry())){
             throw new PeerProjectException("必填字段不可为空");
         }
@@ -54,6 +65,11 @@ public class UserCardServiceImpl implements UserCardService {
             if (1 != rows) {
                 throw new PeerProjectException("添加名片失败");
             }
+
+            JSONObject jsonObject = wxTemplateService.makeCardSuccess(userCard.getOpenId(), userCard.getFormId(), DateUtil.dateToString(saveUserCard.getCtTime()));
+
+            logger.info("【模板消息推送】：{}", jsonObject);
+
         } else {
 
             if (null == userCard.getId() || "".equals(userCard.getId())) {

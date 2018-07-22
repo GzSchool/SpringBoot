@@ -68,22 +68,22 @@ public class UserGroupServiceImpl implements UserGroupService {
                 throw new PeerProjectException("首次分享群名片失败");
             }
 
-            //分享到群，群成员都可以看到，可以让每个群成员都保存对应的名片映射
-            List<UserGroup> userGroupList = userGroupMapper.findUsersByGroupId(userGroup.getGroupId(), userGroup.getOpenId());
-            //本人分享到群中的名片
-            UserCard userCard = userCardMapper.findOneByOpenId(userGroup.getOpenId());
-            UserPeer userPeer = new UserPeer();
-            for (UserGroup userGroup1 : userGroupList) {
-                userPeer.setCardId(userCard.getId());
-                userPeer.setOpenId(userGroup1.getOpenId());
-                userPeer.setGroupId(userGroup1.getGroupId());
-                userPeer.setShareFlag(PeerShareFlagEnum.FLAG_BY_GROUP.getKey());
-                userPeer.setCtTime(new Date());
-                rows = userPeerMapper.save(userPeer);
-                if (1 != rows) {
-                    throw new PeerProjectException("分享群名片失败");
-                }
-            }
+//            //分享到群，群成员都可以看到，可以让每个群成员都保存对应的名片映射
+//            List<UserGroup> userGroupList = userGroupMapper.findUsersByGroupId(userGroup.getGroupId(), userGroup.getOpenId());
+//            //本人分享到群中的名片
+//            UserCard userCard = userCardMapper.findOneByOpenId(userGroup.getOpenId());
+//            UserPeer userPeer = new UserPeer();
+//            for (UserGroup userGroup1 : userGroupList) {
+//                userPeer.setCardId(userCard.getId());
+//                userPeer.setOpenId(userGroup1.getOpenId());
+//                userPeer.setGroupId(userGroup1.getGroupId());
+//                userPeer.setShareFlag(PeerShareFlagEnum.FLAG_BY_GROUP.getKey());
+//                userPeer.setCtTime(new Date());
+//                rows = userPeerMapper.save(userPeer);
+//                if (1 != rows) {
+//                    throw new PeerProjectException("分享群名片失败");
+//                }
+//            }
         } else {
             userGroup.setUpTime(new Date());
             BeanUtils.copyProperties(userGroup, saveUserGroup);

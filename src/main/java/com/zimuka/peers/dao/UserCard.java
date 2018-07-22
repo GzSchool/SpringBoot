@@ -203,4 +203,14 @@ public class UserCard {
     public void setPrepare(String prepare) {
         this.prepare = prepare;
     }
+
+    private String formId;
+
+    public String getFormId() {
+        return formId;
+    }
+
+    public void setFormId(String formId) {
+        this.formId = formId;
+    }
 }

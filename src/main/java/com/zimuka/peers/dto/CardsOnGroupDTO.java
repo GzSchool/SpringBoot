@@ -2,6 +2,8 @@ package com.zimuka.peers.dto;
 
 public class CardsOnGroupDTO {
 
+    private Integer id;
+
     private String username;
 
     private String userWechat;
@@ -29,6 +31,14 @@ public class CardsOnGroupDTO {
     private Integer giveLikeNum;
 
     private Integer saveFlag;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getUsername() {
         return username;
