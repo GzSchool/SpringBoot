@@ -66,9 +66,10 @@ public class UserCardServiceImpl implements UserCardService {
                 throw new PeerProjectException("添加名片失败");
             }
 
-            JSONObject jsonObject = wxTemplateService.makeCardSuccess(userCard.getOpenId(), userCard.getFormId(), DateUtil.dateToString(saveUserCard.getCtTime()));
-
-            logger.info("【模板消息推送】：{}", jsonObject);
+            //TODO 消息模板推送
+//            JSONObject jsonObject = wxTemplateService.makeCardSuccess(userCard.getOpenId(), userCard.getFormId(), DateUtil.dateToString(saveUserCard.getCtTime()));
+//
+//            logger.info("【模板消息推送】：{}", jsonObject);
 
         } else {
 
