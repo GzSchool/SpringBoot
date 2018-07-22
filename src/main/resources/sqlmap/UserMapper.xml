@@ -70,9 +70,6 @@
     <update id="update" parameterType="com.zimuka.peers.dao.User">
         update user
         <set>
-            <if test="null != openId">
-                open_id=#{openId},
-            </if>
             <if test="null != sessionKey">
                 session_key=#{sessionKey},
             </if>
@@ -89,7 +86,7 @@
                 prepare=#{prepare},
             </if>
         </set>
-        where id=#{id}
+        where open_id=#{openId}
     </update>
 
     <select id="findUserByParam" parameterType="com.zimuka.peers.dao.User" resultMap="UserMapperResultMap">

@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
             saveUser.setOpenId(wechatOpenId.getOpenId());
             saveUser.setSessionKey(wechatOpenId.getSessionKey());
             saveUser.setOpenSession(openSession);
-            saveUser.setCt_time(new Date());
+            saveUser.setCtTime(new Date());
             rows = userMapper.save(saveUser);
             if (1 != rows) {
                 throw new PeerProjectException("添加用户信息失败");
@@ -61,9 +61,10 @@ public class UserServiceImpl implements UserService {
             authorizeDTO.setOpenSession(openSession);
             return authorizeDTO;
         } else {
+            saveUser.setOpenId(wechatOpenId.getOpenId());
             saveUser.setSessionKey(wechatOpenId.getSessionKey());
             saveUser.setOpenSession(openSession);
-            saveUser.setUp_time(new Date());
+            saveUser.setUpTime(new Date());
             rows = userMapper.update(saveUser);
             if (1 != rows) {
                 throw new PeerProjectException("修改用户信息失败");
