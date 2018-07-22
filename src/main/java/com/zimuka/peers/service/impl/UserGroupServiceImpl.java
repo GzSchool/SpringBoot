@@ -48,7 +48,7 @@ public class UserGroupServiceImpl implements UserGroupService {
         }
 
         if (StringUtils.isEmpty(userGroup.getOpenId())) {
-            throw new PeerProjectException("缺少用户标识");
+            throw new PeerProjectException("用户未登陆");
         }
 
         User checkUser = userMapper.findOneByOpenId(userGroup.getOpenId());
@@ -105,5 +105,21 @@ public class UserGroupServiceImpl implements UserGroupService {
         List<CardsOnGroupDTO> cardsOnGroupDTOS = userGroupMapper.findCardsOnGroupByOpenId(openId, groupId);
 
         return cardsOnGroupDTOS;
+    }
+
+    @Override
+    public List<UserGroup> findUserGroupByParam(UserGroup userGroup) {
+
+        if (StringUtils.isEmpty(userGroup.getOpenId())) {
+            throw new PeerProjectException("用户未登陆");
+        }
+
+        User checkUser = userMapper.findOneByOpenId(userGroup.getOpenId());
+        if (null == checkUser) {
+            throw new PeerProjectException("用户未注册");
+        }
+
+        List<UserGroup> userGroupList = userGroupMapper.findUserGroupByParam(userGroup);
+        return userGroupList;
     }
 }

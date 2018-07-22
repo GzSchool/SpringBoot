@@ -28,7 +28,7 @@ public class UserPeerServiceImpl implements UserPeerService {
     @Override
     public void saveOrUpdate(UserPeer userPeer) {
         if (StringUtils.isEmpty(userPeer.getOpenId())) {
-            throw new PeerProjectException("缺少用户标识");
+            throw new PeerProjectException("用户未登陆");
         }
 
         User checkUser = userMapper.findOneByOpenId(userPeer.getOpenId());
@@ -65,7 +65,7 @@ public class UserPeerServiceImpl implements UserPeerService {
     public List<UserCard> findAllByOpenId(String openId) {
 
         if (StringUtils.isEmpty(openId)) {
-            throw new PeerProjectException("缺少用户标识");
+            throw new PeerProjectException("用户未登陆");
         }
 
         User checkUser = userMapper.findOneByOpenId(openId);

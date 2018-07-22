@@ -46,7 +46,7 @@ public class UserCardServiceImpl implements UserCardService {
         }
 
         if (null == userCard.getOpenId() || "".equals(userCard.getOpenId())) {
-            throw new PeerProjectException("缺少用户标识");
+            throw new PeerProjectException("用户未登陆");
         }
 
         User checkUser = userMapper.findOneByOpenId(userCard.getOpenId());
@@ -93,7 +93,7 @@ public class UserCardServiceImpl implements UserCardService {
     public UserCard findOneByOpenId(String openId) {
 
         if (StringUtils.isEmpty(openId)) {
-            throw new PeerProjectException("缺少用户标识");
+            throw new PeerProjectException("用户未登陆");
         }
 
         User checkUser = userMapper.findOneByOpenId(openId);
