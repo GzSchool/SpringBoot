@@ -6,6 +6,7 @@ import com.zimuka.peers.dao.UserCard;
 import com.zimuka.peers.dao.UserGroup;
 import com.zimuka.peers.dao.UserPeer;
 import com.zimuka.peers.dto.CardsOnGroupDTO;
+import com.zimuka.peers.enums.PeerCardSaveFlagEnum;
 import com.zimuka.peers.enums.PeerShareFlagEnum;
 import com.zimuka.peers.exception.PeerProjectException;
 import com.zimuka.peers.mapper.UserCardMapper;
@@ -103,7 +104,17 @@ public class UserGroupServiceImpl implements UserGroupService {
         }
 
         List<CardsOnGroupDTO> cardsOnGroupDTOS = userGroupMapper.findCardsOnGroupByOpenId(openId, groupId);
-
+        for (CardsOnGroupDTO cardsOnGroupDTO : cardsOnGroupDTOS) {
+            UserPeer userPeer = new UserPeer();
+            userPeer.setOpenId(openId);
+            userPeer.setCardId(cardsOnGroupDTO.getId());
+            List<UserPeer> checkUserPeer = userPeerMapper.findUserPeerByParam(userPeer);
+            if (0 == checkUserPeer.size()) {
+                cardsOnGroupDTO.setSaveFlag(PeerCardSaveFlagEnum.SAVE_FLAG_FALSE.getKey());
+            } else {
+                cardsOnGroupDTO.setSaveFlag(PeerCardSaveFlagEnum.SAVE_FLAG_TRUE.getKey());
+            }
+        }
         return cardsOnGroupDTOS;
     }
 

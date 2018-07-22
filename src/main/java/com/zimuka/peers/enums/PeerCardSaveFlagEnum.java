@@ -3,8 +3,9 @@ package com.zimuka.peers.enums;
 import com.zimuka.peers.exception.PeerProjectException;
 
 public enum PeerCardSaveFlagEnum {
-    SAVE_FLAG_TRUE(1, "保存"),
-    SAVE_FLAG_FALSE(2, "未保存");
+
+    SAVE_FLAG_FALSE(1, "未保存"),
+    SAVE_FLAG_TRUE(2, "保存");
 
     private int key;
 
