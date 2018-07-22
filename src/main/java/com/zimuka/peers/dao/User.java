@@ -12,9 +12,9 @@ public class User {
 
     private String openSession;
 
-    private Date ct_time;
+    private Date ctTime;
 
-    private Date up_time;
+    private Date upTime;
 
     private String prepare;
 
@@ -50,20 +50,20 @@ public class User {
         this.openSession = openSession;
     }
 
-    public Date getCt_time() {
-        return ct_time;
+    public Date getCtTime() {
+        return ctTime;
     }
 
-    public void setCt_time(Date ct_time) {
-        this.ct_time = ct_time;
+    public void setCtTime(Date ctTime) {
+        this.ctTime = ctTime;
     }
 
-    public Date getUp_time() {
-        return up_time;
+    public Date getUpTime() {
+        return upTime;
     }
 
-    public void setUp_time(Date up_time) {
-        this.up_time = up_time;
+    public void setUpTime(Date upTime) {
+        this.upTime = upTime;
     }
 
     public String getPrepare() {
