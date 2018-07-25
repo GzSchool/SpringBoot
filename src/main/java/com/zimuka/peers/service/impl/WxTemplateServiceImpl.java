@@ -29,8 +29,8 @@ public class WxTemplateServiceImpl implements WxTemplateService {
         WechatTemplate wechatTemplate = new WechatTemplate();
         wechatTemplate.setTouser(openId);//用户ID
         wechatTemplate.setForm_id(formId);//表单ID
-        wechatTemplate.setTemplate_id("kW19kb8Tq0WdL-cFQq61pCxkKXpVmsopcgrflt4e_zA");//模板ID
-        wechatTemplate.setPage("pages/orderlist/index");
+        wechatTemplate.setTemplate_id("ndRWuM7qhttTAaDsqv7VPk-HqU3eSM2GmnrgcD-jQ08");//模板ID
+        wechatTemplate.setPage("");
 
         Map<String, TemplateData> data = new HashMap<String, TemplateData>();
         data.put("keyword1", new TemplateData("您的电子名片已创建成功，点击查看", "#173177"));
