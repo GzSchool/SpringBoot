@@ -5,6 +5,7 @@ import com.zimuka.peers.dao.UserPeer;
 import com.zimuka.peers.dto.AjaxResultDTO;
 import com.zimuka.peers.exception.PeerProjectException;
 import com.zimuka.peers.service.UserPeerService;
+import com.zimuka.peers.vo.CreatePeersVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,16 +27,16 @@ public class UserPeerController {
 
     /**
      * 保存同行名片，修改保存名片
-     * @param userPeer
+     * @param createPeersVO
      * @param response
      * @return
      */
     @RequestMapping("/saveOrUpdate")
     @ResponseBody
-    public AjaxResultDTO saveOrUpdate(UserPeer userPeer, HttpServletResponse response) {
+    public AjaxResultDTO saveOrUpdate(CreatePeersVO createPeersVO, HttpServletResponse response) {
         try {
             response.setHeader("Access-Control-Allow-Origin", "*");
-            userPeerService.saveOrUpdate(userPeer);
+            userPeerService.saveOrUpdate(createPeersVO);
             return AjaxResultDTO.success();
         } catch(PeerProjectException ppe) {
             return AjaxResultDTO.failed(ppe.getMessage());

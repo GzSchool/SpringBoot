@@ -6,6 +6,7 @@ import com.zimuka.peers.exception.PeerProjectException;
 import com.zimuka.peers.service.UserCardService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,7 +32,7 @@ public class UserCardController {
      */
     @RequestMapping("/saveOrUpdate")
     @ResponseBody
-    public AjaxResultDTO saveOrUpdate(UserCard userCard, HttpServletResponse response) {
+    public AjaxResultDTO saveOrUpdate(@RequestBody UserCard userCard, HttpServletResponse response) {
         try {
             response.setHeader("Access-Control-Allow-Origin", "*");
             userCardService.saveOrUpdate(userCard);
