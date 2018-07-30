@@ -1,5 +1,6 @@
 package com.zimuka.peers.dao;
 
+import javax.validation.constraints.Pattern;
 import java.util.Date;
 
 public class UserCard {
@@ -26,6 +27,7 @@ public class UserCard {
 
     private String userPhone;
 
+    @Pattern(regexp = "^(.+)@(.+)$", message = "邮箱格式不合法")
     private String userEmail;
 
     private String synopsis;

@@ -1,11 +1,9 @@
 package com.zimuka.peers.service.impl;
 
 import com.zimuka.peers.configBeans.MiniAppBean;
-import com.zimuka.peers.dao.User;
 import com.zimuka.peers.dao.UserCard;
 import com.zimuka.peers.exception.PeerProjectException;
 import com.zimuka.peers.mapper.UserCardMapper;
-import com.zimuka.peers.mapper.UserMapper;
 import com.zimuka.peers.service.UserCardService;
 import com.zimuka.peers.service.WxTemplateService;
 import com.zimuka.peers.utils.DateUtil;
@@ -29,9 +27,6 @@ public class UserCardServiceImpl implements UserCardService {
     @Resource
     private UserCardMapper userCardMapper;
 
-    @Resource
-    private UserMapper userMapper;
-
     @Autowired
     private MiniAppBean miniAppBean;
 
@@ -47,11 +42,6 @@ public class UserCardServiceImpl implements UserCardService {
 
         if (null == userCard.getOpenId() || "".equals(userCard.getOpenId())) {
             throw new PeerProjectException("用户未登陆");
-        }
-
-        User checkUser = userMapper.findOneByOpenId(userCard.getOpenId());
-        if (null == checkUser) {
-            throw new PeerProjectException("用户未注册");
         }
 
         UserCard checkUserCard = userCardMapper.findOneByOpenId(userCard.getOpenId());
@@ -95,11 +85,6 @@ public class UserCardServiceImpl implements UserCardService {
 
         if (StringUtils.isEmpty(openId)) {
             throw new PeerProjectException("用户未登陆");
-        }
-
-        User checkUser = userMapper.findOneByOpenId(openId);
-        if (null == checkUser) {
-            throw new PeerProjectException("用户未注册");
         }
 
         UserCard userCard = userCardMapper.findOneByOpenId(openId);

@@ -226,7 +226,8 @@
         from user_card
         <where>
             <if test="null != id">
-                and id=#{id}            </if>
+                and id=#{id}
+            </if>
             <if test="null != openId">
                 and open_id=#{openId}
             </if>

@@ -1,11 +1,9 @@
 package com.zimuka.peers.service.impl;
 
-import com.zimuka.peers.dao.User;
 import com.zimuka.peers.dao.UserCard;
 import com.zimuka.peers.dao.UserPeer;
 import com.zimuka.peers.enums.PeerShareFlagEnum;
 import com.zimuka.peers.exception.PeerProjectException;
-import com.zimuka.peers.mapper.UserMapper;
 import com.zimuka.peers.mapper.UserPeerMapper;
 import com.zimuka.peers.service.UserPeerService;
 import com.zimuka.peers.vo.CreatePeersVO;
@@ -27,18 +25,10 @@ public class UserPeerServiceImpl implements UserPeerService {
     @Resource
     private UserPeerMapper userPeerMapper;
 
-    @Resource
-    private UserMapper userMapper;
-
 //    @Override
 //    public void saveOrUpdate(UserPeer userPeer) {
 //        if (StringUtils.isEmpty(userPeer.getOpenId())) {
 //            throw new PeerProjectException("用户未登陆");
-//        }
-//
-//        User checkUser = userMapper.findOneByOpenId(userPeer.getOpenId());
-//        if (null == checkUser) {
-//            throw new PeerProjectException("用户未注册");
 //        }
 //
 //        UserPeer checkUserPeer = userPeerMapper.findOneById(userPeer.getOpenId(), userPeer.getCardId());
@@ -73,11 +63,6 @@ public class UserPeerServiceImpl implements UserPeerService {
             throw new PeerProjectException("用户未登陆");
         }
 
-        User checkUser = userMapper.findOneByOpenId(openId);
-        if (null == checkUser) {
-            throw new PeerProjectException("用户未注册");
-        }
-
         List<UserCard> userCardList = userPeerMapper.findAllByOpenId(openId);
         return userCardList;
     }
@@ -90,11 +75,6 @@ public class UserPeerServiceImpl implements UserPeerService {
 
         if (StringUtils.isEmpty(createPeersVO.getOpenId())) {
             throw new PeerProjectException("用户未登陆");
-        }
-
-        User checkUser = userMapper.findOneByOpenId(createPeersVO.getOpenId());
-        if (null == checkUser) {
-            throw new PeerProjectException("用户未注册");
         }
 
         List<Integer> cardIdList = createPeersVO.getCardIds();
@@ -124,7 +104,7 @@ public class UserPeerServiceImpl implements UserPeerService {
                 BeanUtils.copyProperties(createPeersVO, saveUserPeer);
                 rows = userPeerMapper.update(saveUserPeer);
                 if (1 != rows) {
-                    throw new PeerProjectException("修改保存名片失败");
+                    throw new PeerProjectException("修改名片失败");
                 }
             }
         }

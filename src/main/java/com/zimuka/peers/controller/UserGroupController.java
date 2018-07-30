@@ -7,6 +7,7 @@ import com.zimuka.peers.exception.PeerProjectException;
 import com.zimuka.peers.service.UserGroupService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,9 +25,15 @@ public class UserGroupController {
     @Resource
     private UserGroupService userGroupService;
 
+    /**
+     * 添加用户群列表
+     * @param userGroup
+     * @param response
+     * @return
+     */
     @RequestMapping("/saveOrUpdate")
     @ResponseBody
-    public AjaxResultDTO saveOrUpdate(UserGroup userGroup, HttpServletResponse response) {
+    public AjaxResultDTO saveOrUpdate(@RequestBody UserGroup userGroup, HttpServletResponse response) {
         try {
             response.setHeader("Access-Control-Allow-Origin", "*");
             userGroupService.saveOrUpdate(userGroup);
@@ -39,6 +46,13 @@ public class UserGroupController {
         }
     }
 
+    /**
+     * 查询指定群中，不包含当前用户的所有名片
+     * @param openId
+     * @param groupId
+     * @param response
+     * @return
+     */
     @RequestMapping("/findGroupCards")
     @ResponseBody
     public AjaxResultDTO findGroupCards(String openId, String groupId, HttpServletResponse response) {
@@ -54,6 +68,12 @@ public class UserGroupController {
         }
     }
 
+    /**
+     * 根据入参查询
+     * @param userGroup
+     * @param response
+     * @return
+     */
     @RequestMapping("/findUserGroupByParam")
     @ResponseBody
     public AjaxResultDTO findUserGroupByParam(UserGroup userGroup, HttpServletResponse response) {

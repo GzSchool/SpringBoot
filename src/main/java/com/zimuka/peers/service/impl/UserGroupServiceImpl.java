@@ -2,14 +2,12 @@ package com.zimuka.peers.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.zimuka.peers.configBeans.MiniAppBean;
-import com.zimuka.peers.dao.User;
 import com.zimuka.peers.dao.UserGroup;
 import com.zimuka.peers.dao.UserPeer;
 import com.zimuka.peers.dto.CardsOnGroupDTO;
 import com.zimuka.peers.enums.PeerCardSaveFlagEnum;
 import com.zimuka.peers.exception.PeerProjectException;
 import com.zimuka.peers.mapper.UserGroupMapper;
-import com.zimuka.peers.mapper.UserMapper;
 import com.zimuka.peers.mapper.UserPeerMapper;
 import com.zimuka.peers.service.UserGroupService;
 import com.zimuka.peers.utils.WxDecipherUtil;
@@ -28,9 +26,6 @@ public class UserGroupServiceImpl implements UserGroupService {
     @Resource
     private UserGroupMapper userGroupMapper;
 
-    @Resource
-    private UserMapper userMapper;
-
     @Autowired
     private MiniAppBean miniAppBean;
 
@@ -40,17 +35,8 @@ public class UserGroupServiceImpl implements UserGroupService {
     @Override
     public void saveOrUpdate(UserGroup userGroup) {
 
-//        if (StringUtils.isEmpty(userGroup.getGroupId())) {
-//            throw new PeerProjectException("请选择要分享的群");
-//        }
-
         if (StringUtils.isEmpty(userGroup.getOpenId())) {
             throw new PeerProjectException("用户未登陆");
-        }
-
-        User checkUser = userMapper.findOneByOpenId(userGroup.getOpenId());
-        if (null == checkUser) {
-            throw new PeerProjectException("用户未注册");
         }
 
         UserGroup checkUserGroup = userGroupMapper.findOneById(userGroup.getOpenId(), userGroup.getGroupId());
@@ -109,11 +95,6 @@ public class UserGroupServiceImpl implements UserGroupService {
 
         if (StringUtils.isEmpty(userGroup.getOpenId())) {
             throw new PeerProjectException("用户未登陆");
-        }
-
-        User checkUser = userMapper.findOneByOpenId(userGroup.getOpenId());
-        if (null == checkUser) {
-            throw new PeerProjectException("用户未注册");
         }
 
         List<UserGroup> userGroupList = userGroupMapper.findUserGroupByParam(userGroup);
