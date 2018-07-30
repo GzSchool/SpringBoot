@@ -1,8 +1,8 @@
 #端口号配置
 server:
-  port: 8080spring:
+  port: 8080
+spring:
   datasource:
-
     url: jdbc:mysql://localhost:3306/findpeers?characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true
     username: root
     password: admin
@@ -13,7 +13,8 @@ mybatis:
   mapper-locations:
   - classpath*:sqlmap/*Mapper.xml
   type-aliases-package: org.springboot.sample.entity
-
+AppId: wx34fefa15f676d944
+AppSecret: f4ce303b50267dc17dc69ae083ae3a98
 #logging:
 #  pattern:
 #    console: "%d - %msg%n"

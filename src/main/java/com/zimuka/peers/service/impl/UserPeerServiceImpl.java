@@ -10,6 +10,8 @@ import com.zimuka.peers.mapper.UserPeerMapper;
 import com.zimuka.peers.service.UserPeerService;
 import com.zimuka.peers.vo.CreatePeersVO;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,8 @@ import java.util.List;
 
 @Service
 public class UserPeerServiceImpl implements UserPeerService {
+
+    private static final Logger logger = LoggerFactory.getLogger(UserPeerServiceImpl.class);
 
     @Resource
     private UserPeerMapper userPeerMapper;
@@ -81,6 +85,9 @@ public class UserPeerServiceImpl implements UserPeerService {
     @Override
     public void saveOrUpdate(CreatePeersVO createPeersVO) {
 
+        logger.info("【卡片集合】：{}", createPeersVO.getCardIds());
+
+
         if (StringUtils.isEmpty(createPeersVO.getOpenId())) {
             throw new PeerProjectException("用户未登陆");
         }
@@ -91,6 +98,10 @@ public class UserPeerServiceImpl implements UserPeerService {
         }
 
         List<Integer> cardIdList = createPeersVO.getCardIds();
+
+        logger.info("【获取卡片集合】：{}", cardIdList);
+
+
         int rows;
         UserPeer saveUserPeer = new UserPeer();
         for (int cardId : cardIdList) {

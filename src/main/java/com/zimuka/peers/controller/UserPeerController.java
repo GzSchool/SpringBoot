@@ -8,6 +8,7 @@ import com.zimuka.peers.service.UserPeerService;
 import com.zimuka.peers.vo.CreatePeersVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,7 +34,7 @@ public class UserPeerController {
      */
     @RequestMapping("/saveOrUpdate")
     @ResponseBody
-    public AjaxResultDTO saveOrUpdate(CreatePeersVO createPeersVO, HttpServletResponse response) {
+    public AjaxResultDTO saveOrUpdate(@RequestBody CreatePeersVO createPeersVO, HttpServletResponse response) {
         try {
             response.setHeader("Access-Control-Allow-Origin", "*");
             userPeerService.saveOrUpdate(createPeersVO);
