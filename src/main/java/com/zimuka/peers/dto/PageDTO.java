@@ -8,7 +8,7 @@ public class PageDTO {
 
     private long total;
 
-    private List<?> data;
+    private List<?> result;
 
     public Integer getPages() {
         return pages;
@@ -26,11 +26,11 @@ public class PageDTO {
         this.total = total;
     }
 
-    public List<?> getData() {
-        return data;
+    public List<?> getResult() {
+        return result;
     }
 
-    public void setData(List<?> data) {
-        this.data = data;
+    public void setResult(List<?> result) {
+        this.result = result;
     }
 }

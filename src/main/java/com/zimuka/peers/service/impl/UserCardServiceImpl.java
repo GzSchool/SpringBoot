@@ -124,7 +124,7 @@ public class UserCardServiceImpl implements UserCardService {
         }
 
         PageDTO pageDTO = new PageDTO();
-        pageDTO.setData(returnCardDTOS);
+        pageDTO.setResult(returnCardDTOS);
         pageDTO.setPages(pageInfo.getPages());
         pageDTO.setTotal(pageInfo.getTotal());
 

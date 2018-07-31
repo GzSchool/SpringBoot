@@ -76,7 +76,7 @@ public class UserPeerServiceImpl implements UserPeerService {
         }
 
         PageDTO pageDTO = new PageDTO();
-        pageDTO.setData(returnCardDTOS);
+        pageDTO.setResult(returnCardDTOS);
         pageDTO.setPages(pageInfo.getPages());
         pageDTO.setTotal(pageInfo.getTotal());
 
