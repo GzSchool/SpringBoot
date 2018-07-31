@@ -2,7 +2,8 @@ package com.zimuka.peers.controller;
 
 import com.zimuka.peers.dao.UserGroup;
 import com.zimuka.peers.dto.AjaxResultDTO;
-import com.zimuka.peers.dto.CardsOnGroupDTO;
+import com.zimuka.peers.dto.PageDTO;
+import com.zimuka.peers.dto.ReturnCardDTO;
 import com.zimuka.peers.exception.PeerProjectException;
 import com.zimuka.peers.service.UserGroupService;
 import org.slf4j.Logger;
@@ -55,11 +56,11 @@ public class UserGroupController {
      */
     @RequestMapping("/findGroupCards")
     @ResponseBody
-    public AjaxResultDTO findGroupCards(String openId, String groupId, HttpServletResponse response) {
+    public AjaxResultDTO findGroupCards(String openId, String groupId, Integer pageNum, Integer pageSize, HttpServletResponse response) {
         try {
             response.setHeader("Access-Control-Allow-Origin", "*");
-            List<CardsOnGroupDTO> cardsOnGroupDTOS = userGroupService.findCardsOnGroupByOpenId(openId, groupId);
-            return AjaxResultDTO.success(cardsOnGroupDTOS);
+            PageDTO pageDTO = userGroupService.findCardsOnGroupByOpenId(openId, groupId, pageNum, pageSize);
+            return AjaxResultDTO.success(pageDTO);
         } catch(PeerProjectException ppe) {
             return AjaxResultDTO.failed(ppe.getMessage());
         } catch(Exception e) {

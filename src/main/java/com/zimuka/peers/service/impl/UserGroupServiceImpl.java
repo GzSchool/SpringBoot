@@ -1,16 +1,17 @@
 package com.zimuka.peers.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.zimuka.peers.configBeans.MiniAppBean;
 import com.zimuka.peers.dao.UserGroup;
 import com.zimuka.peers.dao.UserPeer;
-import com.zimuka.peers.dto.CardsOnGroupDTO;
+import com.zimuka.peers.dto.PageDTO;
+import com.zimuka.peers.dto.ReturnCardDTO;
 import com.zimuka.peers.enums.PeerCardSaveFlagEnum;
 import com.zimuka.peers.exception.PeerProjectException;
 import com.zimuka.peers.mapper.UserGroupMapper;
 import com.zimuka.peers.mapper.UserPeerMapper;
 import com.zimuka.peers.service.UserGroupService;
-import com.zimuka.peers.utils.WxDecipherUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,25 +70,36 @@ public class UserGroupServiceImpl implements UserGroupService {
     }
 
     @Override
-    public List<CardsOnGroupDTO> findCardsOnGroupByOpenId(String openId, String groupId) {
+    public PageDTO findCardsOnGroupByOpenId(String openId, String groupId, Integer pageNum, Integer pageSize) {
 
         if (StringUtils.isEmpty(openId) || StringUtils.isEmpty(groupId)) {
             throw new PeerProjectException("参数不完整");
         }
 
-        List<CardsOnGroupDTO> cardsOnGroupDTOS = userGroupMapper.findCardsOnGroupByOpenId(openId, groupId);
-        for (CardsOnGroupDTO cardsOnGroupDTO : cardsOnGroupDTOS) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<ReturnCardDTO> returnCardDTOS = userGroupMapper.findCardsOnGroupByOpenId(openId, groupId);
+
+        for (ReturnCardDTO returnCardDTO : returnCardDTOS) {
             UserPeer userPeer = new UserPeer();
             userPeer.setOpenId(openId);
-            userPeer.setCardId(cardsOnGroupDTO.getId());
+            userPeer.setCardId(returnCardDTO.getId());
+            userPeer.setSaveFlag(PeerCardSaveFlagEnum.SAVE_FLAG_TRUE.getKey());
             List<UserPeer> checkUserPeer = userPeerMapper.findUserPeerByParam(userPeer);
             if (0 == checkUserPeer.size()) {
-                cardsOnGroupDTO.setSaveFlag(PeerCardSaveFlagEnum.SAVE_FLAG_FALSE.getKey());
+                returnCardDTO.setSaveFlag(PeerCardSaveFlagEnum.SAVE_FLAG_FALSE.getKey());
             } else {
-                cardsOnGroupDTO.setSaveFlag(PeerCardSaveFlagEnum.SAVE_FLAG_TRUE.getKey());
+                returnCardDTO.setSaveFlag(PeerCardSaveFlagEnum.SAVE_FLAG_TRUE.getKey());
             }
         }
-        return cardsOnGroupDTOS;
+
+        PageInfo<ReturnCardDTO> pageInfo = new PageInfo<ReturnCardDTO>(returnCardDTOS);
+
+        PageDTO pageDTO = new PageDTO();
+        pageDTO.setData(pageInfo.getList());
+        pageDTO.setPages(pageInfo.getPages());
+        pageDTO.setTotal(pageInfo.getTotal());
+
+        return pageDTO;
     }
 
     @Override

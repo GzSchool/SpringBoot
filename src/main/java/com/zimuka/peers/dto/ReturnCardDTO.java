@@ -1,6 +1,6 @@
 package com.zimuka.peers.dto;
 
-public class CardsOnGroupDTO {
+public class ReturnCardDTO {
 
     private Integer id;
 
