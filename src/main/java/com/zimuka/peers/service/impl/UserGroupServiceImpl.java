@@ -95,7 +95,7 @@ public class UserGroupServiceImpl implements UserGroupService {
         PageInfo<ReturnCardDTO> pageInfo = new PageInfo<ReturnCardDTO>(returnCardDTOS);
 
         PageDTO pageDTO = new PageDTO();
-        pageDTO.setData(pageInfo.getList());
+        pageDTO.setResult(pageInfo.getList());
         pageDTO.setPages(pageInfo.getPages());
         pageDTO.setTotal(pageInfo.getTotal());
 
