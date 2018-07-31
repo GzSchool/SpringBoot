@@ -154,6 +154,6 @@
        uc.user_job as userJob, uc.user_img as userImg, uc.user_phone as userPhone, uc.user_email as userEmail, uc.synopsis as synopsis, uc.demand as demand,
        uc.resources as resources, uc.give_like_num as giveLikeNum
        from user_card uc, user_peer up
-       where up.open_id = #{openId} and uc.id=up.card_id and up.del_flag!=2 and up.save_flag=2
+       where up.open_id = #{openId} and uc.id=up.card_id and up.save_flag=2
     </select>
 </mapper>
