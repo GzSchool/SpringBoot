@@ -1,7 +1,11 @@
 package com.zimuka.peers.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.zimuka.peers.dao.UserCard;
 import com.zimuka.peers.dao.UserPeer;
+import com.zimuka.peers.dto.PageDTO;
+import com.zimuka.peers.dto.ReturnCardDTO;
 import com.zimuka.peers.enums.PeerShareFlagEnum;
 import com.zimuka.peers.exception.PeerProjectException;
 import com.zimuka.peers.mapper.UserPeerMapper;
@@ -12,6 +16,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -53,14 +58,29 @@ public class UserPeerServiceImpl implements UserPeerService {
 //    }
 
     @Override
-    public List<UserCard> findAllByOpenId(String openId) {
+    public PageDTO findAllByOpenId(String openId, Integer pageNum, Integer pageSize) {
 
         if (StringUtils.isEmpty(openId)) {
             throw new PeerProjectException("用户未登陆");
         }
 
+        PageHelper.startPage(pageNum, pageSize);
         List<UserCard> userCardList = userPeerMapper.findAllByOpenId(openId);
-        return userCardList;
+
+        PageInfo<UserCard> pageInfo = new PageInfo<UserCard>(userCardList);
+        List<ReturnCardDTO> returnCardDTOS = new ArrayList<ReturnCardDTO>(pageInfo.getList().size());
+        for (UserCard userCard : pageInfo.getList()) {
+            ReturnCardDTO returnCardDTO = new ReturnCardDTO();
+            BeanUtils.copyProperties(userCard, returnCardDTO);
+            returnCardDTOS.add(returnCardDTO);
+        }
+
+        PageDTO pageDTO = new PageDTO();
+        pageDTO.setData(returnCardDTOS);
+        pageDTO.setPages(pageInfo.getPages());
+        pageDTO.setTotal(pageInfo.getTotal());
+
+        return pageDTO;
     }
 
     @Override

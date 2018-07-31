@@ -1,7 +1,11 @@
 package com.zimuka.peers.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.zimuka.peers.configBeans.MiniAppBean;
 import com.zimuka.peers.dao.UserCard;
+import com.zimuka.peers.dto.PageDTO;
+import com.zimuka.peers.dto.ReturnCardDTO;
 import com.zimuka.peers.exception.PeerProjectException;
 import com.zimuka.peers.mapper.UserCardMapper;
 import com.zimuka.peers.service.UserCardService;
@@ -16,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -103,10 +108,26 @@ public class UserCardServiceImpl implements UserCardService {
     }
 
     @Override
-    public List<UserCard> findAllByParam(String param) {
+    public PageDTO findAllByParam(String param, Integer pageNum, Integer pageSize) {
 
+        //分页查询（插件）pageNum当前页，将此方法放置在需要分页的SQL查询之前，即可对其分页，只对其最近的一条有效
+        PageHelper.startPage(pageNum, pageSize);
         List<UserCard> userCardList = userCardMapper.findAllByParam(param);
 
-        return userCardList;
+        PageInfo<UserCard> pageInfo = new PageInfo<UserCard>(userCardList);
+        List<ReturnCardDTO> returnCardDTOS = new ArrayList<ReturnCardDTO>(pageInfo.getList().size());
+
+        for (UserCard userCard : pageInfo.getList()) {
+            ReturnCardDTO returnCardDTO = new ReturnCardDTO();
+            BeanUtils.copyProperties(userCard, returnCardDTO);
+            returnCardDTOS.add(returnCardDTO);
+        }
+
+        PageDTO pageDTO = new PageDTO();
+        pageDTO.setData(returnCardDTOS);
+        pageDTO.setPages(pageInfo.getPages());
+        pageDTO.setTotal(pageInfo.getTotal());
+
+        return pageDTO;
     }
 }

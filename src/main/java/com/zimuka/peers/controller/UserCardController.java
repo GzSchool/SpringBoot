@@ -1,7 +1,9 @@
 package com.zimuka.peers.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.zimuka.peers.dao.UserCard;
 import com.zimuka.peers.dto.AjaxResultDTO;
+import com.zimuka.peers.dto.PageDTO;
 import com.zimuka.peers.exception.PeerProjectException;
 import com.zimuka.peers.service.UserCardService;
 import org.slf4j.Logger;
@@ -95,11 +97,11 @@ public class UserCardController {
      */
     @RequestMapping("/findAllByParam")
     @ResponseBody
-    public AjaxResultDTO findAllByParam(String param, HttpServletResponse response) {
+    public AjaxResultDTO findAllByParam(String param, Integer pageNum, Integer pageSize, HttpServletResponse response) {
         try {
             response.setHeader("Access-Control-Allow-Origin", "*");
-            List<UserCard> userCardList = userCardService.findAllByParam(param);
-            return AjaxResultDTO.success(userCardList);
+            PageDTO pageDTO = userCardService.findAllByParam(param, pageNum, pageSize);
+            return AjaxResultDTO.success(pageDTO);
         } catch(PeerProjectException ppe) {
             return AjaxResultDTO.failed(ppe.getMessage());
         } catch(Exception e) {

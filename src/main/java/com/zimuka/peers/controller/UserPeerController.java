@@ -3,6 +3,7 @@ package com.zimuka.peers.controller;
 import com.zimuka.peers.dao.UserCard;
 import com.zimuka.peers.dao.UserPeer;
 import com.zimuka.peers.dto.AjaxResultDTO;
+import com.zimuka.peers.dto.PageDTO;
 import com.zimuka.peers.exception.PeerProjectException;
 import com.zimuka.peers.service.UserPeerService;
 import com.zimuka.peers.vo.CreatePeersVO;
@@ -55,11 +56,11 @@ public class UserPeerController {
      */
     @RequestMapping("/findAllByOpenId")
     @ResponseBody
-    public AjaxResultDTO findAllByOpenId(String openId, HttpServletResponse response) {
+    public AjaxResultDTO findAllByOpenId(String openId, Integer pageNum, Integer pageSize, HttpServletResponse response) {
         try {
             response.setHeader("Access-Control-Allow-Origin", "*");
-            List<UserCard> userCardList = userPeerService.findAllByOpenId(openId);
-            return AjaxResultDTO.success(userCardList);
+            PageDTO pageDTO = userPeerService.findAllByOpenId(openId, pageNum, pageSize);
+            return AjaxResultDTO.success(pageDTO);
         } catch(PeerProjectException ppe) {
             return AjaxResultDTO.failed(ppe.getMessage());
         } catch(Exception e) {
