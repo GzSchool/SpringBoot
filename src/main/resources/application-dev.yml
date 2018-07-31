@@ -1,9 +1,5 @@
 server:
-<<<<<<< HEAD
   port: 8080
-=======
-  port: 8766  #端口号配置
->>>>>>> f21ca4af31c7f53101e19a38980d86564c3748e4
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/findpeers?characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true
