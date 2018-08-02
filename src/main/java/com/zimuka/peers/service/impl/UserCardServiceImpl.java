@@ -10,6 +10,7 @@ import com.zimuka.peers.exception.PeerProjectException;
 import com.zimuka.peers.mapper.UserCardMapper;
 import com.zimuka.peers.service.UserCardService;
 import com.zimuka.peers.service.WxTemplateService;
+import com.zimuka.peers.service.cache.CacheManager;
 import com.zimuka.peers.utils.DateUtil;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
@@ -38,6 +39,9 @@ public class UserCardServiceImpl implements UserCardService {
     @Resource
     private WxTemplateService wxTemplateService;
 
+    @Resource
+    private CacheManager cacheManager;
+
     @Override
     public void saveOrUpdate(UserCard userCard) {
 
@@ -60,6 +64,8 @@ public class UserCardServiceImpl implements UserCardService {
             if (1 != rows) {
                 throw new PeerProjectException("添加名片失败");
             }
+            //添加到缓存
+            cacheManager.cacheUserCard(userCard);
 
             //TODO 消息模板推送
 //            JSONObject jsonObject = wxTemplateService.makeCardSuccess(userCard.getOpenId(), userCard.getFormId(), DateUtil.dateToString(saveUserCard.getCtTime()));
@@ -82,6 +88,8 @@ public class UserCardServiceImpl implements UserCardService {
             if (1 != rows) {
                 throw new PeerProjectException("修改名片失败");
             }
+            //添加到缓存
+            cacheManager.cacheUserCard(userCard);
         }
     }
 
@@ -91,8 +99,7 @@ public class UserCardServiceImpl implements UserCardService {
         if (StringUtils.isEmpty(openId)) {
             throw new PeerProjectException("用户未登陆");
         }
-
-        UserCard userCard = userCardMapper.findOneByOpenId(openId);
+        UserCard userCard = cacheManager.getUserCardByOpenId(openId);
         if (null == userCard) {
             throw new PeerProjectException("您还未添加名片");
         }
