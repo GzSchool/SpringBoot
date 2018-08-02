@@ -6,6 +6,7 @@ import com.zimuka.peers.dto.AuthorizeDTO;
 import com.zimuka.peers.exception.PeerProjectException;
 import com.zimuka.peers.mapper.UserMapper;
 import com.zimuka.peers.service.UserService;
+import com.zimuka.peers.service.cache.CacheManager;
 import com.zimuka.peers.utils.WxTemplateUtil;
 import com.zimuka.peers.vo.WechatOpenId;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -28,6 +29,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private MiniAppBean miniAppBean;
+
+    @Autowired
+    private CacheManager cacheManager;
 
     @Override
     public AuthorizeDTO get3rdsession(String code) {
@@ -56,6 +60,8 @@ public class UserServiceImpl implements UserService {
             if (1 != rows) {
                 throw new PeerProjectException("添加用户信息失败");
             }
+
+            cacheManager.cacheEmptyUserCard(wechatOpenId.getOpenId());
 
             authorizeDTO.setOpenId(wechatOpenId.getOpenId());
             authorizeDTO.setOpenSession(openSession);
