@@ -51,6 +51,8 @@ public class UserPeerController {
     /**
      * 查询用户名片夹
      * @param openId
+     * @param pageNum
+     * @param pageSize
      * @param response
      * @return
      */
