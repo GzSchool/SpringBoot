@@ -118,4 +118,16 @@ public class UserPeerServiceImpl implements UserPeerService {
             }
         }
     }
+
+    @Override
+    public List<ReturnCardDTO> findAllPeerByOpenId(String openId) {
+
+        if (StringUtils.isEmpty(openId)) {
+            throw new PeerProjectException("用户未登陆");
+        }
+
+        List<ReturnCardDTO> returnCardDTOS = userPeerMapper.findAllPeerByOpenId(openId);
+
+        return returnCardDTOS;
+    }
 }

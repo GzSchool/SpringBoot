@@ -1,8 +1,10 @@
 package com.zimuka.peers.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.zimuka.peers.configBeans.MiniAppBean;
+import com.zimuka.peers.dao.User;
 import com.zimuka.peers.dao.UserGroup;
 import com.zimuka.peers.dao.UserPeer;
 import com.zimuka.peers.dto.PageDTO;
@@ -10,8 +12,10 @@ import com.zimuka.peers.dto.ReturnCardDTO;
 import com.zimuka.peers.enums.PeerCardSaveFlagEnum;
 import com.zimuka.peers.exception.PeerProjectException;
 import com.zimuka.peers.mapper.UserGroupMapper;
+import com.zimuka.peers.mapper.UserMapper;
 import com.zimuka.peers.mapper.UserPeerMapper;
 import com.zimuka.peers.service.UserGroupService;
+import com.zimuka.peers.utils.WxDecipherUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +37,9 @@ public class UserGroupServiceImpl implements UserGroupService {
     @Resource
     private UserPeerMapper userPeerMapper;
 
+    @Resource
+    private UserMapper userMapper;
+
     @Override
     public void saveOrUpdate(UserGroup userGroup) {
 
@@ -45,10 +52,12 @@ public class UserGroupServiceImpl implements UserGroupService {
         int rows;
         if (null == checkUserGroup) {
 
+            User checkUser = userMapper.findOneByOpenId(userGroup.getOpenId());
+
             // TODO 解密groupId 需要传递encryptedData，iv
-//            JSONObject jsonObject = WxDecipherUtil.getGroupId(userGroup.getEncryptedData(), checkUser.getSessionKey(), userGroup.getIv());
-//
-//            System.out.println("~~~~~~~~~~~~~~~解密groupId:" + jsonObject);
+            JSONObject jsonObject = WxDecipherUtil.getGroupId(userGroup.getEncryptedData(), checkUser.getSessionKey(), userGroup.getIv());
+
+            System.out.println("~~~~~~~~~~~~~~~解密groupId:" + jsonObject);
 
             userGroup.setAppId(miniAppBean.getAppId());
             userGroup.setCtTime(new Date());
