@@ -57,10 +57,15 @@ public class UserGroupServiceImpl implements UserGroupService {
             // TODO 解密groupId 需要传递encryptedData，iv
             JSONObject jsonObject = WxDecipherUtil.getGroupId(userGroup.getEncryptedData(), checkUser.getSessionKey(), userGroup.getIv());
 
+            String openGId = jsonObject.getString("openGId");
+
+            System.out.println("##################获取openGId：" + openGId);
+
             System.out.println("~~~~~~~~~~~~~~~解密groupId:" + jsonObject);
 
             userGroup.setAppId(miniAppBean.getAppId());
             userGroup.setCtTime(new Date());
+            userGroup.setGroupId(openGId);
             BeanUtils.copyProperties(userGroup, saveUserGroup);
             rows = userGroupMapper.save(saveUserGroup);
             if (1 != rows) {
