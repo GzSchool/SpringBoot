@@ -68,9 +68,9 @@ public class UserCardServiceImpl implements UserCardService {
             cacheManager.cacheUserCard(userCard);
 
             //TODO 消息模板推送
-//            JSONObject jsonObject = wxTemplateService.makeCardSuccess(userCard.getOpenId(), userCard.getFormId(), DateUtil.dateToString(saveUserCard.getCtTime()));
-//
-//            logger.info("【模板消息推送】：{}", jsonObject);
+            JSONObject jsonObject = wxTemplateService.makeCardSuccess(userCard.getOpenId(), userCard.getFormId(), DateUtil.dateToString(saveUserCard.getCtTime()));
+
+            logger.info("【模板消息推送】：{}", jsonObject);
 
         } else {
 

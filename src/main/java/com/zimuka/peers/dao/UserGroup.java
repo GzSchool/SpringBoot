@@ -78,6 +78,8 @@ public class UserGroup {
 
     private String iv;
 
+    private String otherOpenId;
+
     public String getEncryptedData() {
         return encryptedData;
     }
@@ -92,5 +94,13 @@ public class UserGroup {
 
     public void setIv(String iv) {
         this.iv = iv;
+    }
+
+    public String getOtherOpenId() {
+        return otherOpenId;
+    }
+
+    public void setOtherOpenId(String otherOpenId) {
+        this.otherOpenId = otherOpenId;
     }
 }

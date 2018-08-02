@@ -47,39 +47,50 @@ public class UserGroupServiceImpl implements UserGroupService {
             throw new PeerProjectException("用户未登陆");
         }
 
-        UserGroup checkUserGroup = userGroupMapper.findOneById(userGroup.getOpenId(), userGroup.getGroupId());
+        User checkUser = userMapper.findOneByOpenId(userGroup.getOpenId());
+
+        // TODO 解密groupId 需要传递encryptedData，iv
+        JSONObject jsonObject = WxDecipherUtil.getGroupId(userGroup.getEncryptedData(), checkUser.getSessionKey(), userGroup.getIv());
+
+        String openGId = jsonObject.getString("openGId");
+
+        System.out.println("##################获取openGId：" + openGId);
+
+        System.out.println("~~~~~~~~~~~~~~~解密groupId:" + jsonObject);
+
+        UserGroup checkUserGroup;
+
         UserGroup saveUserGroup = new UserGroup();
+        //判断是否分享的是他人的名片
+        if (!userGroup.getOtherOpenId().equals(userGroup.getOpenId())) {
+            BeanUtils.copyProperties(userGroup, saveUserGroup);
+            saveUserGroup.setOpenId(userGroup.getOtherOpenId());
+            checkUserGroup = userGroupMapper.findOneById(userGroup.getOtherOpenId(), openGId);
+        } else {
+            BeanUtils.copyProperties(userGroup, saveUserGroup);
+            saveUserGroup.setOpenId(userGroup.getOpenId());
+            checkUserGroup = userGroupMapper.findOneById(userGroup.getOpenId(), openGId);
+        }
+
+        //UserGroup checkUserGroup = userGroupMapper.findOneById(userGroup.getOpenId(), openGId);
+
         int rows;
         if (null == checkUserGroup) {
-
-            User checkUser = userMapper.findOneByOpenId(userGroup.getOpenId());
-
-            // TODO 解密groupId 需要传递encryptedData，iv
-            JSONObject jsonObject = WxDecipherUtil.getGroupId(userGroup.getEncryptedData(), checkUser.getSessionKey(), userGroup.getIv());
-
-            String openGId = jsonObject.getString("openGId");
-
-            System.out.println("##################获取openGId：" + openGId);
-
-            System.out.println("~~~~~~~~~~~~~~~解密groupId:" + jsonObject);
-
-            userGroup.setAppId(miniAppBean.getAppId());
-            userGroup.setCtTime(new Date());
-            userGroup.setGroupId(openGId);
-            BeanUtils.copyProperties(userGroup, saveUserGroup);
+            saveUserGroup.setAppId(miniAppBean.getAppId());
+            saveUserGroup.setCtTime(new Date());
+            saveUserGroup.setGroupId(openGId);
+            //BeanUtils.copyProperties(userGroup, saveUserGroup);
             rows = userGroupMapper.save(saveUserGroup);
             if (1 != rows) {
                 throw new PeerProjectException("首次分享群名片失败");
             }
-
         } else {
-            userGroup.setUpTime(new Date());
-            BeanUtils.copyProperties(userGroup, saveUserGroup);
+            saveUserGroup.setUpTime(new Date());
+            //BeanUtils.copyProperties(userGroup, saveUserGroup);
             rows = userGroupMapper.update(saveUserGroup);
             if (1 != rows) {
                 throw new PeerProjectException("分享群名片失败");
             }
-
         }
     }
 
