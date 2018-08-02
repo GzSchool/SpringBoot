@@ -51,6 +51,8 @@ public class UserGroupController {
      * 查询指定群中，不包含当前用户的所有名片
      * @param openId
      * @param groupId
+     * @param pageNum
+     * @param pageSize
      * @param response
      * @return
      */

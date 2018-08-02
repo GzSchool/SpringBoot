@@ -17,24 +17,24 @@ import java.util.Arrays;
 public class WxDecipherUtil {
 
     public static JSONObject getGroupId(String encryptedData, String sessionKey, String iv) {
-        //加密数据
-        byte[] dataByte = Base64.decode(encryptedData);
+                    //加密数据
+                    byte[] dataByte = Base64.decode(encryptedData);
 
-        //加密密钥
-        byte[] keyByte = Base64.decode(sessionKey);
+                    //加密密钥
+                    byte[] keyByte = Base64.decode(sessionKey);
 
-        //偏移量
-        byte[] ivByte = Base64.decode(iv);
+                    //偏移量
+                    byte[] ivByte = Base64.decode(iv);
 
-        try {
-            // 如果密钥不足16位，那么就补足.  这个if 中的内容很重要
-            int base = 16;
-            if (keyByte.length % base != 0) {
-                int groups = keyByte.length / base + (keyByte.length % base != 0 ? 1 : 0);
-                byte[] temp = new byte[groups * base];
-                Arrays.fill(temp, (byte) 0);
-                System.arraycopy(keyByte, 0, temp, 0, keyByte.length);
-                keyByte = temp;
+                    try {
+                        // 如果密钥不足16位，那么就补足.  这个if 中的内容很重要
+                        int base = 16;
+                        if (keyByte.length % base != 0) {
+                            int groups = keyByte.length / base + (keyByte.length % base != 0 ? 1 : 0);
+                            byte[] temp = new byte[groups * base];
+                            Arrays.fill(temp, (byte) 0);
+                            System.arraycopy(keyByte, 0, temp, 0, keyByte.length);
+                            keyByte = temp;
             }
 
             //初始化
