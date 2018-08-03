@@ -34,7 +34,7 @@ public class UserCardController {
      */
     @RequestMapping("/saveOrUpdate")
     @ResponseBody
-    public AjaxResultDTO saveOrUpdate(UserCard userCard, HttpServletResponse response) {
+    public AjaxResultDTO saveOrUpdate(@RequestBody UserCard userCard, HttpServletResponse response) {
         try {
             response.setHeader("Access-Control-Allow-Origin", "*");
             userCardService.saveOrUpdate(userCard);
