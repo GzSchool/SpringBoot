@@ -4,6 +4,7 @@ import com.zimuka.peers.dao.UserGroup;
 import com.zimuka.peers.dto.AjaxResultDTO;
 import com.zimuka.peers.dto.PageDTO;
 import com.zimuka.peers.dto.ReturnCardDTO;
+import com.zimuka.peers.dto.ReturnGroupDTO;
 import com.zimuka.peers.exception.PeerProjectException;
 import com.zimuka.peers.service.UserGroupService;
 import org.slf4j.Logger;
@@ -82,8 +83,8 @@ public class UserGroupController {
     public AjaxResultDTO findUserGroupByParam(UserGroup userGroup, HttpServletResponse response) {
         try {
             response.setHeader("Access-Control-Allow-Origin", "*");
-            List<UserGroup> userGroupList = userGroupService.findUserGroupByParam(userGroup);
-            return AjaxResultDTO.success(userGroupList);
+            List<ReturnGroupDTO> returnGroupDTOS = userGroupService.findUserGroupByParam(userGroup);
+            return AjaxResultDTO.success(returnGroupDTOS);
         } catch(PeerProjectException ppe) {
             return AjaxResultDTO.failed(ppe.getMessage());
         } catch(Exception e) {
