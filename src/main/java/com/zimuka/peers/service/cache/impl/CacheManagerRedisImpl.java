@@ -59,6 +59,9 @@ public class CacheManagerRedisImpl implements CacheManager {
             userCard = (UserCard) redisService.get(PREFIX_USERCARD + openId);
         }else{
             userCard = userCardMapper.findOneByOpenId(openId);
+            if(userCard != null){
+                cacheUserCard(userCard);
+            }
         }
         return userCard;
     }
