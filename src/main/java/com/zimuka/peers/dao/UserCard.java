@@ -1,14 +1,16 @@
 package com.zimuka.peers.dao;
 
 import javax.validation.constraints.Pattern;
+import java.io.Serializable;
 import java.util.Date;
 
-public class UserCard {
+public class UserCard implements Serializable {
 
     private Integer id;
 
     private String openId;
 
+    //冗余字段，重构时可删除
     private String appId;
 
     private String username;
@@ -214,5 +216,32 @@ public class UserCard {
 
     public void setFormId(String formId) {
         this.formId = formId;
+    }
+
+    @Override
+    public String toString() {
+        return "UserCard{" +
+                "id=" + id +
+                ", openId='" + openId + '\'' +
+                ", appId='" + appId + '\'' +
+                ", username='" + username + '\'' +
+                ", userWechat='" + userWechat + '\'' +
+                ", userCompany='" + userCompany + '\'' +
+                ", userIndustry='" + userIndustry + '\'' +
+                ", userCity='" + userCity + '\'' +
+                ", userJob='" + userJob + '\'' +
+                ", userImg='" + userImg + '\'' +
+                ", userPhone='" + userPhone + '\'' +
+                ", userEmail='" + userEmail + '\'' +
+                ", synopsis='" + synopsis + '\'' +
+                ", demand='" + demand + '\'' +
+                ", resources='" + resources + '\'' +
+                ", giveLikeNum=" + giveLikeNum +
+                ", delFlag=" + delFlag +
+                ", ctTime=" + ctTime +
+                ", upTime=" + upTime +
+                ", prepare='" + prepare + '\'' +
+                ", formId='" + formId + '\'' +
+                '}';
     }
 }

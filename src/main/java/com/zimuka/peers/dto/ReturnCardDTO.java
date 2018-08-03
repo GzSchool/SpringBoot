@@ -32,6 +32,8 @@ public class ReturnCardDTO {
 
     private Integer saveFlag;
 
+    private String prepare;
+
     public Integer getId() {
         return id;
     }
@@ -150,5 +152,13 @@ public class ReturnCardDTO {
 
     public void setSaveFlag(Integer saveFlag) {
         this.saveFlag = saveFlag;
+    }
+
+    public String getPrepare() {
+        return prepare;
+    }
+
+    public void setPrepare(String prepare) {
+        this.prepare = prepare;
     }
 }

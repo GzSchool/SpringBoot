@@ -4,6 +4,7 @@ import com.zimuka.peers.dao.UserCard;
 import com.zimuka.peers.dao.UserPeer;
 import com.zimuka.peers.dto.AjaxResultDTO;
 import com.zimuka.peers.dto.PageDTO;
+import com.zimuka.peers.dto.ReturnCardDTO;
 import com.zimuka.peers.exception.PeerProjectException;
 import com.zimuka.peers.service.UserPeerService;
 import com.zimuka.peers.vo.CreatePeersVO;
@@ -49,8 +50,10 @@ public class UserPeerController {
     }
 
     /**
-     * 查询用户名片夹
+     * 查询用户名片夹（含分页）
      * @param openId
+     * @param pageNum
+     * @param pageSize
      * @param response
      * @return
      */
@@ -66,6 +69,21 @@ public class UserPeerController {
         } catch(Exception e) {
             logger.error("【查询用户名片夹异常】：{}", e);
             return AjaxResultDTO.failed("查询名片夹异常");
+        }
+    }
+
+    @RequestMapping("/findAllPeerByOpenId")
+    @ResponseBody
+    public AjaxResultDTO findAllPeerByOpenId(String openId, HttpServletResponse response) {
+        try {
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            List<ReturnCardDTO> returnCardDTOS = userPeerService.findAllPeerByOpenId(openId);
+            return AjaxResultDTO.success(returnCardDTOS);
+        } catch(PeerProjectException ppe) {
+            return AjaxResultDTO.failed(ppe.getMessage());
+        } catch(Exception e) {
+            logger.error("【查询用户名片夹异常】：{}", e);
+            return AjaxResultDTO.failed("查询用户名片夹异常");
         }
     }
 }

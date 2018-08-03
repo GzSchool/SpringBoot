@@ -216,7 +216,7 @@
 
 
     <select id="findOneByOpenId" resultMap="UserCardMapperResultMap">
-        select <include refid="Base_Column_List"/>
+        select *
         from user_card
         where open_id=#{openId}
     </select>
@@ -295,4 +295,20 @@
         like CONCAT('%',#{param},'%' ) order by convert(username using gbk) ASC
     </select>
 
+	<select id="findById" resultType="com.zimuka.peers.dto.ReturnCardDTO">
+       select uc.id as id, uc.username as username, uc.user_wechat as userWechat, uc.user_company as userCompany, uc.user_industry as userIndustry, uc.user_city as userCity,
+       uc.user_job as userJob, uc.user_img as userImg, uc.user_phone as userPhone, uc.user_email as userEmail, uc.synopsis as synopsis, uc.demand as demand,
+       uc.resources as resources, uc.give_like_num as giveLikeNum, uc.prepare as prepare
+       from user_card uc,
+       where uc.id= #{cardId}
+    </select>
+
+	<select id="findAllByPeerAndParam" resultType="com.zimuka.peers.dto.ReturnCardDTO">
+       select uc.id as id, uc.username as username, uc.user_wechat as userWechat, uc.user_company as userCompany, uc.user_industry as userIndustry, uc.user_city as userCity,
+       uc.user_job as userJob, uc.user_img as userImg, uc.user_phone as userPhone, uc.user_email as userEmail, uc.synopsis as synopsis, uc.demand as demand,
+       uc.resources as resources, uc.give_like_num as giveLikeNum, up.save_flag as saveFlag, uc.prepare as prepare
+       from user_card uc, user_peer up
+       where CONCAT(uc.username, uc.user_wechat, uc.user_company, uc.user_industry, uc.user_city, uc.user_job)
+       like CONCAT('%',#{param},'%' ) and up.open_id = #{openId} and uc.id=up.card_id and up.save_flag=2
+    </select>
 </mapper>
