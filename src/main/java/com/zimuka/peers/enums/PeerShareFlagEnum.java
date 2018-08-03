@@ -2,6 +2,9 @@ package com.zimuka.peers.enums;
 
 import com.zimuka.peers.exception.PeerProjectException;
 
+/**
+ * 同行名片保存来源
+ */
 public enum PeerShareFlagEnum {
     FLAG_BY_PERSON(1, "个人分享"),
     FLAG_BY_GROUP(2, "群分享");

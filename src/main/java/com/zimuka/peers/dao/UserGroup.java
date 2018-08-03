@@ -8,6 +8,7 @@ public class UserGroup {
 
     private String openId;
 
+    //冗余字段，重构时可删除
     private String appId;
 
     private Integer delFlag;

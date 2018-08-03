@@ -2,6 +2,9 @@ package com.zimuka.peers.enums;
 
 import com.zimuka.peers.exception.PeerProjectException;
 
+/**
+ * 同行信息保存状态
+ */
 public enum PeerCardSaveFlagEnum {
 
     SAVE_FLAG_FALSE(1, "未保存"),

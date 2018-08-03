@@ -10,6 +10,7 @@ public class UserCard implements Serializable {
 
     private String openId;
 
+    //冗余字段，重构时可删除
     private String appId;
 
     private String username;

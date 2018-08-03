@@ -72,8 +72,6 @@ public class UserGroupServiceImpl implements UserGroupService {
             checkUserGroup = userGroupMapper.findOneById(userGroup.getOpenId(), openGId);
         }
 
-        //UserGroup checkUserGroup = userGroupMapper.findOneById(userGroup.getOpenId(), openGId);
-
         int rows;
         if (null == checkUserGroup) {
             saveUserGroup.setAppId(miniAppBean.getAppId());
