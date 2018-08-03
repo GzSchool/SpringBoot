@@ -1,6 +1,7 @@
 package com.zimuka.peers.mapper;
 
 import com.zimuka.peers.dao.UserCard;
+import com.zimuka.peers.dto.ReturnCardDTO;
 
 import java.util.List;
 
@@ -15,4 +16,6 @@ public interface UserCardMapper {
     List<UserCard> findCardByParam(UserCard userCard);
 
     List<UserCard> findAllByParam(String param);
+
+    ReturnCardDTO findById(int cardId);
 }
