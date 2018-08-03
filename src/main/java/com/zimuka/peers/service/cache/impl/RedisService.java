@@ -1,5 +1,6 @@
 package com.zimuka.peers.service.cache.impl;
 
+import com.zimuka.peers.dto.ReturnCardDTO;
 import org.springframework.data.redis.core.*;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +18,16 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class RedisService {
 
+    private static final double MAX_SCORE = 9007199254740992D;
+
     @Resource
     private RedisTemplate redisTemplate;
 
     @Resource(name = "redisTemplate")
     ValueOperations<Serializable, Object> simpleValOps;
+
+    @Resource(name = "redisTemplate")
+    ZSetOperations<Serializable, ReturnCardDTO> zSetOperations;
 
     /**
      * 写入缓存
@@ -175,22 +181,52 @@ public class RedisService {
      * 有序集合添加
      * @param key
      * @param value
-     * @param scoure
+     * @param score
      */
-    public void zAdd(String key,Object value,double scoure){
-        ZSetOperations<String, Object> zset = redisTemplate.opsForZSet();
-        zset.add(key,value,scoure);
+    public boolean zAdd(String key,ReturnCardDTO value,double score){
+        boolean result = false;
+        try {
+            zSetOperations.add(key, value, score);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     /**
-     * 有序集合获取
-     * @param key
-     * @param scoure
-     * @param scoure1
-     * @return
+     * @Description: 删除同行缓存
+     *
+     * @auther: Mature
      */
-    public Set<Object> rangeByScore(String key,double scoure,double scoure1){
-        ZSetOperations<String, Object> zset = redisTemplate.opsForZSet();
-        return zset.rangeByScore(key, scoure, scoure1);
+    public boolean zRemove(String key,ReturnCardDTO value){
+        boolean result = false;
+        try {
+            zSetOperations.remove(key, value);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public Set<ReturnCardDTO> rangePeerListByScore(String key,double scoure,double scoure1){
+        return zSetOperations.rangeByScore(key, scoure, scoure1);
+    }
+
+    /**
+     * @Description: 获取同行列表缓存
+     *
+     * @auther: Mature
+     */
+    public Set<ReturnCardDTO> rangeAllPeerByNameScore(String key){
+        return zSetOperations.rangeByScore(key, 47, MAX_SCORE);
+    }
+
+    /**
+     * @Description: 设置过期时间
+     *
+     * @auther: Mature
+     */
+    public boolean expire(String key, Long expireTime) {
+        return redisTemplate.expire(key, expireTime, TimeUnit.SECONDS);
     }
 }

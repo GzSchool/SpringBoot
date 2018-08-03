@@ -1,6 +1,10 @@
 package com.zimuka.peers.service.cache;
 
 import com.zimuka.peers.dao.UserCard;
+import com.zimuka.peers.dto.ReturnCardDTO;
+import com.zimuka.peers.vo.CreatePeersVO;
+
+import java.util.List;
 
 /**
  * @Auther: Mature
@@ -14,4 +18,8 @@ public interface CacheManager {
     UserCard getUserCardByOpenId(String openId);
 
     boolean cacheUserCard(UserCard userCard);
+
+    List<ReturnCardDTO> findPeerListByOpenId(String openId);
+
+    boolean updateCachePeerList(CreatePeersVO createPeersVO);
 }

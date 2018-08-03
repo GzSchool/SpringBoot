@@ -10,6 +10,7 @@ import com.zimuka.peers.enums.PeerShareFlagEnum;
 import com.zimuka.peers.exception.PeerProjectException;
 import com.zimuka.peers.mapper.UserPeerMapper;
 import com.zimuka.peers.service.UserPeerService;
+import com.zimuka.peers.service.cache.CacheManager;
 import com.zimuka.peers.vo.CreatePeersVO;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -26,6 +27,8 @@ public class UserPeerServiceImpl implements UserPeerService {
     @Resource
     private UserPeerMapper userPeerMapper;
 
+    @Resource
+    private CacheManager cacheManager;
 //    @Override
 //    public void saveOrUpdate(UserPeer userPeer) {
 //        if (StringUtils.isEmpty(userPeer.getOpenId())) {
@@ -116,6 +119,9 @@ public class UserPeerServiceImpl implements UserPeerService {
                     throw new PeerProjectException("修改名片失败");
                 }
             }
+
+            //缓存操作
+            cacheManager.updateCachePeerList(createPeersVO);
         }
     }
 
@@ -126,7 +132,7 @@ public class UserPeerServiceImpl implements UserPeerService {
             throw new PeerProjectException("用户未登陆");
         }
 
-        List<ReturnCardDTO> returnCardDTOS = userPeerMapper.findAllPeerByOpenId(openId);
+        List<ReturnCardDTO> returnCardDTOS = cacheManager.findPeerListByOpenId(openId);
 
         return returnCardDTOS;
     }
