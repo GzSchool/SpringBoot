@@ -137,4 +137,16 @@ public class UserCardServiceImpl implements UserCardService {
 
         return pageDTO;
     }
+
+    @Override
+    public List<ReturnCardDTO> findAllByPeerAndParam(String param, String openId) {
+
+        if (StringUtils.isEmpty(param) || StringUtils.isEmpty(openId)) {
+            throw new PeerProjectException("参数缺失");
+        }
+
+        List<ReturnCardDTO> returnCardDTOS = userCardMapper.findAllByPeerAndParam(param, openId);
+
+        return returnCardDTOS;
+    }
 }

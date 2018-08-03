@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.zimuka.peers.dao.UserCard;
 import com.zimuka.peers.dto.AjaxResultDTO;
 import com.zimuka.peers.dto.PageDTO;
+import com.zimuka.peers.dto.ReturnCardDTO;
 import com.zimuka.peers.exception.PeerProjectException;
 import com.zimuka.peers.service.UserCardService;
 import org.slf4j.Logger;
@@ -90,7 +91,7 @@ public class UserCardController {
     }
 
     /**
-     * 模糊搜索
+     * 模糊搜索（全表搜索）
      * @param param
      * @param pageNum
      * @param pageSize
@@ -107,6 +108,21 @@ public class UserCardController {
         } catch(PeerProjectException ppe) {
             return AjaxResultDTO.failed(ppe.getMessage());
         } catch(Exception e) {
+            logger.error("【搜索名片异常】：{}", e);
+            return AjaxResultDTO.failed("搜索名片异常");
+        }
+    }
+
+    @RequestMapping("/findAllByPeerAndParam")
+    @ResponseBody
+    public AjaxResultDTO findAllByPeerAndParam(String param, String openId, HttpServletResponse response) {
+        try {
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            List<ReturnCardDTO> returnCardDTOS = userCardService.findAllByPeerAndParam(param, openId);
+            return AjaxResultDTO.success(returnCardDTOS);
+        }catch (PeerProjectException ppe) {
+            return AjaxResultDTO.failed(ppe.getMessage());
+        }catch (Exception e) {
             logger.error("【搜索名片异常】：{}", e);
             return AjaxResultDTO.failed("搜索名片异常");
         }

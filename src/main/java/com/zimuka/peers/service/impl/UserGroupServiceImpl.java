@@ -9,6 +9,7 @@ import com.zimuka.peers.dao.UserGroup;
 import com.zimuka.peers.dao.UserPeer;
 import com.zimuka.peers.dto.PageDTO;
 import com.zimuka.peers.dto.ReturnCardDTO;
+import com.zimuka.peers.enums.GroupShareFlagEnum;
 import com.zimuka.peers.enums.PeerCardSaveFlagEnum;
 import com.zimuka.peers.exception.PeerProjectException;
 import com.zimuka.peers.mapper.UserGroupMapper;
@@ -43,32 +44,29 @@ public class UserGroupServiceImpl implements UserGroupService {
     @Override
     public void saveOrUpdate(UserGroup userGroup) {
 
-        if (StringUtils.isEmpty(userGroup.getOpenId())) {
-            throw new PeerProjectException("用户未登陆");
+        if (StringUtils.isEmpty(userGroup.getOpenId()) || StringUtils.isEmpty(userGroup.getOtherOpenId())) {
+            throw new PeerProjectException("参数缺失");
         }
 
         User checkUser = userMapper.findOneByOpenId(userGroup.getOpenId());
 
-        // TODO 解密groupId 需要传递encryptedData，iv
+        // 解密groupId 需要传递encryptedData，iv
         JSONObject jsonObject = WxDecipherUtil.getGroupId(userGroup.getEncryptedData(), checkUser.getSessionKey(), userGroup.getIv());
-
         String openGId = jsonObject.getString("openGId");
-
         System.out.println("##################获取openGId：" + openGId);
 
-        System.out.println("~~~~~~~~~~~~~~~解密groupId:" + jsonObject);
-
         UserGroup checkUserGroup;
-
         UserGroup saveUserGroup = new UserGroup();
         //判断是否分享的是他人的名片
         if (!userGroup.getOtherOpenId().equals(userGroup.getOpenId())) {
             BeanUtils.copyProperties(userGroup, saveUserGroup);
             saveUserGroup.setOpenId(userGroup.getOtherOpenId());
+            saveUserGroup.setPrepare(GroupShareFlagEnum.FLAG_BY_OTHER.getKey());
             checkUserGroup = userGroupMapper.findOneById(userGroup.getOtherOpenId(), openGId);
         } else {
             BeanUtils.copyProperties(userGroup, saveUserGroup);
             saveUserGroup.setOpenId(userGroup.getOpenId());
+            saveUserGroup.setPrepare(GroupShareFlagEnum.FLAG_BY_ME.getKey());
             checkUserGroup = userGroupMapper.findOneById(userGroup.getOpenId(), openGId);
         }
 
@@ -77,14 +75,15 @@ public class UserGroupServiceImpl implements UserGroupService {
             saveUserGroup.setAppId(miniAppBean.getAppId());
             saveUserGroup.setCtTime(new Date());
             saveUserGroup.setGroupId(openGId);
-            //BeanUtils.copyProperties(userGroup, saveUserGroup);
             rows = userGroupMapper.save(saveUserGroup);
             if (1 != rows) {
                 throw new PeerProjectException("首次分享群名片失败");
             }
         } else {
             saveUserGroup.setUpTime(new Date());
-            //BeanUtils.copyProperties(userGroup, saveUserGroup);
+            if (!checkUserGroup.getPrepare().equals(GroupShareFlagEnum.FLAG_BY_OTHER.getKey())) {
+                saveUserGroup.setPrepare(checkUserGroup.getPrepare());
+            }
             rows = userGroupMapper.update(saveUserGroup);
             if (1 != rows) {
                 throw new PeerProjectException("分享群名片失败");
@@ -130,6 +129,10 @@ public class UserGroupServiceImpl implements UserGroupService {
 
         if (StringUtils.isEmpty(userGroup.getOpenId())) {
             throw new PeerProjectException("用户未登陆");
+        }
+
+        if (StringUtils.isEmpty(userGroup.getPrepare())) {
+            throw new PeerProjectException("参数Prepare不可为空");
         }
 
         List<UserGroup> userGroupList = userGroupMapper.findUserGroupByParam(userGroup);
