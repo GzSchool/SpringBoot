@@ -140,6 +140,14 @@ public class CacheManagerRedisImpl implements CacheManager {
      * @date:
      */
     private double countScoreByName(String username) {
+        if(username == null){
+            return 0;
+        }
+
+        if(username.length() > 5){
+            username = username.substring(0, 5);
+        }
+
         char[] strs = username.toCharArray();
         StringBuilder sb = new StringBuilder("0");
         for (char str : strs) {
@@ -147,4 +155,5 @@ public class CacheManagerRedisImpl implements CacheManager {
         }
         return Double.parseDouble(sb.toString());
     }
+
 }
