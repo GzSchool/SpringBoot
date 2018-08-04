@@ -1,6 +1,8 @@
 package com.zimuka.peers.dto;
 
-public class ReturnCardDTO {
+import java.io.Serializable;
+
+public class ReturnCardDTO implements Serializable {
 
     private Integer id;
 

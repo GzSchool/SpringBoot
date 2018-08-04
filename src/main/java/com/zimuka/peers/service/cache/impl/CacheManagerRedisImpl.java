@@ -9,6 +9,7 @@ import com.zimuka.peers.service.cache.CacheManager;
 import com.zimuka.peers.vo.CreatePeersVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -59,6 +60,9 @@ public class CacheManagerRedisImpl implements CacheManager {
             userCard = (UserCard) redisService.get(PREFIX_USERCARD + openId);
         }else{
             userCard = userCardMapper.findOneByOpenId(openId);
+            if(userCard != null){
+                cacheUserCard(userCard);
+            }
         }
         return userCard;
     }
@@ -112,11 +116,13 @@ public class CacheManagerRedisImpl implements CacheManager {
             int saveFlag = peer.getSaveFlag();
             if(cardIdList != null && cardIdList.size() > 0){
                 for (int cardId : cardIdList) {
-                    ReturnCardDTO userCard = userCardMapper.findById(cardId);
+                    UserCard userCard = userCardMapper.findById(cardId);
+                    ReturnCardDTO returnCardDTO = new ReturnCardDTO();
+                    BeanUtils.copyProperties(userCard, returnCardDTO);
                     if(saveFlag == 1){  //删除
-                        redisService.zRemove(PREFIX_PEERLIST + peer.getOpenId(), userCard);
+                        redisService.zRemove(PREFIX_PEERLIST + peer.getOpenId(), returnCardDTO);
                     }else if(saveFlag == 2){    //添加
-                        redisService.zAdd(PREFIX_PEERLIST + peer.getOpenId(), userCard, countScoreByName(userCard.getPrepare()));
+                        redisService.zAdd(PREFIX_PEERLIST + peer.getOpenId(), returnCardDTO, countScoreByName(userCard.getPrepare()));
                     }
                 }
                 redisService.expire(PREFIX_PEERLIST + peer.getOpenId(), HOUR_SECONDS);
@@ -145,7 +151,7 @@ public class CacheManagerRedisImpl implements CacheManager {
         }
 
         if(username.length() > 5){
-            username = username.substring(0, 5);
+            username = username.substring(0, 7);
         }
 
         char[] strs = username.toCharArray();

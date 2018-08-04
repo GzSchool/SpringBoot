@@ -295,12 +295,10 @@
         like CONCAT('%',#{param},'%' ) order by convert(username using gbk) ASC
     </select>
 
-	<select id="findById" resultType="com.zimuka.peers.dto.ReturnCardDTO">
-       select uc.id as id, uc.username as username, uc.user_wechat as userWechat, uc.user_company as userCompany, uc.user_industry as userIndustry, uc.user_city as userCity,
-       uc.user_job as userJob, uc.user_img as userImg, uc.user_phone as userPhone, uc.user_email as userEmail, uc.synopsis as synopsis, uc.demand as demand,
-       uc.resources as resources, uc.give_like_num as giveLikeNum, uc.prepare as prepare
-       from user_card uc,
-       where uc.id= #{cardId}
+	<select id="findById" resultMap="UserCardMapperResultMap">
+       select <include refid="Base_Column_List"/>
+       from user_card
+       where id= #{id}
     </select>
 
 	<select id="findAllByPeerAndParam" resultType="com.zimuka.peers.dto.ReturnCardDTO">
