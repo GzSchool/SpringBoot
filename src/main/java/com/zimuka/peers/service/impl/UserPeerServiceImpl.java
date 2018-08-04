@@ -113,6 +113,7 @@ public class UserPeerServiceImpl implements UserPeerService {
                 }
             } else {
                 saveUserPeer.setUpTime(new Date());
+                saveUserPeer.setId(checkUserPeer.getId());
                 BeanUtils.copyProperties(createPeersVO, saveUserPeer);
                 rows = userPeerMapper.update(saveUserPeer);
                 if (1 != rows) {
