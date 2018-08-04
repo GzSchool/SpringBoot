@@ -112,7 +112,7 @@
     <select id="findOneById" resultMap="UserPeerMapperResultMap">
         select <include refid="Base_Column_List"/>
         from user_peer
-        where open_id=#{openId} and card_id=#{cardId}
+        where open_id=#{openId} and card_id=#{cardId} and save_flag=2
     </select>
 
     <select id="findUserPeerByParam" parameterType="com.zimuka.peers.dao.UserPeer" resultMap="UserPeerMapperResultMap">

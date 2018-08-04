@@ -155,7 +155,7 @@ public class UserGroupServiceImpl implements UserGroupService {
             //在根据名片ID与当前用户的OPENID，查询是否保存
             for (ReturnCardDTO returnCardDTO : returnCardDTOS) {
                 UserPeer checkUserPeer = userPeerMapper.findOneById(userGroup.getOpenId(), returnCardDTO.getId());
-                if (null == checkUserPeer) {
+                if (null == checkUserPeer || checkUserPeer.getSaveFlag().intValue() == PeerCardSaveFlagEnum.SAVE_FLAG_FALSE.getKey()) {
                     saveFalse.add(checkUserPeer);
                 }else {
                     saveTrue.add(checkUserPeer);
