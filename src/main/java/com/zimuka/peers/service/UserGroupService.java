@@ -13,4 +13,6 @@ public interface UserGroupService {
     PageDTO findCardsOnGroupByOpenId(String openId, String groupId, Integer pageNum, Integer pageSize);
 
     List<ReturnGroupDTO> findUserGroupByParam(UserGroup userGroup);
+
+    List<ReturnGroupDTO> findAllGroupCardByParam(String groupId, String openId);
 }

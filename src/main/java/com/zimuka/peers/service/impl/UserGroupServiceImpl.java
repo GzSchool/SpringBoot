@@ -173,4 +173,9 @@ public class UserGroupServiceImpl implements UserGroupService {
         }
         return returnGroupDTOS;
     }
+
+    @Override
+    public List<ReturnGroupDTO> findAllGroupCardByParam(String groupId, String openId) {
+        return null;
+    }
 }

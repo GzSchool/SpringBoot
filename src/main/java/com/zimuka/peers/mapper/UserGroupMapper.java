@@ -23,4 +23,6 @@ public interface UserGroupMapper {
     List<ReturnCardDTO> findCardsOnGroupByOpenId(@Param("openId") String openId,
                                                  @Param("groupId") String groupId);
 
+    List<ReturnCardDTO> findAllGroupCardByParam(@Param("groupId") String groupId,
+                                                @Param("openId") String openId);
 }

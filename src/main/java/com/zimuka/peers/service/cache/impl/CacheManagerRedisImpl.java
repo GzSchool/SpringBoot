@@ -151,10 +151,10 @@ public class CacheManagerRedisImpl implements CacheManager {
      * @date:
      */
     private double countScoreByName(String username) {
+
         if(username == null){
             return 0;
         }
-
         if(username.length() > 7){
             username = username.substring(0, 7);
         }
