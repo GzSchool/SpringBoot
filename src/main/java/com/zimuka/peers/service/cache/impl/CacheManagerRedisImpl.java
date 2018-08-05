@@ -125,7 +125,7 @@ public class CacheManagerRedisImpl implements CacheManager {
                     ReturnCardDTO returnCardDTO = new ReturnCardDTO();
                     BeanUtils.copyProperties(userCard, returnCardDTO);
                     if(saveFlag == 1){  //删除
-                        redisService.zRemove(PREFIX_PEERLIST + peer.getOpenId(), returnCardDTO);
+                        redisService.zRemove(PREFIX_PEERLIST + peer.getOpenId(), JSON.toJSONString(returnCardDTO));
                     }else if(saveFlag == 2){    //添加
                         redisService.zAdd(PREFIX_PEERLIST + peer.getOpenId(), JSON.toJSONString(returnCardDTO), countScoreByName(userCard.getPrepare()));
                     }
@@ -155,7 +155,7 @@ public class CacheManagerRedisImpl implements CacheManager {
             return 0;
         }
 
-        if(username.length() > 5){
+        if(username.length() > 7){
             username = username.substring(0, 7);
         }
 
