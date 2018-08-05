@@ -21,4 +21,7 @@ public interface UserPeerMapper {
     List<UserCard> findAllByOpenId(String openId);
 
     List<ReturnCardDTO> findAllPeerByOpenId(String openId);
+
+    UserPeer findOne(@Param("openId") String openId,
+                     @Param("cardId") Integer cardId);
 }

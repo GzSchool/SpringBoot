@@ -97,7 +97,7 @@ public class UserPeerServiceImpl implements UserPeerService {
         int rows;
         UserPeer saveUserPeer = new UserPeer();
         for (int cardId : cardIdList) {
-            UserPeer checkUserPeer = userPeerMapper.findOneById(createPeersVO.getOpenId(), cardId);
+            UserPeer checkUserPeer = userPeerMapper.findOne(createPeersVO.getOpenId(), cardId);
             saveUserPeer.setCardId(cardId);
             if (createPeersVO.getGroupId().equals("0")) {
                 saveUserPeer.setShareFlag(PeerShareFlagEnum.FLAG_BY_PERSON.getKey());
