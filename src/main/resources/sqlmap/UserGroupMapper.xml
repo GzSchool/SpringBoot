@@ -141,6 +141,7 @@
        uc.user_job as userJob, uc.user_img as userImg, uc.user_phone as userPhone, uc.user_email as userEmail, uc.synopsis as synopsis, uc.demand as demand,
        uc.resources as resources, uc.give_like_num as giveLikeNum, uc.prepare as prepare
        from user_card uc, user_group ug
-       where ug.group_id = #{groupId} AND ug.open_id!= #{openId} AND uc.open_id=ug.open_id order by CONVERT( uc.prepare USING gbk ) COLLATE gbk_chinese_ci ASC
+       where CONCAT(uc.username, uc.user_wechat, uc.user_company, uc.user_industry, uc.user_city, uc.user_job)
+       like CONCAT('%',#{param},'%' ) and ug.group_id = #{groupId} AND ug.open_id!= #{openId} AND uc.open_id=ug.open_id order by CONVERT( uc.prepare USING gbk ) COLLATE gbk_chinese_ci ASC
     </select>
 </mapper>

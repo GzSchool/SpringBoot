@@ -175,7 +175,26 @@ public class UserGroupServiceImpl implements UserGroupService {
     }
 
     @Override
-    public List<ReturnGroupDTO> findAllGroupCardByParam(String groupId, String openId) {
-        return null;
+    public List<ReturnCardDTO> findAllGroupCardByParam(String groupId, String openId, String param) {
+
+        if (StringUtils.isEmpty(param)) {
+            return null;
+        }
+
+        if (StringUtils.isEmpty(groupId) || StringUtils.isEmpty(openId)) {
+            throw new PeerProjectException("参数缺失");
+        }
+
+        List<ReturnCardDTO> returnCardDTOS = userGroupMapper.findAllGroupCardByParam(groupId, openId, param);
+
+        for (ReturnCardDTO returnCardDTO : returnCardDTOS) {
+            UserPeer checkUserPeer = userPeerMapper.findOne(openId, returnCardDTO.getId());
+            if (null == checkUserPeer || checkUserPeer.getSaveFlag().intValue() == PeerCardSaveFlagEnum.SAVE_FLAG_FALSE.getKey()) {
+                returnCardDTO.setSaveFlag(PeerCardSaveFlagEnum.SAVE_FLAG_FALSE.getKey());
+            } else {
+                returnCardDTO.setSaveFlag(PeerCardSaveFlagEnum.SAVE_FLAG_TRUE.getKey());
+            }
+        }
+        return returnCardDTOS;
     }
 }

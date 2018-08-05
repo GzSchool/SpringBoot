@@ -92,4 +92,27 @@ public class UserGroupController {
             return AjaxResultDTO.failed("查询群列表异常");
         }
     }
+
+    /**
+     * 群内模糊搜索
+     * @param groupId
+     * @param openId
+     * @param param
+     * @param response
+     * @return
+     */
+    @RequestMapping("/findAllGroupCardByParam")
+    @ResponseBody
+    public AjaxResultDTO findAllGroupCardByParam(String groupId, String openId, String param, HttpServletResponse response) {
+        try {
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            List<ReturnCardDTO> returnCardDTOS = userGroupService.findAllGroupCardByParam(groupId, openId, param);
+            return AjaxResultDTO.success(returnCardDTOS);
+        } catch (PeerProjectException ppe) {
+            return AjaxResultDTO.failed(ppe.getMessage());
+        } catch (Exception e) {
+            logger.error("【参数群查询名片异常】：{}", e);
+            return AjaxResultDTO.failed("参数群查询名片异常");
+        }
+    }
 }
