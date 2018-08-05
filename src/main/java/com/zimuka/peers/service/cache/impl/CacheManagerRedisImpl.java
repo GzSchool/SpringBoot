@@ -85,7 +85,7 @@ public class CacheManagerRedisImpl implements CacheManager {
     @Override
     public List<ReturnCardDTO> findPeerListByOpenId(String openId) {
         boolean isCache = redisService.exists(PREFIX_PEERLIST + openId);
-        List<ReturnCardDTO> peerList = null;
+        List<ReturnCardDTO> peerList = new ArrayList<>();
         if(isCache){
             List<String> strList = new ArrayList<String>(redisService.rangeAllPeerByNameScore(PREFIX_PEERLIST + openId));
                 for (String str: strList) {
