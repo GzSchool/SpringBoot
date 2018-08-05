@@ -219,7 +219,7 @@ public class RedisService {
      * @auther: Mature
      */
     public Set<String> rangeAllPeerByNameScore(String key){
-        return zSetOperations.rangeByScore(key, 0, -1);
+        return zSetOperations.rangeByScore(key, 0, MAX_SCORE);
     }
 
     /**
