@@ -187,7 +187,7 @@ public class RedisService {
     public boolean zAdd(String key,String jsonStr,double score){
         boolean result = false;
         try {
-            zSetOperations.add(key, jsonStr, score);
+            result = zSetOperations.add(key, jsonStr, score);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -199,11 +199,12 @@ public class RedisService {
      *
      * @auther: Mature
      */
-    public boolean zRemove(String key,ReturnCardDTO value){
-        boolean result = false;
+    public boolean zRemove(String key,String jsonStr){
+        boolean result = true;
         try {
-            zSetOperations.remove(key, value);
+            long unm = zSetOperations.remove(key, jsonStr);
         } catch (Exception e) {
+            result = false;
             e.printStackTrace();
         }
         return result;
