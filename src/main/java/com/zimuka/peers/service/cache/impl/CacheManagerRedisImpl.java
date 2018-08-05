@@ -87,16 +87,12 @@ public class CacheManagerRedisImpl implements CacheManager {
         boolean isCache = redisService.exists(PREFIX_PEERLIST + openId);
         List<ReturnCardDTO> peerList = new ArrayList<>();
         if(isCache){
-            List<String> strList = new ArrayList<String>(redisService.rangeAllPeerByNameScore(PREFIX_PEERLIST + openId));
-                for (String str: strList) {
-                    ReturnCardDTO returnCardDTO = JSON.parseObject(str, ReturnCardDTO.class);
-                    peerList.add(returnCardDTO);
-                }
+            peerList = new ArrayList<ReturnCardDTO>(redisService.rangeAllPeerByNameScore(PREFIX_PEERLIST + openId));
         }else{
             peerList = userPeerMapper.findAllPeerByOpenId(openId);
             if(peerList != null && peerList.size() > 0){
                 for (ReturnCardDTO userCard : peerList) {
-                    redisService.zAdd(PREFIX_PEERLIST + openId, JSON.toJSONString(userCard), countScoreByName(userCard.getPrepare()));
+                    redisService.zAdd(PREFIX_PEERLIST + openId, userCard, countScoreByName(userCard.getPrepare()));
                 }
                 redisService.expire(PREFIX_PEERLIST + openId, HOUR_SECONDS);
             }
@@ -125,9 +121,9 @@ public class CacheManagerRedisImpl implements CacheManager {
                     ReturnCardDTO returnCardDTO = new ReturnCardDTO();
                     BeanUtils.copyProperties(userCard, returnCardDTO);
                     if(saveFlag == 1){  //删除
-                        redisService.zRemove(PREFIX_PEERLIST + peer.getOpenId(), JSON.toJSONString(returnCardDTO));
+                        redisService.zRemove(PREFIX_PEERLIST + peer.getOpenId(), returnCardDTO);
                     }else if(saveFlag == 2){    //添加
-                        redisService.zAdd(PREFIX_PEERLIST + peer.getOpenId(), JSON.toJSONString(returnCardDTO), countScoreByName(userCard.getPrepare()));
+                        redisService.zAdd(PREFIX_PEERLIST + peer.getOpenId(), returnCardDTO, countScoreByName(userCard.getPrepare()));
                     }
                 }
                 redisService.expire(PREFIX_PEERLIST + peer.getOpenId(), HOUR_SECONDS);

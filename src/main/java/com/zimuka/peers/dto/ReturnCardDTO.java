@@ -170,12 +170,26 @@ public class ReturnCardDTO implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ReturnCardDTO that = (ReturnCardDTO) o;
-        return Objects.equals(id, that.id);
+        return Objects.equals(id, that.id) &&
+                Objects.equals(username, that.username) &&
+                Objects.equals(userWechat, that.userWechat) &&
+                Objects.equals(userCompany, that.userCompany) &&
+                Objects.equals(userIndustry, that.userIndustry) &&
+                Objects.equals(userCity, that.userCity) &&
+                Objects.equals(userJob, that.userJob) &&
+                Objects.equals(userImg, that.userImg) &&
+                Objects.equals(userPhone, that.userPhone) &&
+                Objects.equals(userEmail, that.userEmail) &&
+                Objects.equals(synopsis, that.synopsis) &&
+                Objects.equals(demand, that.demand) &&
+                Objects.equals(resources, that.resources) &&
+                Objects.equals(giveLikeNum, that.giveLikeNum) &&
+                Objects.equals(saveFlag, that.saveFlag) &&
+                Objects.equals(prepare, that.prepare);
     }
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(id);
+        return Objects.hash(id, username, userWechat, userCompany, userIndustry, userCity, userJob, userImg, userPhone, userEmail, synopsis, demand, resources, giveLikeNum, saveFlag, prepare);
     }
 }
