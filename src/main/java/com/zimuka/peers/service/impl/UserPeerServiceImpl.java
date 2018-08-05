@@ -121,7 +121,7 @@ public class UserPeerServiceImpl implements UserPeerService {
                 }
             }
             //缓存操作
-            cacheManager.updateCachePeerList(createPeersVO);
+//            cacheManager.updateCachePeerList(createPeersVO);
         }
     }
 
@@ -132,7 +132,7 @@ public class UserPeerServiceImpl implements UserPeerService {
             throw new PeerProjectException("用户未登陆");
         }
 
-        List<ReturnCardDTO> returnCardDTOS = cacheManager.findPeerListByOpenId(openId);
+        List<ReturnCardDTO> returnCardDTOS = userPeerMapper.findAllPeerByOpenId(openId);
 
         return returnCardDTOS;
     }
