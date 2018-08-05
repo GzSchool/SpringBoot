@@ -1,6 +1,7 @@
 package com.zimuka.peers.dto;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class ReturnCardDTO implements Serializable {
 
@@ -162,5 +163,19 @@ public class ReturnCardDTO implements Serializable {
 
     public void setPrepare(String prepare) {
         this.prepare = prepare;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ReturnCardDTO that = (ReturnCardDTO) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id);
     }
 }
