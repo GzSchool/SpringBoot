@@ -28,7 +28,7 @@ public class RedisService {
     ValueOperations<Serializable, Object> simpleValOps;
 
     @Resource(name = "redisTemplate")
-    ZSetOperations<Serializable, String> zSetOperations;
+    ZSetOperations<Serializable, ReturnCardDTO> zSetOperations;
 
     /**
      * 写入缓存
@@ -181,13 +181,13 @@ public class RedisService {
     /**
      * 有序集合添加
      * @param key
-     * @param jsonStr
+     * @param value
      * @param score
      */
-    public boolean zAdd(String key,String jsonStr,double score){
+    public boolean zAdd(String key, ReturnCardDTO value, double score){
         boolean result = false;
         try {
-            result = zSetOperations.add(key, jsonStr, score);
+            result = zSetOperations.add(key, value, score);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -199,10 +199,10 @@ public class RedisService {
      *
      * @auther: Mature
      */
-    public boolean zRemove(String key,String jsonStr){
+    public boolean zRemove(String key,ReturnCardDTO value){
         boolean result = true;
         try {
-            long unm = zSetOperations.remove(key, jsonStr);
+            long unm = zSetOperations.remove(key, value);
         } catch (Exception e) {
             result = false;
             e.printStackTrace();
@@ -210,7 +210,7 @@ public class RedisService {
         return result;
     }
 
-    public Set<String> rangePeerListByScore(String key,double scoure,double scoure1){
+    public Set<ReturnCardDTO> rangePeerListByScore(String key, double scoure, double scoure1){
         return zSetOperations.rangeByScore(key, scoure, scoure1);
     }
 
@@ -219,7 +219,7 @@ public class RedisService {
      *
      * @auther: Mature
      */
-    public Set<String> rangeAllPeerByNameScore(String key){
+    public Set<ReturnCardDTO> rangeAllPeerByNameScore(String key){
         return zSetOperations.rangeByScore(key, 0, MAX_SCORE);
     }
 
