@@ -1,5 +1,6 @@
 package com.zimuka.peers.service.cache.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.zimuka.peers.dto.ReturnCardDTO;
 import org.springframework.data.redis.core.*;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,7 @@ public class RedisService {
     ValueOperations<Serializable, Object> simpleValOps;
 
     @Resource(name = "redisTemplate")
-    ZSetOperations<Serializable, ReturnCardDTO> zSetOperations;
+    ZSetOperations<Serializable, String> zSetOperations;
 
     /**
      * 写入缓存
@@ -180,13 +181,13 @@ public class RedisService {
     /**
      * 有序集合添加
      * @param key
-     * @param value
+     * @param jsonStr
      * @param score
      */
-    public boolean zAdd(String key,ReturnCardDTO value,double score){
+    public boolean zAdd(String key,String jsonStr,double score){
         boolean result = false;
         try {
-            zSetOperations.add(key, value, score);
+            zSetOperations.add(key, jsonStr, score);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -208,7 +209,7 @@ public class RedisService {
         return result;
     }
 
-    public Set<ReturnCardDTO> rangePeerListByScore(String key,double scoure,double scoure1){
+    public Set<String> rangePeerListByScore(String key,double scoure,double scoure1){
         return zSetOperations.rangeByScore(key, scoure, scoure1);
     }
 
@@ -217,8 +218,8 @@ public class RedisService {
      *
      * @auther: Mature
      */
-    public Set<ReturnCardDTO> rangeAllPeerByNameScore(String key){
-        return zSetOperations.rangeByScore(key, 47, MAX_SCORE);
+    public Set<String> rangeAllPeerByNameScore(String key){
+        return zSetOperations.rangeByScore(key, 0, -1);
     }
 
     /**
