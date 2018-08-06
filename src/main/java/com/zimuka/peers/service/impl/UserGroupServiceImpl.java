@@ -104,19 +104,6 @@ public class UserGroupServiceImpl implements UserGroupService {
         PageHelper.startPage(pageNum, pageSize);
         List<ReturnCardDTO> returnCardDTOS = userGroupMapper.findCardsOnGroupByOpenId(openId, groupId);
 
-        for (ReturnCardDTO returnCardDTO : returnCardDTOS) {
-            UserPeer userPeer = new UserPeer();
-            userPeer.setOpenId(openId);
-            userPeer.setCardId(returnCardDTO.getId());
-            userPeer.setSaveFlag(PeerCardSaveFlagEnum.SAVE_FLAG_TRUE.getKey());
-            List<UserPeer> checkUserPeer = userPeerMapper.findUserPeerByParam(userPeer);
-            if (0 == checkUserPeer.size()) {
-                returnCardDTO.setSaveFlag(PeerCardSaveFlagEnum.SAVE_FLAG_FALSE.getKey());
-            } else {
-                returnCardDTO.setSaveFlag(PeerCardSaveFlagEnum.SAVE_FLAG_TRUE.getKey());
-            }
-        }
-
         PageInfo<ReturnCardDTO> pageInfo = new PageInfo<ReturnCardDTO>(returnCardDTOS);
 
         PageDTO pageDTO = new PageDTO();
