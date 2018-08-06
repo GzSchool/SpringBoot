@@ -8,6 +8,7 @@ import com.zimuka.peers.dao.User;
 import com.zimuka.peers.dao.UserCard;
 import com.zimuka.peers.dao.UserGroup;
 import com.zimuka.peers.dao.UserPeer;
+import com.zimuka.peers.dto.GroupNoSaveNumDTO;
 import com.zimuka.peers.dto.PageDTO;
 import com.zimuka.peers.dto.ReturnCardDTO;
 import com.zimuka.peers.dto.ReturnGroupDTO;
@@ -103,17 +104,9 @@ public class UserGroupServiceImpl implements UserGroupService {
 
         PageHelper.startPage(pageNum, pageSize);
         List<ReturnCardDTO> returnCardDTOS = userGroupMapper.findCardsOnGroupByOpenId(openId, groupId);
-
-        for (ReturnCardDTO returnCardDTO : returnCardDTOS) {
-            UserPeer userPeer = new UserPeer();
-            userPeer.setOpenId(openId);
-            userPeer.setCardId(returnCardDTO.getId());
-            userPeer.setSaveFlag(PeerCardSaveFlagEnum.SAVE_FLAG_TRUE.getKey());
-            List<UserPeer> checkUserPeer = userPeerMapper.findUserPeerByParam(userPeer);
-            if (0 == checkUserPeer.size()) {
-                returnCardDTO.setSaveFlag(PeerCardSaveFlagEnum.SAVE_FLAG_FALSE.getKey());
-            } else {
-                returnCardDTO.setSaveFlag(PeerCardSaveFlagEnum.SAVE_FLAG_TRUE.getKey());
+        for (ReturnCardDTO returnCard : returnCardDTOS) {
+            if(returnCard.getSaveFlag() == null){
+                returnCard.setSaveFlag(PeerCardSaveFlagEnum.SAVE_FLAG_FALSE.getKey());
             }
         }
 
@@ -144,33 +137,60 @@ public class UserGroupServiceImpl implements UserGroupService {
 
         for (UserGroup group : userGroupList) {
 
-            ReturnGroupDTO returnGroupDTO = new ReturnGroupDTO();
+            List<GroupNoSaveNumDTO> noSaveNumList = userGroupMapper.countByNoSave(group.getGroupId(), userGroup.getOpenId());
 
-            //根据群ID和当前用户的openId,查询出当前群 的除了但前用户的 名片集合
-            List<ReturnCardDTO> returnCardDTOS = userGroupMapper.findCardsOnGroupByOpenId(userGroup.getOpenId(), group.getGroupId());
-
-            List saveTrue = new ArrayList();
-            List saveFalse = new ArrayList();
-
-            //在根据名片ID与当前用户的OPENID，查询是否保存
-            for (ReturnCardDTO returnCardDTO : returnCardDTOS) {
-                UserPeer checkUserPeer = userPeerMapper.findOneById(userGroup.getOpenId(), returnCardDTO.getId());
-                if (null == checkUserPeer || checkUserPeer.getSaveFlag().intValue() == PeerCardSaveFlagEnum.SAVE_FLAG_FALSE.getKey()) {
-                    saveFalse.add(checkUserPeer);
-                }else {
-                    saveTrue.add(checkUserPeer);
+            int saveFalseNum = 0;
+            for (GroupNoSaveNumDTO noSaveNum : noSaveNumList) {
+                if (null == noSaveNum.getSaveFlag() || noSaveNum.getSaveFlag().intValue() == PeerCardSaveFlagEnum.SAVE_FLAG_FALSE.getKey()) {
+                    saveFalseNum += noSaveNum.getNum();
                 }
             }
+
+            ReturnGroupDTO returnGroupDTO = new ReturnGroupDTO();
 
             returnGroupDTO.setGroupId(group.getGroupId());
             returnGroupDTO.setOpenId(userGroup.getOpenId());
             returnGroupDTO.setCtTime(group.getCtTime());
             returnGroupDTO.setUpTime(group.getUpTime());
-            returnGroupDTO.setSaveTrue(saveTrue.size());
-            returnGroupDTO.setSaveFalse(saveFalse.size());
+            returnGroupDTO.setSaveFalse(saveFalseNum);
 
             returnGroupDTOS.add(returnGroupDTO);
         }
         return returnGroupDTOS;
+    }
+
+    @Override
+    public List<ReturnCardDTO> findAllGroupCardByParam(String groupId, String openId, String param) {
+
+        if (StringUtils.isEmpty(param)) {
+            return null;
+        }
+
+        if (StringUtils.isEmpty(groupId) || StringUtils.isEmpty(openId)) {
+            throw new PeerProjectException("参数缺失");
+        }
+
+        List<ReturnCardDTO> returnCardDTOS = userGroupMapper.findAllGroupCardByParam(groupId, openId, param);
+
+        for (ReturnCardDTO returnCardDTO : returnCardDTOS) {
+            UserPeer checkUserPeer = userPeerMapper.findOne(openId, returnCardDTO.getId());
+            if (null == checkUserPeer || checkUserPeer.getSaveFlag().intValue() == PeerCardSaveFlagEnum.SAVE_FLAG_FALSE.getKey()) {
+                returnCardDTO.setSaveFlag(PeerCardSaveFlagEnum.SAVE_FLAG_FALSE.getKey());
+            } else {
+                returnCardDTO.setSaveFlag(PeerCardSaveFlagEnum.SAVE_FLAG_TRUE.getKey());
+            }
+        }
+        return returnCardDTOS;
+    }
+
+    @Override
+    public List<ReturnCardDTO> findCardsNoPage(String openId, String groupId) {
+        if (StringUtils.isEmpty(openId) || StringUtils.isEmpty(groupId)) {
+            throw new PeerProjectException("参数缺失");
+        }
+
+        List<ReturnCardDTO> returnCardDTOS = userGroupMapper.findCardsOnGroupByOpenId(openId, groupId);
+
+        return returnCardDTOS;
     }
 }

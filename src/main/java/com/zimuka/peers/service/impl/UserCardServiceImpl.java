@@ -65,7 +65,7 @@ public class UserCardServiceImpl implements UserCardService {
                 throw new PeerProjectException("添加名片失败");
             }
             //添加到缓存
-            cacheManager.cacheUserCard(userCard);
+            cacheManager.cacheUserCard(saveUserCard);
 
             //TODO 消息模板推送
             JSONObject jsonObject = wxTemplateService.makeCardSuccess(userCard.getOpenId(), userCard.getFormId(), DateUtil.dateToString(saveUserCard.getCtTime()));
@@ -89,7 +89,7 @@ public class UserCardServiceImpl implements UserCardService {
                 throw new PeerProjectException("修改名片失败");
             }
             //添加到缓存
-            cacheManager.cacheUserCard(userCard);
+            cacheManager.cacheUserCard(saveUserCard);
         }
     }
 

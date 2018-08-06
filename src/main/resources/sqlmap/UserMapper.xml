@@ -56,7 +56,7 @@
                 #{upTime},
             </if>
             <if test="null != prepare">
-                prepare,
+                #{prepare},
             </if>
         </trim>
     </insert>

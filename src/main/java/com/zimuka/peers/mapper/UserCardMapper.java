@@ -17,7 +17,7 @@ public interface UserCardMapper {
 
     List<UserCard> findAllByParam(String param);
 
-	ReturnCardDTO findById(int cardId);
+	UserCard findById(int id);
 
 	List<ReturnCardDTO> findAllByPeerAndParam(@Param("param") String param,
                                               @Param("openId") String openId);}

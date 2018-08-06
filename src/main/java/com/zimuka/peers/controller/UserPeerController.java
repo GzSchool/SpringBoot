@@ -86,4 +86,25 @@ public class UserPeerController {
             return AjaxResultDTO.failed("查询用户名片夹异常");
         }
     }
+
+    /**
+     * 检验当前名片是否被当前用户保存
+     * @param openId
+     * @param cardId
+     * @param response
+     * @return
+     */
+    @RequestMapping("/checkSave")
+    @ResponseBody
+    public AjaxResultDTO checkSave(String openId, String cardId, HttpServletResponse response) {
+        try {
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            return AjaxResultDTO.success(userPeerService.checkSave(openId, cardId));
+        } catch (PeerProjectException ppe) {
+            return AjaxResultDTO.failed(ppe.getMessage());
+        } catch (Exception e) {
+            logger.error("【检验当前用户是否绑定名片异常】：{}", e);
+            return AjaxResultDTO.failed("检验当前用户是否绑定名片异常");
+        }
+    }
 }

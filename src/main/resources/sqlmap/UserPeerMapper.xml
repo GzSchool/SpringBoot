@@ -4,7 +4,8 @@
         namespace="com.zimuka.peers.mapper.UserPeerMapper">
     <resultMap id="UserPeerMapperResultMap"
                type="com.zimuka.peers.dao.UserPeer">
-        <id column="open_id" property="openId"/>
+        <id column="id" property="id"/>
+        <result column="open_id" property="openId"/>
         <result column="card_id" property="cardId"/>
         <result column="group_id" property="groupId"/>
         <result column="share_flag" property="shareFlag"/>
@@ -16,7 +17,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        open_id, card_id, group_id, share_flag, save_flag, del_flag, ct_time, up_time, prepare
+        id, open_id, card_id, group_id, share_flag, save_flag, del_flag, ct_time, up_time, prepare
     </sql>
 
     <insert id="save" parameterType="com.zimuka.peers.dao.UserPeer" useGeneratedKeys="true" keyProperty="id">
@@ -106,13 +107,19 @@
                 prepare=#{prepare},
             </if>
         </set>
-        where open_id=#{openId} and card_id=#{cardId}
+        where open_id=#{openId} and card_id=#{cardId} and id=#{id}
     </update>
 
     <select id="findOneById" resultMap="UserPeerMapperResultMap">
         select <include refid="Base_Column_List"/>
         from user_peer
         where open_id=#{openId} and card_id=#{cardId} and save_flag=2
+    </select>
+
+    <select id="findOne" resultMap="UserPeerMapperResultMap">
+        select <include refid="Base_Column_List"/>
+        from user_peer
+        where open_id=#{openId} and card_id=#{cardId}
     </select>
 
     <select id="findUserPeerByParam" parameterType="com.zimuka.peers.dao.UserPeer" resultMap="UserPeerMapperResultMap">

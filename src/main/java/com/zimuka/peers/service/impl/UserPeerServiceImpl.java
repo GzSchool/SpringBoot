@@ -6,6 +6,7 @@ import com.zimuka.peers.dao.UserCard;
 import com.zimuka.peers.dao.UserPeer;
 import com.zimuka.peers.dto.PageDTO;
 import com.zimuka.peers.dto.ReturnCardDTO;
+import com.zimuka.peers.enums.PeerCardSaveFlagEnum;
 import com.zimuka.peers.enums.PeerShareFlagEnum;
 import com.zimuka.peers.exception.PeerProjectException;
 import com.zimuka.peers.mapper.UserPeerMapper;
@@ -108,7 +109,7 @@ public class UserPeerServiceImpl implements UserPeerService {
         int rows;
         UserPeer saveUserPeer = new UserPeer();
         for (int cardId : cardIdList) {
-            UserPeer checkUserPeer = userPeerMapper.findOneById(createPeersVO.getOpenId(), cardId);
+            UserPeer checkUserPeer = userPeerMapper.findOne(createPeersVO.getOpenId(), cardId);
             saveUserPeer.setCardId(cardId);
             if (createPeersVO.getGroupId().equals("0")) {
                 saveUserPeer.setShareFlag(PeerShareFlagEnum.FLAG_BY_PERSON.getKey());
@@ -124,15 +125,13 @@ public class UserPeerServiceImpl implements UserPeerService {
                 }
             } else {
                 saveUserPeer.setUpTime(new Date());
+                saveUserPeer.setId(checkUserPeer.getId());
                 BeanUtils.copyProperties(createPeersVO, saveUserPeer);
                 rows = userPeerMapper.update(saveUserPeer);
                 if (1 != rows) {
                     throw new PeerProjectException("修改名片失败");
                 }
             }
-
-            //缓存操作
-            cacheManager.updateCachePeerList(createPeersVO);
         }
     }
 
@@ -143,8 +142,23 @@ public class UserPeerServiceImpl implements UserPeerService {
             throw new PeerProjectException("用户未登陆");
         }
 
-        List<ReturnCardDTO> returnCardDTOS = cacheManager.findPeerListByOpenId(openId);
+        List<ReturnCardDTO> returnCardDTOS = userPeerMapper.findAllPeerByOpenId(openId);
 
         return returnCardDTOS;
+    }
+
+    @Override
+    public boolean checkSave(String openId, String cardId) {
+
+        if (StringUtils.isEmpty(openId) || StringUtils.isEmpty(cardId)) {
+            throw new PeerProjectException("参数缺失");
+        }
+
+        UserPeer checkPeer = userPeerMapper.findOne(openId, Integer.parseInt(cardId));
+        if (null == checkPeer || checkPeer.getSaveFlag() == PeerCardSaveFlagEnum.SAVE_FLAG_FALSE.getKey()) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }

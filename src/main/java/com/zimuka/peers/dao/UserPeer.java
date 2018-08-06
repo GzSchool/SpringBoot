@@ -4,6 +4,8 @@ import java.util.Date;
 
 public class UserPeer {
 
+    private Integer id;
+
     private String openId;
 
     private Integer cardId;
@@ -21,6 +23,14 @@ public class UserPeer {
     private Date upTime;
 
     private String prepare;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getOpenId() {
         return openId;
