@@ -120,8 +120,6 @@ public class UserPeerServiceImpl implements UserPeerService {
                     throw new PeerProjectException("修改名片失败");
                 }
             }
-            //缓存操作
-//            cacheManager.updateCachePeerList(createPeersVO);
         }
     }
 
