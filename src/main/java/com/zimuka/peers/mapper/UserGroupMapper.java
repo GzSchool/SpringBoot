@@ -1,6 +1,7 @@
 package com.zimuka.peers.mapper;
 
 import com.zimuka.peers.dao.UserGroup;
+import com.zimuka.peers.dto.GroupNoSaveNumDTO;
 import com.zimuka.peers.dto.ReturnCardDTO;
 import org.apache.ibatis.annotations.Param;
 
@@ -27,6 +28,6 @@ public interface UserGroupMapper {
                                                 @Param("openId") String openId,
                                                 @Param("param") String param);
 
-    int countByNoSave(@Param("groupId") String groupId,
-                      @Param("openId") String openId);
+    List<GroupNoSaveNumDTO> countByNoSave(@Param("groupId") String groupId,
+                                          @Param("openId") String openId);
 }

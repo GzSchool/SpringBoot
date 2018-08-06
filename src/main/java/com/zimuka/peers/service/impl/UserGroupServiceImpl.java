@@ -8,6 +8,7 @@ import com.zimuka.peers.dao.User;
 import com.zimuka.peers.dao.UserCard;
 import com.zimuka.peers.dao.UserGroup;
 import com.zimuka.peers.dao.UserPeer;
+import com.zimuka.peers.dto.GroupNoSaveNumDTO;
 import com.zimuka.peers.dto.PageDTO;
 import com.zimuka.peers.dto.ReturnCardDTO;
 import com.zimuka.peers.dto.ReturnGroupDTO;
@@ -103,6 +104,11 @@ public class UserGroupServiceImpl implements UserGroupService {
 
         PageHelper.startPage(pageNum, pageSize);
         List<ReturnCardDTO> returnCardDTOS = userGroupMapper.findCardsOnGroupByOpenId(openId, groupId);
+        for (ReturnCardDTO returnCard : returnCardDTOS) {
+            if(returnCard.getSaveFlag() == null){
+                returnCard.setSaveFlag(PeerCardSaveFlagEnum.SAVE_FLAG_FALSE.getKey());
+            }
+        }
 
         PageInfo<ReturnCardDTO> pageInfo = new PageInfo<ReturnCardDTO>(returnCardDTOS);
 
@@ -131,7 +137,14 @@ public class UserGroupServiceImpl implements UserGroupService {
 
         for (UserGroup group : userGroupList) {
 
-            int saveFalseSize = userGroupMapper.countByNoSave(group.getGroupId(), userGroup.getOpenId());
+            List<GroupNoSaveNumDTO> noSaveNumList = userGroupMapper.countByNoSave(group.getGroupId(), userGroup.getOpenId());
+
+            int saveFalseNum = 0;
+            for (GroupNoSaveNumDTO noSaveNum : noSaveNumList) {
+                if (null == noSaveNum.getSaveFlag() || noSaveNum.getSaveFlag().intValue() == PeerCardSaveFlagEnum.SAVE_FLAG_FALSE.getKey()) {
+                    saveFalseNum += noSaveNum.getNum();
+                }
+            }
 
             ReturnGroupDTO returnGroupDTO = new ReturnGroupDTO();
 
@@ -139,7 +152,7 @@ public class UserGroupServiceImpl implements UserGroupService {
             returnGroupDTO.setOpenId(userGroup.getOpenId());
             returnGroupDTO.setCtTime(group.getCtTime());
             returnGroupDTO.setUpTime(group.getUpTime());
-            returnGroupDTO.setSaveFalse(saveFalseSize);
+            returnGroupDTO.setSaveFalse(saveFalseNum);
 
             returnGroupDTOS.add(returnGroupDTO);
         }
