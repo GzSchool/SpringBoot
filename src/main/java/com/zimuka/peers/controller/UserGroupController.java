@@ -49,7 +49,7 @@ public class UserGroupController {
     }
 
     /**
-     * 查询指定群中，不包含当前用户的所有名片
+     * 查询指定群中，不包含当前用户的所有名片（含分页）
      * @param openId
      * @param groupId
      * @param pageNum
@@ -113,6 +113,28 @@ public class UserGroupController {
         } catch (Exception e) {
             logger.error("【参数群查询名片异常】：{}", e);
             return AjaxResultDTO.failed("参数群查询名片异常");
+        }
+    }
+
+    /**
+     * 查询群内除当前用户以外的所有名片
+     * @param openId
+     * @param groupId
+     * @param response
+     * @return
+     */
+    @RequestMapping("/findCardsNoPage")
+    @ResponseBody
+    public AjaxResultDTO findCardsNoPage(String openId, String groupId, HttpServletResponse response) {
+        try {
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            List<ReturnCardDTO> returnCardDTOS = userGroupService.findCardsNoPage(openId,groupId);
+            return AjaxResultDTO.success(returnCardDTOS);
+        } catch (PeerProjectException ppe) {
+            return AjaxResultDTO.failed(ppe.getMessage());
+        } catch (Exception e) {
+            logger.error("【查询群内名片异常】：{}", e);
+            return AjaxResultDTO.failed("查询群内名片异常");
         }
     }
 }

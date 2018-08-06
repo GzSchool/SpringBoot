@@ -144,30 +144,15 @@ public class UserGroupServiceImpl implements UserGroupService {
 
         for (UserGroup group : userGroupList) {
 
+            int saveFalseSize = userGroupMapper.countByNoSave(group.getGroupId(), userGroup.getOpenId());
+
             ReturnGroupDTO returnGroupDTO = new ReturnGroupDTO();
-
-            //根据群ID和当前用户的openId,查询出当前群 的除了但前用户的 名片集合
-            List<ReturnCardDTO> returnCardDTOS = userGroupMapper.findCardsOnGroupByOpenId(userGroup.getOpenId(), group.getGroupId());
-
-            List saveTrue = new ArrayList();
-            List saveFalse = new ArrayList();
-
-            //在根据名片ID与当前用户的OPENID，查询是否保存
-            for (ReturnCardDTO returnCardDTO : returnCardDTOS) {
-                UserPeer checkUserPeer = userPeerMapper.findOne(userGroup.getOpenId(), returnCardDTO.getId());
-                if (null == checkUserPeer || checkUserPeer.getSaveFlag().intValue() == PeerCardSaveFlagEnum.SAVE_FLAG_FALSE.getKey()) {
-                    saveFalse.add(checkUserPeer);
-                }else {
-                    saveTrue.add(checkUserPeer);
-                }
-            }
 
             returnGroupDTO.setGroupId(group.getGroupId());
             returnGroupDTO.setOpenId(userGroup.getOpenId());
             returnGroupDTO.setCtTime(group.getCtTime());
             returnGroupDTO.setUpTime(group.getUpTime());
-            returnGroupDTO.setSaveTrue(saveTrue.size());
-            returnGroupDTO.setSaveFalse(saveFalse.size());
+            returnGroupDTO.setSaveFalse(saveFalseSize);
 
             returnGroupDTOS.add(returnGroupDTO);
         }
@@ -195,6 +180,17 @@ public class UserGroupServiceImpl implements UserGroupService {
                 returnCardDTO.setSaveFlag(PeerCardSaveFlagEnum.SAVE_FLAG_TRUE.getKey());
             }
         }
+        return returnCardDTOS;
+    }
+
+    @Override
+    public List<ReturnCardDTO> findCardsNoPage(String openId, String groupId) {
+        if (StringUtils.isEmpty(openId) || StringUtils.isEmpty(groupId)) {
+            throw new PeerProjectException("参数缺失");
+        }
+
+        List<ReturnCardDTO> returnCardDTOS = userGroupMapper.findCardsOnGroupByOpenId(openId, groupId);
+
         return returnCardDTOS;
     }
 }

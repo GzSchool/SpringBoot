@@ -16,4 +16,6 @@ public interface UserGroupService {
     List<ReturnGroupDTO> findUserGroupByParam(UserGroup userGroup);
 
     List<ReturnCardDTO> findAllGroupCardByParam(String groupId, String openId, String param);
+
+    List<ReturnCardDTO> findCardsNoPage(String openId, String groupId);
 }

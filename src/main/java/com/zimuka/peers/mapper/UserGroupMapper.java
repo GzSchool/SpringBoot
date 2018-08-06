@@ -26,4 +26,7 @@ public interface UserGroupMapper {
     List<ReturnCardDTO> findAllGroupCardByParam(@Param("groupId") String groupId,
                                                 @Param("openId") String openId,
                                                 @Param("param") String param);
+
+    int countByNoSave(@Param("groupId") String groupId,
+                      @Param("openId") String openId);
 }
