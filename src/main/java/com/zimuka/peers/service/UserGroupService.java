@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface UserGroupService {
 
-    void saveOrUpdate(UserGroup userGroup);
+    String saveOrUpdate(UserGroup userGroup);
 
     PageDTO findCardsOnGroupByOpenId(String openId, String groupId, Integer pageNum, Integer pageSize);
 

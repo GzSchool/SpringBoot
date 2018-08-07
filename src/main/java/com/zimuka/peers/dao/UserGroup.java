@@ -19,6 +19,12 @@ public class UserGroup {
 
     private String prepare;
 
+    private String encryptedData;
+
+    private String iv;
+
+    private String otherOpenId;
+
     public String getGroupId() {
         return groupId;
     }
@@ -75,11 +81,6 @@ public class UserGroup {
         this.prepare = prepare;
     }
 
-    private String encryptedData;
-
-    private String iv;
-
-    private String otherOpenId;
 
     public String getEncryptedData() {
         return encryptedData;

@@ -38,8 +38,8 @@ public class UserGroupController {
     public AjaxResultDTO saveOrUpdate(@RequestBody UserGroup userGroup, HttpServletResponse response) {
         try {
             response.setHeader("Access-Control-Allow-Origin", "*");
-            userGroupService.saveOrUpdate(userGroup);
-            return AjaxResultDTO.success();
+            String returnGroupId = userGroupService.saveOrUpdate(userGroup);
+            return AjaxResultDTO.success(returnGroupId);
         } catch(PeerProjectException ppe) {
             return AjaxResultDTO.failed(ppe.getMessage());
         } catch(Exception e) {

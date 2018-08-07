@@ -46,7 +46,7 @@ public class UserGroupServiceImpl implements UserGroupService {
     private UserMapper userMapper;
 
     @Override
-    public void saveOrUpdate(UserGroup userGroup) {
+    public String saveOrUpdate(UserGroup userGroup) {
 
         if (StringUtils.isEmpty(userGroup.getOpenId()) || StringUtils.isEmpty(userGroup.getOtherOpenId())) {
             throw new PeerProjectException("参数缺失");
@@ -83,6 +83,9 @@ public class UserGroupServiceImpl implements UserGroupService {
             if (1 != rows) {
                 throw new PeerProjectException("首次分享群名片失败");
             }
+
+            return openGId;
+
         } else {
             saveUserGroup.setUpTime(new Date());
             if (!checkUserGroup.getPrepare().equals(GroupShareFlagEnum.FLAG_BY_OTHER.getKey())) {
@@ -92,6 +95,7 @@ public class UserGroupServiceImpl implements UserGroupService {
             if (1 != rows) {
                 throw new PeerProjectException("分享群名片失败");
             }
+            return openGId;
         }
     }
 
