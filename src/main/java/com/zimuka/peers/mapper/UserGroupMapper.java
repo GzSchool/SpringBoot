@@ -30,4 +30,6 @@ public interface UserGroupMapper {
 
     List<GroupNoSaveNumDTO> countByNoSave(@Param("groupId") String groupId,
                                           @Param("openId") String openId);
+
+    List<String> getNineBeforeByGroupId(String groupId);
 }

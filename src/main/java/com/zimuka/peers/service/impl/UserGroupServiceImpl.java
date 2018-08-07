@@ -150,6 +150,8 @@ public class UserGroupServiceImpl implements UserGroupService {
                 }
             }
 
+            List<String> beforeNineImg = userGroupMapper.getNineBeforeByGroupId(group.getGroupId());
+
             ReturnGroupDTO returnGroupDTO = new ReturnGroupDTO();
 
             returnGroupDTO.setGroupId(group.getGroupId());
@@ -157,7 +159,7 @@ public class UserGroupServiceImpl implements UserGroupService {
             returnGroupDTO.setCtTime(group.getCtTime());
             returnGroupDTO.setUpTime(group.getUpTime());
             returnGroupDTO.setSaveFalse(saveFalseNum);
-
+            returnGroupDTO.setBeforeNineImg(beforeNineImg);
             returnGroupDTOS.add(returnGroupDTO);
         }
         return returnGroupDTOS;

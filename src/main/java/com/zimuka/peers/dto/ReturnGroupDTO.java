@@ -1,6 +1,7 @@
 package com.zimuka.peers.dto;
 
 import java.util.Date;
+import java.util.List;
 
 public class ReturnGroupDTO {
 
@@ -15,6 +16,8 @@ public class ReturnGroupDTO {
     private Integer saveFalse;
 
     private Integer saveTrue;
+
+    private List<String> beforeNineImg;
 
     public String getGroupId() {
         return groupId;
@@ -62,5 +65,13 @@ public class ReturnGroupDTO {
 
     public void setSaveTrue(Integer saveTrue) {
         this.saveTrue = saveTrue;
+    }
+
+    public List<String> getBeforeNineImg() {
+        return beforeNineImg;
+    }
+
+    public void setBeforeNineImg(List<String> beforeNineImg) {
+        this.beforeNineImg = beforeNineImg;
     }
 }

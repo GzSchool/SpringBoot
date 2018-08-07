@@ -156,4 +156,10 @@
         WHERE ug.group_id=#{groupId} AND ug.open_id!=#{openId} AND uc.open_id=ug.open_id
         GROUP BY up.save_flag
     </select>
+
+    <select id="getNineBeforeByGroupId" resultType="String">
+        SELECT uc.user_img as userImg
+        FROM user_group ug, user_card uc
+        WHERE ug.group_id=#{groupId} AND ug.open_id=uc.open_id LIMIT 0,9
+    </select>
 </mapper>
