@@ -9,15 +9,20 @@ import com.zimuka.peers.dto.ReturnCardDTO;
 import com.zimuka.peers.enums.PeerCardSaveFlagEnum;
 import com.zimuka.peers.enums.PeerShareFlagEnum;
 import com.zimuka.peers.exception.PeerProjectException;
+import com.zimuka.peers.mapper.UserCardMapper;
 import com.zimuka.peers.mapper.UserPeerMapper;
 import com.zimuka.peers.service.UserPeerService;
+import com.zimuka.peers.service.WxTemplateService;
 import com.zimuka.peers.service.cache.CacheManager;
+import com.zimuka.peers.utils.DateUtil;
 import com.zimuka.peers.vo.CreatePeersVO;
+import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -34,6 +39,12 @@ public class UserPeerServiceImpl implements UserPeerService {
 
     @Resource
     private CacheManager cacheManager;
+
+    @Resource
+    private UserCardMapper userCardMapper;
+
+    @Resource
+    private WxTemplateService wxTemplateService;
 //    @Override
 //    public void saveOrUpdate(UserPeer userPeer) {
 //        if (StringUtils.isEmpty(userPeer.getOpenId())) {
@@ -109,6 +120,11 @@ public class UserPeerServiceImpl implements UserPeerService {
         int rows;
         UserPeer saveUserPeer = new UserPeer();
         for (int cardId : cardIdList) {
+            UserCard checkUserCard = userCardMapper.findById(cardId);
+            if (null == checkUserCard) {
+                throw new PeerProjectException("名片不存在");
+            }
+
             UserPeer checkUserPeer = userPeerMapper.findOne(createPeersVO.getOpenId(), cardId);
             saveUserPeer.setCardId(cardId);
             if (createPeersVO.getGroupId().equals("0")) {
@@ -123,6 +139,10 @@ public class UserPeerServiceImpl implements UserPeerService {
                 if (1 != rows) {
                     throw new PeerProjectException("保存名片失败");
                 }
+
+                JSONObject jsonObject = wxTemplateService.saveCardSuccess(checkUserCard.getOpenId(), createPeersVO.getSaveName() , createPeersVO.getFromId(), DateUtil.dateToString(saveUserPeer.getCtTime()));
+                logger.info("【模板消息推送】：{}", jsonObject);
+
             } else {
                 saveUserPeer.setUpTime(new Date());
                 saveUserPeer.setId(checkUserPeer.getId());

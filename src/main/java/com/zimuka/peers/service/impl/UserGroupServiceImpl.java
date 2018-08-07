@@ -56,6 +56,11 @@ public class UserGroupServiceImpl implements UserGroupService {
 
         // 解密groupId 需要传递encryptedData，iv
         JSONObject jsonObject = WxDecipherUtil.getGroupId(userGroup.getEncryptedData(), checkUser.getSessionKey(), userGroup.getIv());
+
+        if (null == jsonObject.getString("openGId")) {
+            throw new PeerProjectException("获取群ID失败");
+        }
+
         String openGId = jsonObject.getString("openGId");
         System.out.println("##################获取openGId：" + openGId);
 
