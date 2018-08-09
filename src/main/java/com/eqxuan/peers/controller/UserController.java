@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * @Auther: zheng guangjing.
  * @Date: 2018/8/9 12:29
- * @Description: 收集用户信息
+ * @Description: 用户相关接口
  */
 @RestController
 @RequestMapping("/user")
@@ -30,12 +30,6 @@ public class UserController {
     @Resource
     private UserService userService;
 
-    /**
-     * 用户授权，保存用户信息
-     * @param code
-     * @param response
-     * @return
-     */
     @RequestMapping(value = "/userAuthor", method = RequestMethod.GET)
     @ResponseBody
     @ApiOperation(value = "用户登录授权接口")

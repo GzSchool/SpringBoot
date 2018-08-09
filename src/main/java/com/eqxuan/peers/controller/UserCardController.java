@@ -17,11 +17,11 @@ import java.util.List;
 /**
  * @Auther: zheng guangjing.
  * @Date: 2018/8/9 12:29
- * @Description: 用户名片操作
+ * @Description: 用户卡片相关接口
  */
 @RestController
 @RequestMapping("/userCard")
-@Api(description = "UserCardController", tags = "用户卡片相关接口 @郑光景")
+@Api(tags = "用户卡片相关接口 @郑光景", description = "UserCardController")
 public class UserCardController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserCardController.class);
@@ -29,12 +29,6 @@ public class UserCardController {
     @Resource
     private UserCardService userCardService;
 
-    /**
-     * 增加，修改名片
-     * @param userCard
-     * @param response
-     * @return
-     */
     @RequestMapping(value = "/saveOrUpdate", method = RequestMethod.POST)
     @ResponseBody
     @ApiOperation(value = "保存用户卡片信息")
@@ -53,16 +47,10 @@ public class UserCardController {
         }
     }
 
-    /**
-     * 查询指定用户名片
-     * @param openId
-     * @param response
-     * @return
-     */
     @RequestMapping(value = "/findOneByOpenId", method = RequestMethod.GET)
     @ResponseBody
     @ApiOperation(value = "根据openId获取用户卡片信息")
-    @ApiImplicitParam(name = "openId", value = "微信用户唯一标识", required = true, dataType = "String", paramType = "")
+    @ApiImplicitParam(name = "openId", value = "微信用户唯一标识", required = true, dataType = "String")
     public AjaxResultDTO findOneByOpenId(String openId, HttpServletResponse response) {
         try {
             response.setHeader("Access-Control-Allow-Origin", "*");
@@ -76,15 +64,12 @@ public class UserCardController {
         }
     }
 
-    /**
-     * 动态查询
-     * @param userCard
-     * @param response
-     * @return
-     */
-    @RequestMapping("/findCardByParam")
+    @GetMapping("/findCardByParam")
     @ResponseBody
-    public AjaxResultDTO findCardByParam(UserCard userCard, HttpServletResponse response) {
+    @ApiOperation(value = "根据前端传递信息，查询指定名片")
+    public AjaxResultDTO findCardByParam(
+            @ApiParam(name = "前端传递信息", value = "传入的JSON值", required = true) UserCard userCard,
+            HttpServletResponse response) {
         try {
             response.setHeader("Access-Control-Allow-Origin", "*");
             List<UserCard> userCardList = userCardService.findCardByParam(userCard);
@@ -97,8 +82,13 @@ public class UserCardController {
         }
     }
 
-    @RequestMapping("/findAllByPeerAndParam")
+    @GetMapping("/findAllByPeerAndParam")
     @ResponseBody
+    @ApiOperation(value = "模糊搜索当前用户的名片夹信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "param", value = "搜索参数", required = false, dataType = "String", paramType = ""),
+            @ApiImplicitParam(name = "openId", value = "当前用户唯一标识", required = true, dataType = "String", paramType = "")
+    })
     public AjaxResultDTO findAllByPeerAndParam(String param, String openId, HttpServletResponse response) {
         try {
             response.setHeader("Access-Control-Allow-Origin", "*");

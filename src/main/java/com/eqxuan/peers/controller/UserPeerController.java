@@ -5,12 +5,10 @@ import com.eqxuan.peers.dto.ReturnCardDTO;
 import com.eqxuan.peers.exception.PeerProjectException;
 import com.eqxuan.peers.service.UserPeerService;
 import com.eqxuan.peers.vo.CreatePeersVO;
+import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -23,6 +21,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/userPeer")
+@Api(tags = "用户同行信息相关接口 @郑光景", description = "UserPeerController")
 public class UserPeerController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserPeerController.class);
@@ -30,15 +29,12 @@ public class UserPeerController {
     @Resource
     private UserPeerService userPeerService;
 
-    /**
-     * 保存同行名片，修改保存名片
-     * @param createPeersVO
-     * @param response
-     * @return
-     */
-    @RequestMapping("/saveOrUpdate")
+    @PostMapping("/saveOrUpdate")
     @ResponseBody
-    public AjaxResultDTO saveOrUpdate(@RequestBody CreatePeersVO createPeersVO, HttpServletResponse response) {
+    @ApiOperation(value = "用户保存，修改同行名片")
+    public AjaxResultDTO saveOrUpdate(
+            @RequestBody @ApiParam(name = "用户同行对象", value = "传入的JSON值", required = true) CreatePeersVO createPeersVO,
+            HttpServletResponse response) {
         try {
             response.setHeader("Access-Control-Allow-Origin", "*");
             userPeerService.saveOrUpdate(createPeersVO);
@@ -51,8 +47,10 @@ public class UserPeerController {
         }
     }
 
-    @RequestMapping("/findAllPeerByOpenId")
+    @GetMapping("/findAllPeerByOpenId")
     @ResponseBody
+    @ApiOperation(value = "返回当前用户的名片夹信息")
+    @ApiImplicitParam(name = "openId", value = "当前用户唯一标识", required = true, dataType = "String")
     public AjaxResultDTO findAllPeerByOpenId(String openId, HttpServletResponse response) {
         try {
             response.setHeader("Access-Control-Allow-Origin", "*");
@@ -66,15 +64,13 @@ public class UserPeerController {
         }
     }
 
-    /**
-     * 检验当前名片是否被当前用户保存
-     * @param openId
-     * @param cardId
-     * @param response
-     * @return
-     */
-    @RequestMapping("/checkSave")
+    @GetMapping("/checkSave")
     @ResponseBody
+    @ApiOperation(value = "检验当前名片是否被当前用户保存")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "openId", value = "当前用户唯一标识", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "cardId", value = "当前名片ID", required = true, dataType = "String")
+    })
     public AjaxResultDTO checkSave(String openId, String cardId, HttpServletResponse response) {
         try {
             response.setHeader("Access-Control-Allow-Origin", "*");

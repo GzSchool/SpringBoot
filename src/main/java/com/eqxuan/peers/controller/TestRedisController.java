@@ -4,6 +4,7 @@ import com.eqxuan.peers.dao.UserCard;
 import com.eqxuan.peers.service.cache.CacheManager;
 import com.eqxuan.peers.service.cache.impl.RedisService;
 import com.eqxuan.peers.service.impl.TestRedisServiceImpl;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,7 @@ import java.util.Date;
  */
 @RestController
 @RequestMapping("/redis")
+@Api(tags = "缓存相关接口 @郑光景", description = "TestRedisController")
 public class TestRedisController {
 
     @Autowired

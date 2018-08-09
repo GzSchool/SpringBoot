@@ -49,6 +49,10 @@ public class UserCardServiceImpl implements UserCardService {
             throw new PeerProjectException("用户未登陆");
         }
 
+        if (StringUtils.isEmpty(userCard.getPrepare())) {
+            throw new PeerProjectException("参数缺失");
+        }
+
         UserCard checkUserCard = userCardMapper.findOneByOpenId(userCard.getOpenId());
         UserCard saveUserCard = new UserCard();
         userCard.setAppId(miniAppBean.getAppId());

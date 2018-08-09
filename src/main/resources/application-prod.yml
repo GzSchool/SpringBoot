@@ -35,10 +35,10 @@ mybatis:
   type-aliases-package: org.springboot.sample.entity
 AppId: wx34fefa15f676d944
 AppSecret: f4ce303b50267dc17dc69ae083ae3a98
-#logging:
-#  pattern:
-#    console: "%d - %msg%n"
-#  level.root: info
-#  level.com.zimuka: debug
-#  path: logs/
-#  file: zimuka-peers.log
+logging:
+  pattern:
+    console: "%d - %msg%n"
+  level.root: info
+  level.com.eqxuan: debug
+  path: logs/
+  file: eqxuan-peers.log
