@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper
-        namespace="com.zimuka.peers.mapper.UserPeerMapper">
+        namespace="com.eqxuan.peers.mapper.UserPeerMapper">
     <resultMap id="UserPeerMapperResultMap"
-               type="com.zimuka.peers.dao.UserPeer">
+               type="com.eqxuan.peers.dao.UserPeer">
         <id column="id" property="id"/>
         <result column="open_id" property="openId"/>
         <result column="card_id" property="cardId"/>
@@ -20,7 +20,7 @@
         id, open_id, card_id, group_id, share_flag, save_flag, del_flag, ct_time, up_time, prepare
     </sql>
 
-    <insert id="save" parameterType="com.zimuka.peers.dao.UserPeer" useGeneratedKeys="true" keyProperty="id">
+    <insert id="save" parameterType="com.eqxuan.peers.dao.UserPeer" useGeneratedKeys="true" keyProperty="id">
         insert into user_peer
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="null != openId">
@@ -82,7 +82,7 @@
         </trim>
     </insert>
 
-    <update id="update" parameterType="com.zimuka.peers.dao.UserPeer">
+    <update id="update" parameterType="com.eqxuan.peers.dao.UserPeer">
         update user_peer
         <set>
             <if test="null != groupId">
@@ -122,7 +122,7 @@
         where open_id=#{openId} and card_id=#{cardId}
     </select>
 
-    <select id="findUserPeerByParam" parameterType="com.zimuka.peers.dao.UserPeer" resultMap="UserPeerMapperResultMap">
+    <select id="findUserPeerByParam" parameterType="com.eqxuan.peers.dao.UserPeer" resultMap="UserPeerMapperResultMap">
         select <include refid="Base_Column_List"/>
         from user_peer
         <where>
@@ -156,7 +156,7 @@
         </where>
     </select>
 
-    <select id="findAllByOpenId" resultType="com.zimuka.peers.dao.UserCard">
+    <select id="findAllByOpenId" resultType="com.eqxuan.peers.dao.UserCard">
        select uc.id as id, uc.username as username, uc.user_wechat as userWechat, uc.user_company as userCompany, uc.user_industry as userIndustry, uc.user_city as userCity,
        uc.user_job as userJob, uc.user_img as userImg, uc.user_phone as userPhone, uc.user_email as userEmail, uc.synopsis as synopsis, uc.demand as demand,
        uc.resources as resources, uc.give_like_num as giveLikeNum
@@ -164,7 +164,7 @@
        where up.open_id = #{openId} and uc.id=up.card_id and up.save_flag=2
     </select>
 
-    <select id="findAllPeerByOpenId" resultType="com.zimuka.peers.dto.ReturnCardDTO">
+    <select id="findAllPeerByOpenId" resultType="com.eqxuan.peers.dto.ReturnCardDTO">
        select uc.id as id, uc.username as username, uc.user_wechat as userWechat, uc.user_company as userCompany, uc.user_industry as userIndustry, uc.user_city as userCity,
        uc.user_job as userJob, uc.user_img as userImg, uc.user_phone as userPhone, uc.user_email as userEmail, uc.synopsis as synopsis, uc.demand as demand,
        uc.resources as resources, uc.give_like_num as giveLikeNum, up.save_flag as saveFlag, uc.prepare as prepare

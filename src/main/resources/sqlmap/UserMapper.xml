@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper
-        namespace="com.zimuka.peers.mapper.UserMapper">
+        namespace="com.eqxuan.peers.mapper.UserMapper">
     <resultMap id="UserMapperResultMap"
-               type="com.zimuka.peers.dao.User">
+               type="com.eqxuan.peers.dao.User">
         <id column="id" property="id"/>
         <result column="open_id" property="openId"/>
         <result column="session_key" property="sessionKey"/>
@@ -17,7 +17,7 @@
       id, open_id, session_key, open_session, ct_time, up_time, prepare
     </sql>
 
-    <insert id="save" parameterType="com.zimuka.peers.dao.User" useGeneratedKeys="true" keyProperty="id">
+    <insert id="save" parameterType="com.eqxuan.peers.dao.User" useGeneratedKeys="true" keyProperty="id">
         insert into user
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="null != openId">
@@ -67,7 +67,7 @@
         where open_id = #{openId}
     </select>
 
-    <update id="update" parameterType="com.zimuka.peers.dao.User">
+    <update id="update" parameterType="com.eqxuan.peers.dao.User">
         update user
         <set>
             <if test="null != sessionKey">
@@ -89,7 +89,7 @@
         where open_id=#{openId}
     </update>
 
-    <select id="findUserByParam" parameterType="com.zimuka.peers.dao.User" resultMap="UserMapperResultMap">
+    <select id="findUserByParam" parameterType="com.eqxuan.peers.dao.User" resultMap="UserMapperResultMap">
         select <include refid="Base_Column_List"/>
         from user
         <where>
