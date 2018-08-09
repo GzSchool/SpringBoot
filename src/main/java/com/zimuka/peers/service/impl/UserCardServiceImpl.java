@@ -49,7 +49,7 @@ public class UserCardServiceImpl implements UserCardService {
             throw new PeerProjectException("必填字段不可为空");
         }
 
-        if (null == userCard.getOpenId() || "".equals(userCard.getOpenId())) {
+        if (StringUtils.isEmpty(userCard.getOpenId())) {
             throw new PeerProjectException("用户未登陆");
         }
 

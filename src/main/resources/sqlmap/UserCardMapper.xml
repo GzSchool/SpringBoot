@@ -216,7 +216,7 @@
 
 
     <select id="findOneByOpenId" resultMap="UserCardMapperResultMap">
-        select *
+        select <include refid="Base_Column_List"/>
         from user_card
         where open_id=#{openId}
     </select>

@@ -111,6 +111,10 @@ public class UserGroupServiceImpl implements UserGroupService {
             throw new PeerProjectException("参数不完整");
         }
 
+        if (null == pageNum || "".equals(pageNum) || null == pageSize || "".equals(pageSize)) {
+            throw new PeerProjectException("请传入分页数据");
+        }
+
         PageHelper.startPage(pageNum, pageSize);
         List<ReturnCardDTO> returnCardDTOS = userGroupMapper.findCardsOnGroupByOpenId(openId, groupId);
         for (ReturnCardDTO returnCard : returnCardDTOS) {
