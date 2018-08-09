@@ -58,6 +58,9 @@ public class UserCardServiceImpl implements UserCardService {
         userCard.setAppId(miniAppBean.getAppId());
         int rows;
         if (null == checkUserCard) {
+
+            logger.info("【添加时获取prepare】：{}", userCard.getPrepare());
+
             userCard.setCtTime(new Date());
             BeanUtils.copyProperties(userCard, saveUserCard);
             rows = userCardMapper.save(saveUserCard);
@@ -81,6 +84,8 @@ public class UserCardServiceImpl implements UserCardService {
             if (checkUserCard.getId().intValue() != userCard.getId().intValue()) {
                 throw new PeerProjectException("该名片不属于你，不能修改");
             }
+
+            logger.info("【修改时获取prepare】：{}", userCard.getPrepare());
 
             userCard.setUpTime(new Date());
             BeanUtils.copyProperties(userCard, saveUserCard);
