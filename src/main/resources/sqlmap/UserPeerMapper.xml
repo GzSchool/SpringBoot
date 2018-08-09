@@ -110,58 +110,10 @@
         where open_id=#{openId} and card_id=#{cardId} and id=#{id}
     </update>
 
-    <select id="findOneById" resultMap="UserPeerMapperResultMap">
-        select <include refid="Base_Column_List"/>
-        from user_peer
-        where open_id=#{openId} and card_id=#{cardId} and save_flag=2
-    </select>
-
     <select id="findOne" resultMap="UserPeerMapperResultMap">
         select <include refid="Base_Column_List"/>
         from user_peer
         where open_id=#{openId} and card_id=#{cardId}
-    </select>
-
-    <select id="findUserPeerByParam" parameterType="com.eqxuan.peers.dao.UserPeer" resultMap="UserPeerMapperResultMap">
-        select <include refid="Base_Column_List"/>
-        from user_peer
-        <where>
-            <if test="null != openId">
-                and open_id=#{openId}
-            </if>
-            <if test="null != cardId">
-                and card_id=#{cardId}
-            </if>
-            <if test="null != groupId">
-                and group_id=#{groupId}
-            </if>
-            <if test="null != shareFlag">
-                and share_flag=#{shareFlag}
-            </if>
-            <if test="null != saveFlag">
-                and save_flag=#{saveFlag}
-            </if>
-            <if test="null != delFlag">
-                and del_flag=#{delFlag}
-            </if>
-            <if test="null != ctTime">
-                and ct_time=#{ctTime}
-            </if>
-            <if test="null != upTime">
-                and up_time=#{upTime}
-            </if>
-            <if test="null != prepare">
-                and prepare=#{prepare}
-            </if>
-        </where>
-    </select>
-
-    <select id="findAllByOpenId" resultType="com.eqxuan.peers.dao.UserCard">
-       select uc.id as id, uc.username as username, uc.user_wechat as userWechat, uc.user_company as userCompany, uc.user_industry as userIndustry, uc.user_city as userCity,
-       uc.user_job as userJob, uc.user_img as userImg, uc.user_phone as userPhone, uc.user_email as userEmail, uc.synopsis as synopsis, uc.demand as demand,
-       uc.resources as resources, uc.give_like_num as giveLikeNum
-       from user_card uc, user_peer up
-       where up.open_id = #{openId} and uc.id=up.card_id and up.save_flag=2
     </select>
 
     <select id="findAllPeerByOpenId" resultType="com.eqxuan.peers.dto.ReturnCardDTO">

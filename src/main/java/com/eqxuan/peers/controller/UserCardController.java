@@ -94,29 +94,6 @@ public class UserCardController {
         }
     }
 
-    /**
-     * 模糊搜索（全表搜索）
-     * @param param
-     * @param pageNum
-     * @param pageSize
-     * @param response
-     * @return
-     */
-    @RequestMapping("/findAllByParam")
-    @ResponseBody
-    public AjaxResultDTO findAllByParam(String param, Integer pageNum, Integer pageSize, HttpServletResponse response) {
-        try {
-            response.setHeader("Access-Control-Allow-Origin", "*");
-            PageDTO pageDTO = userCardService.findAllByParam(param, pageNum, pageSize);
-            return AjaxResultDTO.success(pageDTO);
-        } catch(PeerProjectException ppe) {
-            return AjaxResultDTO.failed(ppe.getMessage());
-        } catch(Exception e) {
-            logger.error("【搜索名片异常】：{}", e);
-            return AjaxResultDTO.failed("搜索名片异常");
-        }
-    }
-
     @RequestMapping("/findAllByPeerAndParam")
     @ResponseBody
     public AjaxResultDTO findAllByPeerAndParam(String param, String openId, HttpServletResponse response) {

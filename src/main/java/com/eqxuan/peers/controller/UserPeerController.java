@@ -1,7 +1,6 @@
 package com.eqxuan.peers.controller;
 
 import com.eqxuan.peers.dto.AjaxResultDTO;
-import com.eqxuan.peers.dto.PageDTO;
 import com.eqxuan.peers.dto.ReturnCardDTO;
 import com.eqxuan.peers.exception.PeerProjectException;
 import com.eqxuan.peers.service.UserPeerService;
@@ -49,29 +48,6 @@ public class UserPeerController {
         } catch(Exception e) {
             logger.error("【修改用户同行名片异常】：{}", e);
             return AjaxResultDTO.failed("修改用户同行名片异常");
-        }
-    }
-
-    /**
-     * 查询用户名片夹（含分页）
-     * @param openId
-     * @param pageNum
-     * @param pageSize
-     * @param response
-     * @return
-     */
-    @RequestMapping("/findAllByOpenId")
-    @ResponseBody
-    public AjaxResultDTO findAllByOpenId(String openId, Integer pageNum, Integer pageSize, HttpServletResponse response) {
-        try {
-            response.setHeader("Access-Control-Allow-Origin", "*");
-            PageDTO pageDTO = userPeerService.findAllByOpenId(openId, pageNum, pageSize);
-            return AjaxResultDTO.success(pageDTO);
-        } catch(PeerProjectException ppe) {
-            return AjaxResultDTO.failed(ppe.getMessage());
-        } catch(Exception e) {
-            logger.error("【查询用户名片夹异常】：{}", e);
-            return AjaxResultDTO.failed("查询名片夹异常");
         }
     }
 
