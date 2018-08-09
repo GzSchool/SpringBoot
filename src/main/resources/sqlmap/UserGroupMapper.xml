@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper
-        namespace="com.zimuka.peers.mapper.UserGroupMapper">
+        namespace="com.eqxuan.peers.mapper.UserGroupMapper">
     <resultMap id="UserGroupMapperResultMap"
-               type="com.zimuka.peers.dao.UserGroup">
+               type="com.eqxuan.peers.dao.UserGroup">
         <id column="group_id" property="groupId"/>
         <result column="open_id" property="openId"/>
         <result column="app_id" property="appId"/>
@@ -16,7 +16,7 @@
         group_id, open_id, app_id, del_flag, ct_time, up_time, prepare
     </sql>
 
-    <insert id="save" parameterType="com.zimuka.peers.dao.UserGroup" useGeneratedKeys="true" keyProperty="id">
+    <insert id="save" parameterType="com.eqxuan.peers.dao.UserGroup" useGeneratedKeys="true" keyProperty="id">
         insert into user_group
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="null != groupId">
@@ -66,7 +66,7 @@
         </trim>
     </insert>
 
-    <update id="update" parameterType="com.zimuka.peers.dao.UserGroup">
+    <update id="update" parameterType="com.eqxuan.peers.dao.UserGroup">
         update user_group
         <set>
             <if test="null != appId">
@@ -94,7 +94,7 @@
         where open_id=#{openId} and group_id=#{groupId}
     </select>
 
-    <select id="findUserGroupByParam" parameterType="com.zimuka.peers.dao.UserGroup" resultMap="UserGroupMapperResultMap">
+    <select id="findUserGroupByParam" parameterType="com.eqxuan.peers.dao.UserGroup" resultMap="UserGroupMapperResultMap">
         select <include refid="Base_Column_List"/>
         from user_group
         <where>
@@ -128,7 +128,7 @@
         where group_id=#{groupId} and open_id != #{openId}
     </select>
 
-    <select id="findCardsOnGroupByOpenId" resultType="com.zimuka.peers.dto.ReturnCardDTO">
+    <select id="findCardsOnGroupByOpenId" resultType="com.eqxuan.peers.dto.ReturnCardDTO">
       select uc.id as id, uc.username as username, uc.user_wechat as userWechat, uc.user_company as userCompany, uc.user_industry as userIndustry,
         uc.user_city as userCity, uc.user_job as userJob, uc.user_img as userImg, uc.user_phone as userPhone, uc.user_email as userEmail,
         uc.synopsis as synopsis, uc.demand as demand, uc.resources as resources, uc.give_like_num as giveLikeNum ,up.save_flag as saveFlag
@@ -139,7 +139,7 @@
         order by up.save_flag asc
     </select>
     
-    <select id="findAllGroupCardByParam" resultType="com.zimuka.peers.dto.ReturnCardDTO">
+    <select id="findAllGroupCardByParam" resultType="com.eqxuan.peers.dto.ReturnCardDTO">
        select uc.id as id, uc.username as username, uc.user_wechat as userWechat, uc.user_company as userCompany, uc.user_industry as userIndustry, uc.user_city as userCity,
        uc.user_job as userJob, uc.user_img as userImg, uc.user_phone as userPhone, uc.user_email as userEmail, uc.synopsis as synopsis, uc.demand as demand,
        uc.resources as resources, uc.give_like_num as giveLikeNum, uc.prepare as prepare
@@ -148,7 +148,7 @@
        like CONCAT('%',#{param},'%' ) and ug.group_id = #{groupId} AND ug.open_id!= #{openId} AND uc.open_id=ug.open_id order by CONVERT( uc.prepare USING gbk ) COLLATE gbk_chinese_ci ASC
     </select>
     
-    <select id="countByNoSave" resultType="com.zimuka.peers.dto.GroupNoSaveNumDTO">
+    <select id="countByNoSave" resultType="com.eqxuan.peers.dto.GroupNoSaveNumDTO">
         select up.save_flag as saveFlag, COUNT(1) as num
         from user_group ug, user_card uc
         LEFT JOIN user_peer up

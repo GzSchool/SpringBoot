@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper
-        namespace="com.zimuka.peers.mapper.UserCardMapper">
+        namespace="com.eqxuan.peers.mapper.UserCardMapper">
     <resultMap id="UserCardMapperResultMap"
-               type="com.zimuka.peers.dao.UserCard">
+               type="com.eqxuan.peers.dao.UserCard">
         <id column="id" property="id"/>
         <result column="open_id" property="openId"/>
         <result column="app_id" property="appId"/>
@@ -31,7 +31,7 @@
         synopsis, demand, resources, give_like_num, del_flag, ct_time, up_time, prepare
     </sql>
 
-    <insert id="save" parameterType="com.zimuka.peers.dao.UserCard" useGeneratedKeys="true" keyProperty="id">
+    <insert id="save" parameterType="com.eqxuan.peers.dao.UserCard" useGeneratedKeys="true" keyProperty="id">
         insert into user_card
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="null != openId">
@@ -153,7 +153,7 @@
         </trim>
     </insert>
 
-    <update id="update" parameterType="com.zimuka.peers.dao.UserCard">
+    <update id="update" parameterType="com.eqxuan.peers.dao.UserCard">
         update user_card
         <set>
             <if test="null != appId">
@@ -221,7 +221,7 @@
         where open_id=#{openId}
     </select>
 
-    <select id="findCardByParam" parameterType="com.zimuka.peers.dao.UserCard" resultMap="UserCardMapperResultMap">
+    <select id="findCardByParam" parameterType="com.eqxuan.peers.dao.UserCard" resultMap="UserCardMapperResultMap">
         select <include refid="Base_Column_List"/>
         from user_card
         <where>
@@ -301,7 +301,7 @@
        where id= #{id}
     </select>
 
-	<select id="findAllByPeerAndParam" resultType="com.zimuka.peers.dto.ReturnCardDTO">
+	<select id="findAllByPeerAndParam" resultType="com.eqxuan.peers.dto.ReturnCardDTO">
        select uc.id as id, uc.username as username, uc.user_wechat as userWechat, uc.user_company as userCompany, uc.user_industry as userIndustry, uc.user_city as userCity,
        uc.user_job as userJob, uc.user_img as userImg, uc.user_phone as userPhone, uc.user_email as userEmail, uc.synopsis as synopsis, uc.demand as demand,
        uc.resources as resources, uc.give_like_num as giveLikeNum, up.save_flag as saveFlag, uc.prepare as prepare
