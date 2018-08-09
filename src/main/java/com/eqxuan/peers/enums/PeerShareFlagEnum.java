@@ -3,7 +3,9 @@ package com.eqxuan.peers.enums;
 import com.eqxuan.peers.exception.PeerProjectException;
 
 /**
- * 同行名片保存来源
+ * @Auther: zheng guangjing.
+ * @Date: 2018/8/9 12:29
+ * @Description: 同行名片保存来源
  */
 public enum PeerShareFlagEnum {
     FLAG_BY_PERSON(1, "个人分享"),

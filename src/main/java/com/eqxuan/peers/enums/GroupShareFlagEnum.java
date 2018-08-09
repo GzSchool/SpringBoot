@@ -3,7 +3,9 @@ package com.eqxuan.peers.enums;
 import com.eqxuan.peers.exception.PeerProjectException;
 
 /**
- * 是否是本人分享名片到群
+ * @Auther: zheng guangjing.
+ * @Date: 2018/8/9 12:29
+ * @Description: 是否本人分享名片到群
  */
 public enum GroupShareFlagEnum {
 

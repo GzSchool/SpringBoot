@@ -3,7 +3,9 @@ package com.eqxuan.peers.enums;
 import com.eqxuan.peers.exception.PeerProjectException;
 
 /**
- * 同行信息保存状态
+ * @Auther: zheng guangjing.
+ * @Date: 2018/8/9 12:29
+ * @Description: 同行信息保存状态
  */
 public enum PeerCardSaveFlagEnum {
 

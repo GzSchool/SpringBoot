@@ -1,10 +1,9 @@
 package com.eqxuan.peers.dto;
 
 /**
- * 消息模板内容，字体大小，颜色可配置
- * @author zimuka
- *
- * 2018年3月5日
+ * @Auther: zheng guangjing.
+ * @Date: 2018/8/9 12:29
+ * @Description: 消息模板内容，字体大小，颜色可配置
  */
 public class TemplateData {
 	

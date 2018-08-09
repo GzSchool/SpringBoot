@@ -1,7 +1,9 @@
 package com.eqxuan.peers.dto;
 
 /**
- * 自定义前端返回格式
+ * @Auther: zheng guangjing.
+ * @Date: 2018/8/9 12:29
+ * @Description: 自定义前端返回格式
  */
 public class AjaxResultDTO {
 

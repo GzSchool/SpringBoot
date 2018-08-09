@@ -1,10 +1,9 @@
 package com.eqxuan.peers.dto;
 
 /**
- * 授权参数封装
- * @author zimuka
- *
- * 2018年3月27日
+ * @Auther: zheng guangjing.
+ * @Date: 2018/8/9 12:29
+ * @Description: 微信授权参数封装
  */
 public class AuthorizeDTO {
 	

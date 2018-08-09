@@ -3,6 +3,11 @@ package com.eqxuan.peers.dto;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @Auther: zheng guangjing.
+ * @Date: 2018/8/9 12:29
+ * @Description: 返回前端 指定 群信息 属性
+ */
 public class ReturnGroupDTO {
 
     private String groupId;
