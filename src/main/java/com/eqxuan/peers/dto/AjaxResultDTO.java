@@ -1,10 +1,15 @@
 package com.eqxuan.peers.dto;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * @Auther: zheng guangjing.
  * @Date: 2018/8/9 12:29
  * @Description: 自定义前端返回格式
  */
+@Getter
+@Setter
 public class AjaxResultDTO {
 
     /* 请求结果 */
@@ -15,10 +20,6 @@ public class AjaxResultDTO {
 
     /* 错误信息 */
     private String message;
-
-    public AjaxResultDTO() {
-
-    }
 
     public AjaxResultDTO(boolean success, Object data, String message) {
         this.success = success;
@@ -32,30 +33,6 @@ public class AjaxResultDTO {
 
     public static AjaxResultDTO success(Object data) {
         return new AjaxResultDTO(true, data, null);
-    }
-
-    public boolean isSuccess() {
-        return success;
-    }
-
-    public void setSuccess(boolean success) {
-        this.success = success;
-    }
-
-    public Object getData() {
-        return data;
-    }
-
-    public void setData(Object data) {
-        this.data = data;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 
     public static AjaxResultDTO failed(String message) {

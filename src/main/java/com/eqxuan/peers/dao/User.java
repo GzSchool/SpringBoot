@@ -1,5 +1,9 @@
 package com.eqxuan.peers.dao;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 import java.util.Date;
 
 /**
@@ -7,6 +11,9 @@ import java.util.Date;
  * @Date: 2018/8/9 12:29
  * @Description: 用户基本属性
  */
+@Getter
+@Setter
+@ToString
 public class User {
 
     private Integer id;
@@ -23,59 +30,4 @@ public class User {
 
     private String prepare;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getOpenId() {
-        return openId;
-    }
-
-    public void setOpenId(String openId) {
-        this.openId = openId;
-    }
-
-    public String getSessionKey() {
-        return sessionKey;
-    }
-
-    public void setSessionKey(String sessionKey) {
-        this.sessionKey = sessionKey;
-    }
-
-    public String getOpenSession() {
-        return openSession;
-    }
-
-    public void setOpenSession(String openSession) {
-        this.openSession = openSession;
-    }
-
-    public Date getCtTime() {
-        return ctTime;
-    }
-
-    public void setCtTime(Date ctTime) {
-        this.ctTime = ctTime;
-    }
-
-    public Date getUpTime() {
-        return upTime;
-    }
-
-    public void setUpTime(Date upTime) {
-        this.upTime = upTime;
-    }
-
-    public String getPrepare() {
-        return prepare;
-    }
-
-    public void setPrepare(String prepare) {
-        this.prepare = prepare;
-    }
 }
