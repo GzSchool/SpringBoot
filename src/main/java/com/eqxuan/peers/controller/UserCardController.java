@@ -2,7 +2,6 @@ package com.eqxuan.peers.controller;
 
 import com.eqxuan.peers.dao.UserCard;
 import com.eqxuan.peers.dto.AjaxResultDTO;
-import com.eqxuan.peers.dto.PageDTO;
 import com.eqxuan.peers.dto.ReturnCardDTO;
 import com.eqxuan.peers.exception.PeerProjectException;
 import com.eqxuan.peers.service.UserCardService;
@@ -95,29 +94,6 @@ public class UserCardController {
         } catch(Exception e) {
             logger.error("【查询Param名片异常】:{}", e);
             return AjaxResultDTO.failed("查询名片异常");
-        }
-    }
-
-    /**
-     * 模糊搜索（全表搜索）
-     * @param param
-     * @param pageNum
-     * @param pageSize
-     * @param response
-     * @return
-     */
-    @RequestMapping("/findAllByParam")
-    @ResponseBody
-    public AjaxResultDTO findAllByParam(String param, Integer pageNum, Integer pageSize, HttpServletResponse response) {
-        try {
-            response.setHeader("Access-Control-Allow-Origin", "*");
-            PageDTO pageDTO = userCardService.findAllByParam(param, pageNum, pageSize);
-            return AjaxResultDTO.success(pageDTO);
-        } catch(PeerProjectException ppe) {
-            return AjaxResultDTO.failed(ppe.getMessage());
-        } catch(Exception e) {
-            logger.error("【搜索名片异常】：{}", e);
-            return AjaxResultDTO.failed("搜索名片异常");
         }
     }
 

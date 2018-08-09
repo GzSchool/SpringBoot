@@ -13,13 +13,6 @@ public interface UserPeerMapper {
 
     int update(UserPeer userPeer);
 
-    UserPeer findOneById(@Param("openId") String openId,
-                         @Param("cardId") Integer cardId);
-
-    List<UserPeer> findUserPeerByParam(UserPeer userPeer);
-
-    List<UserCard> findAllByOpenId(String openId);
-
     List<ReturnCardDTO> findAllPeerByOpenId(String openId);
 
     UserPeer findOne(@Param("openId") String openId,

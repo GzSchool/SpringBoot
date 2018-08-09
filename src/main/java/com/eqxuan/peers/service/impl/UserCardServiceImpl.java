@@ -1,15 +1,12 @@
 package com.eqxuan.peers.service.impl;
 
 import com.eqxuan.peers.dao.UserCard;
-import com.eqxuan.peers.dto.PageDTO;
 import com.eqxuan.peers.dto.ReturnCardDTO;
 import com.eqxuan.peers.mapper.UserCardMapper;
 import com.eqxuan.peers.service.UserCardService;
 import com.eqxuan.peers.service.WxTemplateService;
 import com.eqxuan.peers.service.cache.CacheManager;
 import com.eqxuan.peers.utils.DateUtil;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.eqxuan.peers.configBeans.MiniAppBean;
 import com.eqxuan.peers.exception.PeerProjectException;
 import net.sf.json.JSONObject;
@@ -21,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -112,30 +108,6 @@ public class UserCardServiceImpl implements UserCardService {
         List<UserCard> userCardList = userCardMapper.findCardByParam(userCard);
 
         return userCardList;
-    }
-
-    @Override
-    public PageDTO findAllByParam(String param, Integer pageNum, Integer pageSize) {
-
-        //分页查询（插件）pageNum当前页，将此方法放置在需要分页的SQL查询之前，即可对其分页，只对其最近的一条有效
-        PageHelper.startPage(pageNum, pageSize);
-        List<UserCard> userCardList = userCardMapper.findAllByParam(param);
-
-        PageInfo<UserCard> pageInfo = new PageInfo<UserCard>(userCardList);
-        List<ReturnCardDTO> returnCardDTOS = new ArrayList<ReturnCardDTO>(pageInfo.getList().size());
-
-        for (UserCard userCard : pageInfo.getList()) {
-            ReturnCardDTO returnCardDTO = new ReturnCardDTO();
-            BeanUtils.copyProperties(userCard, returnCardDTO);
-            returnCardDTOS.add(returnCardDTO);
-        }
-
-        PageDTO pageDTO = new PageDTO();
-        pageDTO.setResult(returnCardDTOS);
-        pageDTO.setPages(pageInfo.getPages());
-        pageDTO.setTotal(pageInfo.getTotal());
-
-        return pageDTO;
     }
 
     @Override

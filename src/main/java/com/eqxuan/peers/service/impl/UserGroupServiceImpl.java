@@ -202,15 +202,4 @@ public class UserGroupServiceImpl implements UserGroupService {
         }
         return returnCardDTOS;
     }
-
-    @Override
-    public List<ReturnCardDTO> findCardsNoPage(String openId, String groupId) {
-        if (StringUtils.isEmpty(openId) || StringUtils.isEmpty(groupId)) {
-            throw new PeerProjectException("参数缺失");
-        }
-
-        List<ReturnCardDTO> returnCardDTOS = userGroupMapper.findCardsOnGroupByOpenId(openId, groupId);
-
-        return returnCardDTOS;
-    }
 }

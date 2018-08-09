@@ -122,12 +122,6 @@
         </where>
     </select>
 
-    <select id="findUsersByGroupId" resultMap="UserGroupMapperResultMap">
-        select <include refid="Base_Column_List"/>
-        from user_group
-        where group_id=#{groupId} and open_id != #{openId}
-    </select>
-
     <select id="findCardsOnGroupByOpenId" resultType="com.eqxuan.peers.dto.ReturnCardDTO">
       select uc.id as id, uc.username as username, uc.user_wechat as userWechat, uc.user_company as userCompany, uc.user_industry as userIndustry,
         uc.user_city as userCity, uc.user_job as userJob, uc.user_img as userImg, uc.user_phone as userPhone, uc.user_email as userEmail,

@@ -288,13 +288,6 @@
         </where>
     </select>
 
-    <select id="findAllByParam" parameterType="String" resultMap="UserCardMapperResultMap">
-        select <include refid="Base_Column_List"/>
-        from user_card
-        where CONCAT(username, user_wechat, user_company, user_industry, user_city, user_job)
-        like CONCAT('%',#{param},'%' ) order by convert(username using gbk) ASC
-    </select>
-
 	<select id="findById" resultMap="UserCardMapperResultMap">
        select <include refid="Base_Column_List"/>
        from user_card
