@@ -6,12 +6,10 @@ import com.eqxuan.peers.dto.PageDTO;
 import com.eqxuan.peers.dto.ReturnCardDTO;
 import com.eqxuan.peers.exception.PeerProjectException;
 import com.eqxuan.peers.service.UserCardService;
+import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +22,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/userCard")
+@Api(description = "UserCardController", tags = "用户卡片相关接口 @郑光景")
 public class UserCardController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserCardController.class);
@@ -37,9 +36,12 @@ public class UserCardController {
      * @param response
      * @return
      */
-    @RequestMapping("/saveOrUpdate")
+    @RequestMapping(value = "/saveOrUpdate", method = RequestMethod.POST)
     @ResponseBody
-    public AjaxResultDTO saveOrUpdate(@RequestBody UserCard userCard, HttpServletResponse response) {
+    @ApiOperation(value = "保存用户卡片信息")
+    public AjaxResultDTO saveOrUpdate(
+            @RequestBody @ApiParam(name = "用户卡片对象",value = "传入Json格式的值", required = true) UserCard userCard,
+            HttpServletResponse response) {
         try {
             response.setHeader("Access-Control-Allow-Origin", "*");
             userCardService.saveOrUpdate(userCard);
@@ -58,8 +60,10 @@ public class UserCardController {
      * @param response
      * @return
      */
-    @RequestMapping("/findOneByOpenId")
+    @RequestMapping(value = "/findOneByOpenId", method = RequestMethod.GET)
     @ResponseBody
+    @ApiOperation(value = "根据openId获取用户卡片信息")
+    @ApiImplicitParam(name = "openId", value = "微信用户唯一标识", required = true, dataType = "String", paramType = "")
     public AjaxResultDTO findOneByOpenId(String openId, HttpServletResponse response) {
         try {
             response.setHeader("Access-Control-Allow-Origin", "*");
