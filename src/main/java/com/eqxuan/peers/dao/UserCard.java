@@ -4,6 +4,11 @@ import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * @Auther: zheng guangjing.
+ * @Date: 2018/8/9 12:29
+ * @Description: 用户名片基本属性
+ */
 public class UserCard implements Serializable {
 
     private Integer id;

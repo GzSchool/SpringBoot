@@ -3,6 +3,11 @@ package com.eqxuan.peers.dto;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @Auther: zheng guangjing.
+ * @Date: 2018/8/9 12:29
+ * @Description: 消息模板基本属性封装
+ */
 public class WechatTemplate {
 	
 	/** 模板消息ID(必填).*/

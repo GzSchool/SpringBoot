@@ -2,6 +2,11 @@ package com.eqxuan.peers.dao;
 
 import java.util.Date;
 
+/**
+ * @Auther: zheng guangjing.
+ * @Date: 2018/8/9 12:29
+ * @Description: 用户关联微信群
+ */
 public class UserGroup {
 
     private String groupId;

@@ -12,7 +12,9 @@ import java.security.Security;
 import java.util.Arrays;
 
 /**
- * 微信加密信息解密
+ * @Auther: zheng guangjing.
+ * @Date: 2018/8/9 12:29
+ * @Description: 微信加密信息解密工具
  */
 public class WxDecipherUtil {
 

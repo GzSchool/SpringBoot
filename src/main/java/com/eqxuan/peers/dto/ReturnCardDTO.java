@@ -3,6 +3,11 @@ package com.eqxuan.peers.dto;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * @Auther: zheng guangjing.
+ * @Date: 2018/8/9 12:29
+ * @Description: 返回前端 指定 名片信息 属性
+ */
 public class ReturnCardDTO implements Serializable {
 
     private Integer id;

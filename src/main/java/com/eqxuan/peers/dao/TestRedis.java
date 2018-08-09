@@ -3,7 +3,9 @@ package com.eqxuan.peers.dao;
 import java.io.Serializable;
 
 /**
- * 测试redis
+ * @Auther: zheng guangjing.
+ * @Date: 2018/8/9 12:29
+ * @Description: 测试redis
  */
 public class TestRedis implements Serializable {
 

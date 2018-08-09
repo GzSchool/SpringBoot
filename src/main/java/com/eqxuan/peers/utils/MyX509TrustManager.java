@@ -4,6 +4,11 @@ import javax.net.ssl.X509TrustManager;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
+/**
+ * @Auther: zheng guangjing.
+ * @Date: 2018/8/9 12:29
+ * @Description: 证书验证
+ */
 public class MyX509TrustManager implements X509TrustManager{
 
 	@Override

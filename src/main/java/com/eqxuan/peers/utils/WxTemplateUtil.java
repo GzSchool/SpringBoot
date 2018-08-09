@@ -18,6 +18,11 @@ import java.io.OutputStream;
 import java.net.ConnectException;
 import java.net.URL;
 
+/**
+ * @Auther: zheng guangjing.
+ * @Date: 2018/8/9 12:29
+ * @Description: 微信接口访问工具封装
+ */
 public class WxTemplateUtil {
 	
 	//通过code获取openId接口地址（GET）

@@ -29,6 +29,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @Auther: zheng guangjing.
+ * @Date: 2018/8/9 12:29
+ * @Description: 微信群操作
+ */
 @Service
 public class UserGroupServiceImpl implements UserGroupService {
 
@@ -92,6 +97,7 @@ public class UserGroupServiceImpl implements UserGroupService {
 
         } else {
             saveUserGroup.setUpTime(new Date());
+            saveUserGroup.setGroupId(openGId);
             if (!checkUserGroup.getPrepare().equals(GroupShareFlagEnum.FLAG_BY_OTHER.getKey())) {
                 saveUserGroup.setPrepare(checkUserGroup.getPrepare());
             }
