@@ -89,32 +89,4 @@
         where open_id=#{openId}
     </update>
 
-    <select id="findUserByParam" parameterType="com.eqxuan.peers.dao.User" resultMap="UserMapperResultMap">
-        select <include refid="Base_Column_List"/>
-        from user
-        <where>
-            <if test="null != id">
-                and id=#{id}
-            </if>
-            <if test="null != openId">
-                and open_id=#{openId}
-            </if>
-            <if test="null != sessionKey">
-                and session_key=#{sessionKey}
-            </if>
-            <if test="null != openSession">
-                and open_session=#{openSession}
-            </if>
-            <if test="null != ctTime">
-                and ct_time=#{ctTime}
-            </if>
-            <if test="null != upTime">
-                and up_time=#{upTime}
-            </if>
-            <if test="null != prepare">
-                and prepare=#{prepare}
-            </if>
-        </where>
-    </select>
-
 </mapper>

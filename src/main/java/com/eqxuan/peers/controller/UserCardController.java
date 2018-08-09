@@ -2,7 +2,6 @@ package com.eqxuan.peers.controller;
 
 import com.eqxuan.peers.dao.UserCard;
 import com.eqxuan.peers.dto.AjaxResultDTO;
-import com.eqxuan.peers.dto.PageDTO;
 import com.eqxuan.peers.dto.ReturnCardDTO;
 import com.eqxuan.peers.exception.PeerProjectException;
 import com.eqxuan.peers.service.UserCardService;

@@ -12,5 +12,4 @@ public interface UserMapper {
 
     int update(User user);
 
-    List<User> findUserByParam(User user);
 }
