@@ -49,6 +49,9 @@ public class UserGroupServiceImpl implements UserGroupService {
     @Resource
     private UserMapper userMapper;
 
+    @Resource
+    private WxDecipherUtil wxDecipherUtil;
+
     @Override
     public String saveOrUpdate(UserGroup userGroup) {
 
@@ -59,7 +62,7 @@ public class UserGroupServiceImpl implements UserGroupService {
         User checkUser = userMapper.findOneByOpenId(userGroup.getOpenId());
 
         // 解密groupId 需要传递encryptedData，iv
-        JSONObject jsonObject = WxDecipherUtil.getGroupId(userGroup.getEncryptedData(), checkUser.getSessionKey(), userGroup.getIv());
+        JSONObject jsonObject = wxDecipherUtil.getGroupId(userGroup.getEncryptedData(), checkUser.getSessionKey(), userGroup.getIv());
 
         if (null == jsonObject || null == jsonObject.getString("openGId")) {
             throw new PeerProjectException("获取群ID失败");

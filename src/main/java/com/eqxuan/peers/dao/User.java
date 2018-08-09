@@ -18,10 +18,13 @@ public class User {
 
     private Integer id;
 
+    /** 用户唯一标识.*/
     private String openId;
 
+    /** 小程序会话密钥.*/
     private String sessionKey;
 
+    /** 标识 + 密钥加密后字段.*/
     private String openSession;
 
     private Date ctTime;

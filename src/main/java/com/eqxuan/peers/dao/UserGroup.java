@@ -16,13 +16,16 @@ import java.util.Date;
 @ToString
 public class UserGroup {
 
+    /** 群组ID.*/
     private String groupId;
 
+    /** 用户标识.*/
     private String openId;
 
     //冗余字段，重构时可删除
     private String appId;
 
+    /** 删除标识（1-未删除，2-已删除，默认未删除）.*/
     private Integer delFlag;
 
     private Date ctTime;
@@ -31,10 +34,13 @@ public class UserGroup {
 
     private String prepare;
 
+    /** 微信加密信息（非表字段）.*/
     private String encryptedData;
 
+    /** 偏移量（非表字段）.*/
     private String iv;
 
+    /** 他人OpenId（非表字段）.*/
     private String otherOpenId;
 
 }

@@ -3,6 +3,7 @@ package com.eqxuan.peers.utils;
 import com.alibaba.fastjson.JSONObject;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.springframework.stereotype.Service;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
@@ -16,9 +17,10 @@ import java.util.Arrays;
  * @Date: 2018/8/9 12:29
  * @Description: 微信加密信息解密工具
  */
+@Service
 public class WxDecipherUtil {
 
-    public static JSONObject getGroupId(String encryptedData, String sessionKey, String iv) {
+    public JSONObject getGroupId(String encryptedData, String sessionKey, String iv) {
                     //加密数据
                     byte[] dataByte = Base64.decode(encryptedData);
 
