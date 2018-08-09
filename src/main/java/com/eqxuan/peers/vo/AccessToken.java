@@ -1,5 +1,8 @@
 package com.eqxuan.peers.vo;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 
 /**
@@ -7,6 +10,8 @@ import java.io.Serializable;
  * @Date: 2018/8/9 12:29
  * @Description: 获取微信accessToken接口信息，参数封装
  */
+@Getter
+@Setter
 public class AccessToken implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -17,20 +22,4 @@ public class AccessToken implements Serializable {
     /** 凭证有效时间，单位：秒.*/
     private int expiresin;
 
-	public String getAccessToken() {
-		return accessToken;
-	}
-
-	public void setAccessToken(String accessToken) {
-		this.accessToken = accessToken;
-	}
-
-	public int getExpiresin() {
-		return expiresin;
-	}
-
-	public void setExpiresin(int expiresin) {
-		this.expiresin = expiresin;
-	}
-    
 }

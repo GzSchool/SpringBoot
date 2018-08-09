@@ -1,5 +1,8 @@
 package com.eqxuan.peers.vo;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 
 /**
@@ -7,6 +10,8 @@ import java.io.Serializable;
  * @Date: 2018/8/9 12:29
  * @Description: 获取微信apiTicket接口信息，参数封装
  */
+@Getter
+@Setter
 public class ApiTicket implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -15,20 +20,4 @@ public class ApiTicket implements Serializable{
 	
     private long expiresin;
 
-	public String getTicket() {
-		return ticket;
-	}
-
-	public void setTicket(String ticket) {
-		this.ticket = ticket;
-	}
-
-	public long getExpiresin() {
-		return expiresin;
-	}
-
-	public void setExpiresin(long expiresin) {
-		this.expiresin = expiresin;
-	}
-    
 }

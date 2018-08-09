@@ -1,5 +1,8 @@
 package com.eqxuan.peers.dto;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 
 /**
@@ -7,6 +10,8 @@ import java.util.List;
  * @Date: 2018/8/9 12:29
  * @Description: 分页数据统一返回格式
  */
+@Getter
+@Setter
 public class PageDTO {
 
     private Integer pages;
@@ -15,27 +20,4 @@ public class PageDTO {
 
     private List<?> result;
 
-    public Integer getPages() {
-        return pages;
-    }
-
-    public void setPages(Integer pages) {
-        this.pages = pages;
-    }
-
-    public long getTotal() {
-        return total;
-    }
-
-    public void setTotal(long total) {
-        this.total = total;
-    }
-
-    public List<?> getResult() {
-        return result;
-    }
-
-    public void setResult(List<?> result) {
-        this.result = result;
-    }
 }

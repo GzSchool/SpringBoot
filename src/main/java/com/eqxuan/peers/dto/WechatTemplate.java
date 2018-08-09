@@ -1,5 +1,8 @@
 package com.eqxuan.peers.dto;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,6 +11,8 @@ import java.util.Map;
  * @Date: 2018/8/9 12:29
  * @Description: 消息模板基本属性封装
  */
+@Getter
+@Setter
 public class WechatTemplate {
 	
 	/** 模板消息ID(必填).*/
@@ -25,44 +30,4 @@ public class WechatTemplate {
     /** 模板内容，不填则下发空模板(必填).*/
     private Map<String, TemplateData> data = new HashMap<String, TemplateData>();
 
-	public String getTemplate_id() {
-		return template_id;
-	}
-
-	public void setTemplate_id(String template_id) {
-		this.template_id = template_id;
-	}
-
-	public String getTouser() {
-		return touser;
-	}
-
-	public void setTouser(String touser) {
-		this.touser = touser;
-	}
-
-	public String getForm_id() {
-		return form_id;
-	}
-
-	public void setForm_id(String form_id) {
-		this.form_id = form_id;
-	}
-
-	public String getPage() {
-		return page;
-	}
-
-	public void setPage(String page) {
-		this.page = page;
-	}
-
-	public Map<String, TemplateData> getData() {
-		return data;
-	}
-
-	public void setData(Map<String, TemplateData> data) {
-		this.data = data;
-	}
-    
 }

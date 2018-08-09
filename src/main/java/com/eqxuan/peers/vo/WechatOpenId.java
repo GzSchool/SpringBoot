@@ -1,5 +1,8 @@
 package com.eqxuan.peers.vo;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 
 /**
@@ -7,6 +10,8 @@ import java.io.Serializable;
  * @Date: 2018/8/9 12:29
  * @Description: 获取微信授权接口信息，参数封装
  */
+@Getter
+@Setter
 public class WechatOpenId implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -16,21 +21,5 @@ public class WechatOpenId implements Serializable {
     
     /** sessionKey.*/
     private String sessionKey;
-
-	public String getOpenId() {
-		return openId;
-	}
-
-	public void setOpenId(String openId) {
-		this.openId = openId;
-	}
-
-	public String getSessionKey() {
-		return sessionKey;
-	}
-
-	public void setSessionKey(String sessionKey) {
-		this.sessionKey = sessionKey;
-	}
 
 }
