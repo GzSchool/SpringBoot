@@ -7,10 +7,7 @@ import com.eqxuan.peers.service.UserService;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -30,7 +27,7 @@ public class UserController {
     @Resource
     private UserService userService;
 
-    @RequestMapping(value = "/userAuthor", method = RequestMethod.GET)
+    @GetMapping("/userAuthor")
     @ResponseBody
     @ApiOperation(value = "用户登录授权接口")
     @ApiImplicitParam(name = "code", value = "用户登陆码", required = true, dataType = "string")

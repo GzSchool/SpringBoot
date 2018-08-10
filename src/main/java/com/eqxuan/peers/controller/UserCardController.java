@@ -29,7 +29,7 @@ public class UserCardController {
     @Resource
     private UserCardService userCardService;
 
-    @RequestMapping(value = "/saveOrUpdate", method = RequestMethod.POST)
+    @PostMapping("/saveOrUpdate")
     @ResponseBody
     @ApiOperation(value = "保存用户卡片信息")
     public AjaxResultDTO saveOrUpdate(
@@ -47,7 +47,7 @@ public class UserCardController {
         }
     }
 
-    @RequestMapping(value = "/findOneByOpenId", method = RequestMethod.GET)
+    @GetMapping("/findOneByOpenId")
     @ResponseBody
     @ApiOperation(value = "根据openId获取用户卡片信息")
     @ApiImplicitParam(name = "openId", value = "微信用户唯一标识", required = true, dataType = "String")

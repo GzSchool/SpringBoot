@@ -122,8 +122,12 @@ public class UserCardServiceImpl implements UserCardService {
     @Override
     public List<ReturnCardDTO> findAllByPeerAndParam(String param, String openId) {
 
-        if (StringUtils.isEmpty(param) || StringUtils.isEmpty(openId)) {
-            throw new PeerProjectException("参数缺失");
+        if (StringUtils.isEmpty(param)) {
+            return null;
+        }
+
+        if (StringUtils.isEmpty(openId)) {
+            throw new PeerProjectException("用户未登陆");
         }
 
         List<ReturnCardDTO> returnCardDTOS = userCardMapper.findAllByPeerAndParam(param, openId);

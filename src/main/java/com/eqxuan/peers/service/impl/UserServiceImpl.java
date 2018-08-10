@@ -46,6 +46,9 @@ public class UserServiceImpl implements UserService {
         WechatOpenId wechatOpenId = WxTemplateUtil.getOpenIdAndSessionKey(miniAppBean.getAppId(), miniAppBean.getAppSecret(), code);
         logger.info("【获取openId】：" + wechatOpenId.getOpenId());
         logger.info("【获取sessionKey】：" + wechatOpenId.getSessionKey());
+        if (StringUtils.isEmpty(wechatOpenId.getOpenId())) {
+            throw new PeerProjectException("获取openId异常");
+        }
         String openSession = DigestUtils.md5Hex(wechatOpenId.getOpenId() + wechatOpenId.getSessionKey());
 
         User checkUser = userMapper.findOneByOpenId(wechatOpenId.getOpenId());

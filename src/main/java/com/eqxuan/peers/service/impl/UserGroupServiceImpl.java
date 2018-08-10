@@ -3,14 +3,12 @@ package com.eqxuan.peers.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.eqxuan.peers.dao.User;
 import com.eqxuan.peers.dao.UserGroup;
-import com.eqxuan.peers.dao.UserPeer;
 import com.eqxuan.peers.dto.GroupNoSaveNumDTO;
 import com.eqxuan.peers.dto.PageDTO;
 import com.eqxuan.peers.dto.ReturnCardDTO;
 import com.eqxuan.peers.enums.PeerCardSaveFlagEnum;
 import com.eqxuan.peers.mapper.UserGroupMapper;
 import com.eqxuan.peers.mapper.UserMapper;
-import com.eqxuan.peers.mapper.UserPeerMapper;
 import com.eqxuan.peers.service.UserGroupService;
 import com.eqxuan.peers.utils.WxDecipherUtil;
 import com.github.pagehelper.PageHelper;
@@ -44,9 +42,6 @@ public class UserGroupServiceImpl implements UserGroupService {
     private MiniAppBean miniAppBean;
 
     @Resource
-    private UserPeerMapper userPeerMapper;
-
-    @Resource
     private UserMapper userMapper;
 
     @Resource
@@ -55,11 +50,14 @@ public class UserGroupServiceImpl implements UserGroupService {
     @Override
     public String saveOrUpdate(UserGroup userGroup) {
 
-        if (StringUtils.isEmpty(userGroup.getOpenId()) || StringUtils.isEmpty(userGroup.getOtherOpenId())) {
+        if (StringUtils.isEmpty(userGroup.getOpenId()) || StringUtils.isEmpty(userGroup.getOtherOpenId()) || StringUtils.isEmpty(userGroup.getEncryptedData()) || StringUtils.isEmpty(userGroup.getIv())) {
             throw new PeerProjectException("参数缺失");
         }
 
         User checkUser = userMapper.findOneByOpenId(userGroup.getOpenId());
+        if (null == checkUser) {
+            throw new PeerProjectException("用户未注册");
+        }
 
         // 解密groupId 需要传递encryptedData，iv
         JSONObject jsonObject = wxDecipherUtil.getGroupId(userGroup.getEncryptedData(), checkUser.getSessionKey(), userGroup.getIv());
@@ -71,20 +69,19 @@ public class UserGroupServiceImpl implements UserGroupService {
         String openGId = jsonObject.getString("openGId");
         System.out.println("##################获取openGId：" + openGId);
 
-        UserGroup checkUserGroup;
         UserGroup saveUserGroup = new UserGroup();
         //判断是否分享的是他人的名片
         if (!userGroup.getOtherOpenId().equals(userGroup.getOpenId())) {
             BeanUtils.copyProperties(userGroup, saveUserGroup);
             saveUserGroup.setOpenId(userGroup.getOtherOpenId());
             saveUserGroup.setPrepare(GroupShareFlagEnum.FLAG_BY_OTHER.getKey());
-            checkUserGroup = userGroupMapper.findOneById(userGroup.getOtherOpenId(), openGId);
         } else {
             BeanUtils.copyProperties(userGroup, saveUserGroup);
             saveUserGroup.setOpenId(userGroup.getOpenId());
             saveUserGroup.setPrepare(GroupShareFlagEnum.FLAG_BY_ME.getKey());
-            checkUserGroup = userGroupMapper.findOneById(userGroup.getOpenId(), openGId);
         }
+
+        UserGroup checkUserGroup = userGroupMapper.findOneById(userGroup.getOtherOpenId(), openGId);
 
         int rows;
         if (null == checkUserGroup) {
@@ -95,7 +92,6 @@ public class UserGroupServiceImpl implements UserGroupService {
             if (1 != rows) {
                 throw new PeerProjectException("首次分享群名片失败");
             }
-
             return openGId;
 
         } else {
@@ -196,13 +192,18 @@ public class UserGroupServiceImpl implements UserGroupService {
         List<ReturnCardDTO> returnCardDTOS = userGroupMapper.findAllGroupCardByParam(groupId, openId, param);
 
         for (ReturnCardDTO returnCardDTO : returnCardDTOS) {
-            UserPeer checkUserPeer = userPeerMapper.findOne(openId, returnCardDTO.getId());
-            if (null == checkUserPeer || checkUserPeer.getSaveFlag().intValue() == PeerCardSaveFlagEnum.SAVE_FLAG_FALSE.getKey()) {
+            if (null == returnCardDTO.getSaveFlag()) {
                 returnCardDTO.setSaveFlag(PeerCardSaveFlagEnum.SAVE_FLAG_FALSE.getKey());
-            } else {
-                returnCardDTO.setSaveFlag(PeerCardSaveFlagEnum.SAVE_FLAG_TRUE.getKey());
             }
         }
+//        for (ReturnCardDTO returnCardDTO : returnCardDTOS) {
+//            UserPeer checkUserPeer = userPeerMapper.findOne(openId, returnCardDTO.getId());
+//            if (null == checkUserPeer || checkUserPeer.getSaveFlag().intValue() == PeerCardSaveFlagEnum.SAVE_FLAG_FALSE.getKey()) {
+//                returnCardDTO.setSaveFlag(PeerCardSaveFlagEnum.SAVE_FLAG_FALSE.getKey());
+//            } else {
+//                returnCardDTO.setSaveFlag(PeerCardSaveFlagEnum.SAVE_FLAG_TRUE.getKey());
+//            }
+//        }
         return returnCardDTOS;
     }
 }
