@@ -70,6 +70,7 @@ public class UserServiceImpl implements UserService {
             saveUser.setOpenId(wechatOpenId.getOpenId());
             saveUser.setSessionKey(wechatOpenId.getSessionKey());
             saveUser.setOpenSession(openSession);
+            saveUser.setId(checkUser.getId());
             saveUser.setUpTime(new Date());
             rows = userMapper.update(saveUser);
             if (1 != rows) {
