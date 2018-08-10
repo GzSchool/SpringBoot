@@ -65,6 +65,9 @@ public class UserCard implements Serializable {
     /** 点赞次数.*/
     private Integer giveLikeNum;
 
+    /** 名片类型.*/
+    private Integer cardType;
+
     /** 删除标识（1-可用，2-不可用，默认可用）.*/
     private Integer delFlag;
 

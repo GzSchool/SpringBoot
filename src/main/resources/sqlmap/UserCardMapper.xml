@@ -21,6 +21,7 @@
         <result column="resources" property="resources"/>
         <result column="give_like_num" property="giveLikeNum"/>
         <result column="del_flag" property="delFlag"/>
+        <result column="card_type" property="cardType"/>
         <result column="ct_time" property="ctTime"/>
         <result column="up_time" property="upTime"/>
         <result column="prepare" property="prepare"/>
@@ -28,7 +29,7 @@
 
     <sql id="Base_Column_List">
         id, open_id, app_id, username, user_wechat, user_company, user_industry, user_city, user_job, user_img, user_phone, user_email,
-        synopsis, demand, resources, give_like_num, del_flag, ct_time, up_time, prepare
+        synopsis, demand, resources, give_like_num, card_type, del_flag, ct_time, up_time, prepare
     </sql>
 
     <insert id="save" parameterType="com.eqxuan.peers.dao.UserCard" useGeneratedKeys="true" keyProperty="id">
@@ -78,6 +79,9 @@
             </if>
             <if test="null != giveLikeNum">
                 give_like_num,
+            </if>
+            <if test="null != cardType">
+                card_type,
             </if>
             <if test="null != delFlag">
                 del_flag,
@@ -138,6 +142,9 @@
             <if test="null != giveLikeNum">
                 #{giveLikeNum},
             </if>
+            <if test="null != cardType">
+                #{cardType},
+            </if>
             <if test="null != delFlag">
                 #{delFlag},
             </if>
@@ -197,6 +204,9 @@
             </if>
             <if test="null != giveLikeNum">
                 give_like_num=#{giveLikeNum},
+            </if>
+            <if test="null != cardType">
+                card_type=#{cardType},
             </if>
             <if test="null != delFlag">
                 del_flag=#{delFlag},
@@ -273,6 +283,9 @@
             <if test="null != giveLikeNum">
                 and give_like_num=#{giveLikeNum}
             </if>
+            <if test="null != cardType">
+                and card_type=#{cardType}
+            </if>
             <if test="null != delFlag">
                 and del_flag=#{delFlag}
             </if>
@@ -297,7 +310,7 @@
 	<select id="findAllByPeerAndParam" resultType="com.eqxuan.peers.dto.ReturnCardDTO">
        select uc.id as id, uc.username as username, uc.user_wechat as userWechat, uc.user_company as userCompany, uc.user_industry as userIndustry, uc.user_city as userCity,
        uc.user_job as userJob, uc.user_img as userImg, uc.user_phone as userPhone, uc.user_email as userEmail, uc.synopsis as synopsis, uc.demand as demand,
-       uc.resources as resources, uc.give_like_num as giveLikeNum, up.save_flag as saveFlag, uc.prepare as prepare
+       uc.resources as resources, uc.give_like_num as giveLikeNum, uc.card_type as cardType, up.save_flag as saveFlag, uc.prepare as prepare
        from user_card uc, user_peer up
        where CONCAT(uc.username, uc.user_wechat, uc.user_company, uc.user_industry, uc.user_city, uc.user_job)
        like CONCAT('%',#{param},'%' ) and up.open_id = #{openId} and uc.id=up.card_id and up.save_flag=2

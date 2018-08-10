@@ -43,6 +43,8 @@ public class ReturnCardDTO implements Serializable {
 
     private Integer giveLikeNum;
 
+    private Integer cardType;
+
     private Integer saveFlag;
 
     private String prepare;
