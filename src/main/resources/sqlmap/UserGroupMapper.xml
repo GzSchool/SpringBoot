@@ -98,11 +98,11 @@
         select <include refid="Base_Column_List"/>
         from user_group
         <where>
-            <if test="null != groupId">
-                and group_id=#{groupId}
-            </if>
             <if test="null != openId">
                 and open_id=#{openId}
+            </if>
+            <if test="null != groupId">
+                and group_id=#{groupId}
             </if>
             <if test="null != appId">
                 and app_id=#{appId}
@@ -129,7 +129,7 @@
         from user_group ug, user_card uc
         LEFT JOIN user_peer up
         ON up.open_id=#{openId} AND uc.id = up.card_id
-        where ug.group_id=#{groupId} AND ug.open_id!=#{openId} AND uc.open_id=ug.open_id
+        where  ug.open_id!=#{openId} AND ug.group_id=#{groupId} AND uc.open_id=ug.open_id
         order by up.save_flag asc
     </select>
     
@@ -147,7 +147,7 @@
         from user_group ug, user_card uc
         LEFT JOIN user_peer up
         ON up.open_id=#{openId} AND uc.id = up.card_id
-        WHERE ug.group_id=#{groupId} AND ug.open_id!=#{openId} AND uc.open_id=ug.open_id
+        WHERE ug.open_id!=#{openId} AND ug.group_id=#{groupId} AND uc.open_id=ug.open_id
         GROUP BY up.save_flag
     </select>
 

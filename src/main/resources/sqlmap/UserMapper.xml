@@ -86,7 +86,7 @@
                 prepare=#{prepare},
             </if>
         </set>
-        where id=#{id} and open_id=#{openId}
+        where open_id=#{openId}
     </update>
 
 </mapper>
