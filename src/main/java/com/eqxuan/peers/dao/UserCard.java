@@ -80,4 +80,14 @@ public class UserCard implements Serializable {
     /** 微信表单ID（非表字段）.*/
     private String formId;
 
+    /**
+     * 个人主页
+     */
+    private String homePage;
+
+    /**
+     * 公司主页
+     */
+    private String companyPage;
+
 }

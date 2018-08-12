@@ -25,11 +25,13 @@
         <result column="ct_time" property="ctTime"/>
         <result column="up_time" property="upTime"/>
         <result column="prepare" property="prepare"/>
+        <result column="home_page" property="homePage"/>
+        <result column="company_page" property="companyPage"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id, open_id, app_id, username, user_wechat, user_company, user_industry, user_city, user_job, user_img, user_phone, user_email,
-        synopsis, demand, resources, give_like_num, card_type, del_flag, ct_time, up_time, prepare
+        synopsis, demand, resources, give_like_num, card_type, del_flag, ct_time, up_time, prepare, home_page, company_page
     </sql>
 
     <insert id="save" parameterType="com.eqxuan.peers.dao.UserCard" useGeneratedKeys="true" keyProperty="id">
@@ -95,6 +97,12 @@
             <if test="null != prepare">
                 prepare,
             </if>
+            <if test="null != homePage">
+                home_page,
+            </if>
+            <if test="null != companyPage">
+                company_page,
+            </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="null != openId">
@@ -156,6 +164,12 @@
             </if>
             <if test="null != prepare">
                 #{prepare},
+            </if>
+            <if test="null != homePage">
+                #{homePage},
+            </if>
+            <if test="null != companyPage">
+                #{companyPage},
             </if>
         </trim>
     </insert>
@@ -219,6 +233,12 @@
             </if>
             <if test="null != prepare">
                 prepare=#{prepare},
+            </if>
+            <if test="null != homePage">
+                home_page=#{homePage},
+            </if>
+            <if test="null != companyPage">
+                company_page=#{companyPage},
             </if>
         </set>
         where open_id=#{openId} and id=#{id}
@@ -310,7 +330,7 @@
 	<select id="findAllByPeerAndParam" resultType="com.eqxuan.peers.dto.ReturnCardDTO">
        select uc.id as id, uc.username as username, uc.user_wechat as userWechat, uc.user_company as userCompany, uc.user_industry as userIndustry, uc.user_city as userCity,
        uc.user_job as userJob, uc.user_img as userImg, uc.user_phone as userPhone, uc.user_email as userEmail, uc.synopsis as synopsis, uc.demand as demand,
-       uc.resources as resources, uc.give_like_num as giveLikeNum, uc.card_type as cardType, up.save_flag as saveFlag, uc.prepare as prepare
+       uc.resources as resources, uc.give_like_num as giveLikeNum, uc.card_type as cardType, up.save_flag as saveFlag, uc.prepare as prepare, uc.home_page as homePage, uc.company_page as companyPage
        from user_card uc, user_peer up
        where CONCAT(uc.username, uc.user_wechat, uc.user_company, uc.user_industry, uc.user_city, uc.user_job)
        like CONCAT('%',#{param},'%' ) and up.open_id = #{openId} and uc.id=up.card_id and up.save_flag=2
