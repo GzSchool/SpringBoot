@@ -89,7 +89,7 @@ public class UserPeerController {
         }
     }
 
-    @RequestMapping(value = "/addRemark", method = RequestMethod.POST)
+    @RequestMapping(value = "/addRemark", method = RequestMethod.GET)
     @ApiOperation(value = "为同行添加备注信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "openId", value = "微信用户唯一标识", required = true, dataType = "String"),

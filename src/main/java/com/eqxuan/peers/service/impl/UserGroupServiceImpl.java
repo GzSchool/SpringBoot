@@ -177,6 +177,7 @@ public class UserGroupServiceImpl implements UserGroupService {
             returnGroupDTO.setUpTime(group.getUpTime());
             returnGroupDTO.setSaveFalse(saveFalseNum);
             returnGroupDTO.setBeforeNineImg(beforeNineImg);
+            returnGroupDTO.setHint(group.getHint());
             returnGroupDTOS.add(returnGroupDTO);
         }
         return returnGroupDTOS;
@@ -217,7 +218,7 @@ public class UserGroupServiceImpl implements UserGroupService {
         userGroup.setGroupId(groupId);
         userGroup.setOpenId(openId);
         userGroup.setUpTime(new Date());
-        userGroup.setHint(1);
+        userGroup.setHint(0);
         return userGroupMapper.update(userGroup);
     }
 
