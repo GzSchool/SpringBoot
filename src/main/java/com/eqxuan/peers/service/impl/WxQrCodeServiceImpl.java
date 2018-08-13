@@ -29,7 +29,7 @@ public class WxQrCodeServiceImpl implements WxQrCodeService {
         if (StringUtils.isEmpty(userPhotoUrl) || StringUtils.isEmpty(openId) || StringUtils.isEmpty(scene) || StringUtils.isEmpty(openId)) {
             throw new PeerProjectException("参数缺失");
         }
-        String pathName = "/userImg/" + openId + ".png";
+        String pathName = System.getProperty("user.dir") + "/src/main/resources/static/" + openId + ".png";
 
         AccessToken accessToken = WxTemplateUtil.getAccessToken(miniAppBean.getAppId(), miniAppBean.getAppSecret());
 

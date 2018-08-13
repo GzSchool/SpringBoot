@@ -60,6 +60,9 @@ public class UserController {
     public AjaxResultDTO makeWxQrCode(String userPhotoUrl, String scene, String page, String openId, HttpServletResponse response) {
         try {
             response.setHeader("Access-Control-Allow-Origin", "*");
+
+            logger.debug("-------------------------------" + System.getProperty("user.dir"));
+
             String pathName = wxQrCodeService.makeWxQrCode(userPhotoUrl, scene, page, openId);
             return AjaxResultDTO.success(pathName);
         } catch (PeerProjectException ppe) {
