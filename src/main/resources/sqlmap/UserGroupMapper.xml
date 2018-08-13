@@ -11,9 +11,10 @@
         <result column="ct_time" property="ctTime"/>
         <result column="up_time" property="upTime"/>
         <result column="prepare" property="prepare"/>
+        <result column="hint" property="hint"/>
     </resultMap>
     <sql id="Base_Column_List">
-        group_id, open_id, app_id, del_flag, ct_time, up_time, prepare
+        group_id, open_id, app_id, del_flag, ct_time, up_time, prepare, hint
     </sql>
 
     <insert id="save" parameterType="com.eqxuan.peers.dao.UserGroup" useGeneratedKeys="true" keyProperty="id">
@@ -84,8 +85,17 @@
             <if test="null != prepare">
                 prepare=#{prepare},
             </if>
+            <if test="null != hint">
+                hint=#{hint},
+            </if>
         </set>
         where open_id=#{openId} and group_id=#{groupId}
+    </update>
+
+    <update id="hintOthers">
+        UPDATE user_group
+        SET hint=1
+        WHERE group_id=#{groupId} AND open_id != #{openId};
     </update>
 
     <select id="findOneById" resultMap="UserGroupMapperResultMap">

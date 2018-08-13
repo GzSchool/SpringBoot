@@ -17,4 +17,5 @@ public interface UserGroupService {
 
     List<ReturnCardDTO> findAllGroupCardByParam(String groupId, String openId, String param);
 
+    int removeHint(String groupId, String openId);
 }

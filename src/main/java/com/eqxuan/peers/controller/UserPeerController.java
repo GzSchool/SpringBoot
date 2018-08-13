@@ -1,11 +1,14 @@
 package com.eqxuan.peers.controller;
 
+import com.eqxuan.peers.dao.UserCard;
 import com.eqxuan.peers.dto.AjaxResultDTO;
 import com.eqxuan.peers.dto.ReturnCardDTO;
 import com.eqxuan.peers.exception.PeerProjectException;
+import com.eqxuan.peers.service.UserCardService;
 import com.eqxuan.peers.service.UserPeerService;
 import com.eqxuan.peers.vo.CreatePeersVO;
 import io.swagger.annotations.*;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +31,9 @@ public class UserPeerController {
 
     @Resource
     private UserPeerService userPeerService;
+
+    @Resource
+    private UserCardService userCardService;
 
     @PostMapping("/saveOrUpdate")
     @ResponseBody
@@ -106,12 +112,20 @@ public class UserPeerController {
     @RequestMapping(value = "/getPeerInfo", method = RequestMethod.GET)
     @ApiOperation(value = "获取同行名片信息")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "openId", value = "当前用户唯一标识", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "openId", value = "当前用户唯一标识", required = false, dataType = "String"),
             @ApiImplicitParam(name = "cardId", value = "同行名片ID", required = true, dataType = "String")
     })
     public AjaxResultDTO getPeerInfo(String openId, String cardId, HttpServletResponse response) {
         try {
             response.setHeader("Access-Control-Allow-Origin", "*");
+            if(StringUtils.isBlank(openId)){
+                UserCard userCard = new UserCard();
+                userCard.setId(Integer.parseInt(cardId));
+                List<UserCard> userCardList = userCardService.findCardByParam(userCard);
+                if(null != userCardList){
+                    return AjaxResultDTO.success(userCardList.get(0));
+                }
+            }
             return AjaxResultDTO.success(userPeerService.getPeerInfo(openId, cardId));
         } catch (PeerProjectException ppe) {
             return AjaxResultDTO.failed(ppe.getMessage());

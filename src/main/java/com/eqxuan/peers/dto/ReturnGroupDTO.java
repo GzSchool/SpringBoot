@@ -29,4 +29,6 @@ public class ReturnGroupDTO {
 
     private List<String> beforeNineImg;
 
+    private Integer hint;
+
 }

@@ -43,4 +43,6 @@ public class UserGroup {
     /** 他人OpenId（非表字段）.*/
     private String otherOpenId;
 
+    private Integer hint;
+
 }
