@@ -49,4 +49,14 @@ public class ReturnCardDTO implements Serializable {
 
     private String prepare;
 
+    /**
+     * 个人主页
+     */
+    private String homePage;
+
+    /**
+     * 公司主页
+     */
+    private String companyPage;
+
 }

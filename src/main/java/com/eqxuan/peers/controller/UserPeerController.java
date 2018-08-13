@@ -82,4 +82,24 @@ public class UserPeerController {
             return AjaxResultDTO.failed("检验当前用户是否绑定名片异常");
         }
     }
+
+    @RequestMapping(value = "/addRemark", method = RequestMethod.POST)
+    @ApiOperation(value = "为同行添加备注信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "openId", value = "微信用户唯一标识", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "cardId", value = "同行名片ID", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "remark", value = "同行备注", required = true, dataType = "String")
+    })
+    public AjaxResultDTO addRemark(String openId, String cardId, String remark, HttpServletResponse response) {
+        try {
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            return AjaxResultDTO.success(userPeerService.addRemark(openId, cardId, remark));
+        } catch (PeerProjectException ppe) {
+            return AjaxResultDTO.failed(ppe.getMessage());
+        } catch (Exception e) {
+            logger.error("【检验当前用户是否绑定名片异常】：{}", e);
+            return AjaxResultDTO.failed("检验当前用户是否绑定名片异常");
+        }
+
+    }
 }
