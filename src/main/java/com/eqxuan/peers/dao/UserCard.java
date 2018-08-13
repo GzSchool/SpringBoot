@@ -23,7 +23,7 @@ public class UserCard implements Serializable {
     /** 用户标识.*/
     private String openId;
 
-    //冗余字段，重构时可删除
+    /** 冗余字段，重构时可删除.*/
     private String appId;
 
     /** 用户名称.*/

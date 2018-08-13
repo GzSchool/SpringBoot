@@ -2,6 +2,7 @@ package com.eqxuan.peers.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -13,6 +14,7 @@ import java.util.Objects;
  */
 @Getter
 @Setter
+@ToString
 public class ReturnCardDTO implements Serializable {
 
     private Integer id;

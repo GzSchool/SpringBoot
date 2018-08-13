@@ -7,8 +7,8 @@ import lombok.ToString;
 import java.util.Date;
 
 /**
- * @Auther: zheng guangjing.
- * @Date: 2018/8/9 12:29
+ * @author: zheng guangjing.
+ * @Date: 2018/8/13 16:05
  * @Description: 用户关联同行信息
  */
 @Getter

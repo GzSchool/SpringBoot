@@ -62,7 +62,7 @@ public class UserGroupServiceImpl implements UserGroupService {
         // 解密groupId 需要传递encryptedData，iv
         JSONObject jsonObject = wxDecipherUtil.getGroupId(userGroup.getEncryptedData(), checkUser.getSessionKey(), userGroup.getIv());
 
-        if (null == jsonObject || null == jsonObject.getString("openGId")) {
+        if (null == jsonObject) {
             throw new PeerProjectException("获取群ID失败");
         }
 
@@ -201,14 +201,6 @@ public class UserGroupServiceImpl implements UserGroupService {
                 returnCardDTO.setSaveFlag(PeerCardSaveFlagEnum.SAVE_FLAG_FALSE.getKey());
             }
         }
-//        for (ReturnCardDTO returnCardDTO : returnCardDTOS) {
-//            UserPeer checkUserPeer = userPeerMapper.findOne(openId, returnCardDTO.getId());
-//            if (null == checkUserPeer || checkUserPeer.getSaveFlag().intValue() == PeerCardSaveFlagEnum.SAVE_FLAG_FALSE.getKey()) {
-//                returnCardDTO.setSaveFlag(PeerCardSaveFlagEnum.SAVE_FLAG_FALSE.getKey());
-//            } else {
-//                returnCardDTO.setSaveFlag(PeerCardSaveFlagEnum.SAVE_FLAG_TRUE.getKey());
-//            }
-//        }
         return returnCardDTOS;
     }
 

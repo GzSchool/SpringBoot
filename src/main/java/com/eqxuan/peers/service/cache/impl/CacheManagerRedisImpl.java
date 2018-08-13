@@ -29,11 +29,14 @@ public class CacheManagerRedisImpl implements CacheManager {
 
     private static String PREFIX_PEERLIST = "peerList_";
 
-    private static long EMPTY_TIME = 60 * 3;    //缓存3分钟
+    /** 缓存3分钟.*/
+    private static long EMPTY_TIME = 60 * 3;
 
-    private static long WEEK_SECONDS = 60 * 60 * 24 * 7;   //缓存一周
+    /** 缓存一周.*/
+    private static long WEEK_SECONDS = 60 * 60 * 24 * 7;
 
-    private static long HOUR_SECONDS = 60 * 60;   //缓存一小时
+    /** 缓存一小时.*/
+    private static long HOUR_SECONDS = 60 * 60;
 
     @Autowired
     private RedisService redisService;
@@ -116,9 +119,11 @@ public class CacheManagerRedisImpl implements CacheManager {
                     UserCard userCard = userCardMapper.findById(cardId);
                     ReturnCardDTO returnCardDTO = new ReturnCardDTO();
                     BeanUtils.copyProperties(userCard, returnCardDTO);
-                    if(saveFlag == 1){  //删除
+                    if(saveFlag == 1){
+                        //删除
                         redisService.zRemove(PREFIX_PEERLIST + peer.getOpenId(), returnCardDTO);
-                    }else if(saveFlag == 2){    //添加
+                    }else if(saveFlag == 2){
+                        //添加
                         redisService.zAdd(PREFIX_PEERLIST + peer.getOpenId(), returnCardDTO, countScoreByName(userCard.getPrepare()));
                     }
                 }
@@ -144,10 +149,12 @@ public class CacheManagerRedisImpl implements CacheManager {
      */
     private double countScoreByName(String username) {
 
+        int num = 7;
+
         if(username == null){
             return 0;
         }
-        if(username.length() > 7){
+        if(username.length() > num){
             username = username.substring(0, 7);
         }
 

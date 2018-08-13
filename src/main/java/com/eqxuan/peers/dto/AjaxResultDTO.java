@@ -2,6 +2,7 @@ package com.eqxuan.peers.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * @Auther: zheng guangjing.
@@ -10,15 +11,16 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@ToString
 public class AjaxResultDTO {
 
-    /* 请求结果 */
-    private boolean success;
+    /** 请求状态.*/
+    private Boolean success;
 
-    /* 成功后返回数据 */
+    /** 返回数据.*/
     private Object data;
 
-    /* 错误信息 */
+    /** 错误信息.*/
     private String message;
 
     public AjaxResultDTO(boolean success, Object data, String message) {

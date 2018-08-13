@@ -2,6 +2,7 @@ package com.eqxuan.peers.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * @Auther: zheng guangjing.
@@ -10,6 +11,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@ToString
 public class AuthorizeDTO {
 	
 	private String openId;

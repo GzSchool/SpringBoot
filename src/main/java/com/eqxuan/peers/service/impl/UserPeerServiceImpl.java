@@ -56,7 +56,7 @@ public class UserPeerServiceImpl implements UserPeerService {
             //校验当前用户是否保存过当前名片
             UserPeer checkUserPeer = userPeerMapper.findOne(createPeersVO.getOpenId(), cardId);
             saveUserPeer.setCardId(cardId);
-            if (createPeersVO.getGroupId().equals("0")) {
+            if ("0".equals(createPeersVO.getGroupId())) {
                 saveUserPeer.setShareFlag(PeerShareFlagEnum.FLAG_BY_PERSON.getKey());
             } else {
                 saveUserPeer.setShareFlag(PeerShareFlagEnum.FLAG_BY_GROUP.getKey());

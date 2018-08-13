@@ -14,8 +14,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * @Auther: zheng guangjing.
- * @Date: 2018/8/9 12:29
+ * @author: zheng guangjing.
+ * @Date: 2018/8/13 16:05
  * @Description: 用户相关接口
  */
 @RestController

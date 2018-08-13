@@ -7,8 +7,8 @@ import lombok.ToString;
 import java.util.Date;
 
 /**
- * @Auther: zheng guangjing.
- * @Date: 2018/8/9 12:29
+ * @author: zheng guangjing.
+ * @Date: 2018/8/13 16:05
  * @Description: 用户关联微信群
  */
 @Getter
@@ -22,7 +22,7 @@ public class UserGroup {
     /** 用户标识.*/
     private String openId;
 
-    //冗余字段，重构时可删除
+    /** 冗余字段，重构时可删除.*/
     private String appId;
 
     /** 删除标识（1-未删除，2-已删除，默认未删除）.*/
