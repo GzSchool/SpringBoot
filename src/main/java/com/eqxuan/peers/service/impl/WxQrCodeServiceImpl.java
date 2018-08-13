@@ -42,7 +42,7 @@ public class WxQrCodeServiceImpl implements WxQrCodeService {
         //获取小程序码
         InputStream miniQrCodeInputStream = WxQrCodeUtil.miniQrCode(accessToken.getAccessToken(), scene, page);
         //替换后的小程序码
-        WxQrCodeUtil.makeInRound(miniQrCodeInputStream, centerImg, pathName);
-        return pathName;
+        String newWxQrCode = WxQrCodeUtil.makeInRound(miniQrCodeInputStream, centerImg, pathName);
+        return newWxQrCode;
     }
 }

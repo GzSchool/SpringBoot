@@ -157,7 +157,7 @@ public class WxQrCodeUtil {
      * @param centerImg 用来替换小程序码的中央图片
      * @param pathName 保存路径
      */
-    public static void makeInRound(InputStream miniQrCodeInputStream, BufferedImage centerImg, String pathName){
+    public static String makeInRound(InputStream miniQrCodeInputStream, BufferedImage centerImg, String pathName){
         try {
             //读取小程序码
             BufferedImage appletImg = ImageIO.read(miniQrCodeInputStream);
@@ -184,8 +184,11 @@ public class WxQrCodeUtil {
             file.createNewFile();
 
             ImageIO.write(appletImg, "png", file);
+            String newWxQrCode = file.getCanonicalPath();
+            return newWxQrCode;
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
     }
 }
