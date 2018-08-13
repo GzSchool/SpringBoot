@@ -126,4 +126,12 @@ public class UserPeerServiceImpl implements UserPeerService {
         }
         return result;
     }
+
+    @Override
+    public ReturnCardDTO getPeerInfo(String openId, String cardId) {
+        if (StringUtils.isEmpty(openId)) {
+            throw new PeerProjectException("用户未登陆");
+        }
+        return userPeerMapper.getPeerInfo(openId, Integer.parseInt(cardId));
+    }
 }
