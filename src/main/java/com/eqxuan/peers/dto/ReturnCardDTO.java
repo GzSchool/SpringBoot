@@ -59,4 +59,6 @@ public class ReturnCardDTO implements Serializable {
      */
     private String companyPage;
 
+    private String remark;
+
 }

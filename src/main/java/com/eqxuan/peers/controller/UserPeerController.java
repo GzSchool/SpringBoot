@@ -102,4 +102,23 @@ public class UserPeerController {
         }
 
     }
+
+    @RequestMapping(value = "/getPeerInfo", method = RequestMethod.GET)
+    @ApiOperation(value = "获取同行名片信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "openId", value = "当前用户唯一标识", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "cardId", value = "同行名片ID", required = true, dataType = "String")
+    })
+    public AjaxResultDTO getPeerInfo(String openId, String cardId, HttpServletResponse response) {
+        try {
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            return AjaxResultDTO.success(userPeerService.getPeerInfo(openId, cardId));
+        } catch (PeerProjectException ppe) {
+            return AjaxResultDTO.failed(ppe.getMessage());
+        } catch (Exception e) {
+            logger.error("【检验当前用户是否绑定名片异常】：{}", e);
+            return AjaxResultDTO.failed("检验当前用户是否绑定名片异常");
+        }
+
+    }
 }

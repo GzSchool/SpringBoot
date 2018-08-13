@@ -1,6 +1,5 @@
 package com.eqxuan.peers.mapper;
 
-import com.eqxuan.peers.dao.UserCard;
 import com.eqxuan.peers.dao.UserPeer;
 import com.eqxuan.peers.dto.ReturnCardDTO;
 import org.apache.ibatis.annotations.Param;
@@ -17,4 +16,7 @@ public interface UserPeerMapper {
 
     UserPeer findOne(@Param("openId") String openId,
                      @Param("cardId") Integer cardId);
+
+    ReturnCardDTO getPeerInfo(@Param("openId") String openId,
+                              @Param("cardId") Integer cardId);
 }
