@@ -16,6 +16,8 @@ spring:
       max-active: 400 #指定连接池中最大的活跃连接数.
       max-wait: 10000 #指定连接池等待连接返回的最大等待时间，毫秒单位.
       min-idle: 100 #指定必须保持连接的最小值
+  resources:
+      static-locations: file:${web.upload-path},file:${web.front-path}
 
   # redis配置
   redis:
@@ -43,3 +45,7 @@ logging:
   level.com.eqxuan: debug
   path: logs/
   file: eqxuan-peers.log
+
+web:
+  upload-path: c:/userImg/
+  front-path: c:/userImg/
