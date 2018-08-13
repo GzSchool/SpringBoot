@@ -48,7 +48,7 @@ public class WxDecipherUtil {
             SecretKeySpec spec = new SecretKeySpec(keyByte, "AES");
             AlgorithmParameters parameters = AlgorithmParameters.getInstance("AES");
             parameters.init(new IvParameterSpec(ivByte));
-            cipher.init(Cipher.DECRYPT_MODE, spec, parameters);// 初始化
+            cipher.init(Cipher.DECRYPT_MODE, spec, parameters);
             byte[] resultByte = cipher.doFinal(dataByte);
             if (null != resultByte && resultByte.length > 0) {
                 String result = new String(resultByte, "UTF-8");

@@ -24,9 +24,9 @@ public class ControllerInterceptor {
      *
      * ~ 第一个 * 代表任意修饰符及任意返回值. ~ 第二个 * 定义在web包或者子包 ~ 第三个 * 任意方法 ~ .. 匹配任意数量的参数.
      */
-    static final String pCutStr = "execution(* com.eqxuan.peers.controller.*..*(..))";
+    static final String POINT_CUT = "execution(* com.eqxuan.peers.controller.*..*(..))";
 
-    @Pointcut(value = pCutStr)
+    @Pointcut(value = POINT_CUT)
     public void logPointcut() {
     }
 
@@ -44,11 +44,11 @@ public class ControllerInterceptor {
 
             logger.info("============================================================================================");
             String tragetClassName = joinPoint.getSignature().getDeclaringTypeName();
-            String MethodName = joinPoint.getSignature().getName();
+            String methodName = joinPoint.getSignature().getName();
 
             String typeStr = joinPoint.getSignature().getDeclaringType().toString().split(" ")[0];
             logger.info("类/接口:" + tragetClassName + "(" + typeStr + ")");
-            logger.info("方法:" + MethodName);
+            logger.info("方法:" + methodName);
 
             Long total = end - start;
             logger.info("耗时: " + total + " ms!");

@@ -1,5 +1,6 @@
-package com.eqxuan.peers.configBeans;
+package com.eqxuan.peers.config;
 
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
@@ -9,19 +10,13 @@ import org.springframework.context.annotation.Configuration;
  * @Description: 小程序基础信息配置类
  */
 @Configuration
+@Getter
 public class MiniAppBean {
 
     @Value("${AppId}")
-    private String AppId;
+    private String appId;
 
     @Value("${AppSecret}")
-    private String AppSecret;
+    private String appSecret;
 
-    public String getAppId() {
-        return AppId;
-    }
-
-    public String getAppSecret() {
-        return AppSecret;
-    }
 }
