@@ -1,6 +1,6 @@
 package com.eqxuan.peers.service.impl;
 
-import com.eqxuan.peers.configBeans.MiniAppBean;
+import com.eqxuan.peers.config.MiniAppBean;
 import com.eqxuan.peers.exception.PeerProjectException;
 import com.eqxuan.peers.service.WxQrCodeService;
 import com.eqxuan.peers.utils.WxQrCodeUtil;

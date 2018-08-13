@@ -3,6 +3,7 @@ package com.eqxuan.peers.utils;
 import com.alibaba.fastjson.JSONObject;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
@@ -39,7 +40,7 @@ public class WxQrCodeUtil {
 
             httpURLConnection.setRequestMethod("GET");
             int responseCode = httpURLConnection.getResponseCode();
-            if (responseCode == 200) {
+            if (responseCode == HttpServletResponse.SC_OK) {
                 //从服务器返回一个输入流
                 inputStream = httpURLConnection.getInputStream();
             }
@@ -64,9 +65,12 @@ public class WxQrCodeUtil {
                 System.out.println("photoInputStream为空");
             }
             double wr = 0, hr = 0;
-            BufferedImage bufferedImage = ImageIO.read(photoInputStream);//读取图片
-            Image itemp = bufferedImage.getScaledInstance(w, h, BufferedImage.SCALE_SMOOTH);//设置缩放目标图片模板
-            wr = w * 1.0 / bufferedImage.getWidth(); //获取缩放比例
+            //读取图片
+            BufferedImage bufferedImage = ImageIO.read(photoInputStream);
+            //设置缩放目标图片模板
+            Image itemp = bufferedImage.getScaledInstance(w, h, BufferedImage.SCALE_SMOOTH);
+            //获取缩放比例
+            wr = w * 1.0 / bufferedImage.getWidth();
             hr = w * 1.0 / bufferedImage.getHeight();
 
             AffineTransformOp ato = new AffineTransformOp(AffineTransform.getScaleInstance(wr, hr), null);
@@ -115,7 +119,8 @@ public class WxQrCodeUtil {
         try {
             URL url = new URL("https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=" + accessToken);
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-            httpURLConnection.setRequestMethod("POST");// 提交模式
+            // 提交模式
+            httpURLConnection.setRequestMethod("POST");
             // conn.setConnectTimeout(10000);//连接超时 单位毫秒
             // conn.setReadTimeout(2000);//读取超时 单位毫秒
             // 发送POST请求必须设置如下两行
@@ -129,15 +134,6 @@ public class WxQrCodeUtil {
             paramJson.put("page", page);
             paramJson.put("width", 430);
             paramJson.put("auto_color", true);
-            /**
-             * line_color生效
-             * paramJson.put("auto_color", false);
-             * JSONObject lineColor = new JSONObject();
-             * lineColor.put("r", 0);
-             * lineColor.put("g", 0);
-             * lineColor.put("b", 0);
-             * paramJson.put("line_color", lineColor);
-             * */
 
             printWriter.write(paramJson.toString());
             // flush输出流的缓冲

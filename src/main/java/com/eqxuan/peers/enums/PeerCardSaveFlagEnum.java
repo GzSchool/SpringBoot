@@ -1,15 +1,24 @@
 package com.eqxuan.peers.enums;
 
 import com.eqxuan.peers.exception.PeerProjectException;
+import lombok.Getter;
 
 /**
  * @Auther: zheng guangjing.
  * @Date: 2018/8/9 12:29
  * @Description: 同行信息保存状态
  */
+@Getter
 public enum PeerCardSaveFlagEnum {
 
+    /**
+     * 1:未保存的同行信息
+     */
     SAVE_FLAG_FALSE(1, "未保存"),
+
+    /**
+     * 2:已保存的同行信息
+     */
     SAVE_FLAG_TRUE(2, "保存");
 
     private int key;
@@ -19,14 +28,6 @@ public enum PeerCardSaveFlagEnum {
     private PeerCardSaveFlagEnum(int key, String value) {
         this.key = key;
         this.value = value;
-    }
-
-    public int getKey() {
-        return key;
-    }
-
-    public String getValue() {
-        return value;
     }
 
     public static PeerCardSaveFlagEnum getPeerCardSaveFlagEnum(int key) {

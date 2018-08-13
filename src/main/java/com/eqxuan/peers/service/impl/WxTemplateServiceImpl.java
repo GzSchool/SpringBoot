@@ -5,7 +5,7 @@ import com.eqxuan.peers.dto.WechatTemplate;
 import com.eqxuan.peers.service.WxTemplateService;
 import com.eqxuan.peers.utils.WxTemplateUtil;
 import com.eqxuan.peers.vo.AccessToken;
-import com.eqxuan.peers.configBeans.MiniAppBean;
+import com.eqxuan.peers.config.MiniAppBean;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

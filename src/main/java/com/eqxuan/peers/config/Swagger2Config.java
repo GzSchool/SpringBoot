@@ -1,4 +1,4 @@
-package com.eqxuan.peers.configBeans;
+package com.eqxuan.peers.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

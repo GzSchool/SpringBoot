@@ -13,7 +13,7 @@ import com.eqxuan.peers.service.UserGroupService;
 import com.eqxuan.peers.utils.WxDecipherUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.eqxuan.peers.configBeans.MiniAppBean;
+import com.eqxuan.peers.config.MiniAppBean;
 import com.eqxuan.peers.dto.ReturnGroupDTO;
 import com.eqxuan.peers.enums.GroupShareFlagEnum;
 import com.eqxuan.peers.exception.PeerProjectException;

@@ -1,15 +1,24 @@
 package com.eqxuan.peers.enums;
 
 import com.eqxuan.peers.exception.PeerProjectException;
+import lombok.Getter;
 
 /**
  * @Auther: zheng guangjing.
  * @Date: 2018/8/9 12:29
  * @Description: 是否本人分享名片到群
  */
+@Getter
 public enum GroupShareFlagEnum {
 
+    /**
+     * 本人分享
+     */
     FLAG_BY_ME("1", "本人分享"),
+
+    /**
+     * 他人分享
+     */
     FLAG_BY_OTHER("2", "他人分享");
 
     private String key;
@@ -19,14 +28,6 @@ public enum GroupShareFlagEnum {
     private GroupShareFlagEnum(String key, String value) {
         this.key = key;
         this.value = value;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public String getValue() {
-        return value;
     }
 
     public static GroupShareFlagEnum getGroupShareFlagEnum(String key) {

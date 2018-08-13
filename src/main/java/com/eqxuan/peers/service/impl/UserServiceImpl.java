@@ -8,7 +8,7 @@ import com.eqxuan.peers.service.UserService;
 import com.eqxuan.peers.service.cache.CacheManager;
 import com.eqxuan.peers.utils.WxTemplateUtil;
 import com.eqxuan.peers.vo.WechatOpenId;
-import com.eqxuan.peers.configBeans.MiniAppBean;
+import com.eqxuan.peers.config.MiniAppBean;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;

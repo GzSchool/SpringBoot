@@ -7,7 +7,7 @@ import com.eqxuan.peers.service.UserCardService;
 import com.eqxuan.peers.service.WxTemplateService;
 import com.eqxuan.peers.service.cache.CacheManager;
 import com.eqxuan.peers.utils.DateUtil;
-import com.eqxuan.peers.configBeans.MiniAppBean;
+import com.eqxuan.peers.config.MiniAppBean;
 import com.eqxuan.peers.exception.PeerProjectException;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;

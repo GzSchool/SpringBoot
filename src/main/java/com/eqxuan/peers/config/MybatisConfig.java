@@ -1,4 +1,4 @@
-package com.eqxuan.peers.configBeans;
+package com.eqxuan.peers.config;
 
 import java.io.IOException;
 import java.util.Properties;
