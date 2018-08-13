@@ -55,12 +55,14 @@ public class UserGroupController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "openId", value = "当前用户唯一标识", required = true, dataType = "String"),
             @ApiImplicitParam(name = "groupId", value = "当前群ID", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "pageNum", value = "当前页", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "pageSize", value = "每页条数", required = true, dataType = "Integer")
+            @ApiImplicitParam(name = "pageNum", value = "当前页", required = true, dataType = "Integer", defaultValue = "1"),
+            @ApiImplicitParam(name = "pageSize", value = "每页条数", required = true, dataType = "Integer", defaultValue = "10")
     })
     public AjaxResultDTO findGroupCards(String openId, String groupId, Integer pageNum, Integer pageSize, HttpServletResponse response) {
         try {
             response.setHeader("Access-Control-Allow-Origin", "*");
+            //消除红点提示
+            userGroupService.removeHint(groupId, openId);
             PageDTO pageDTO = userGroupService.findCardsOnGroupByOpenId(openId, groupId, pageNum, pageSize);
             return AjaxResultDTO.success(pageDTO);
         } catch(PeerProjectException ppe) {

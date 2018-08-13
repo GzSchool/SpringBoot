@@ -29,4 +29,7 @@ public interface UserGroupMapper {
                                           @Param("openId") String openId);
 
     List<String> getNineBeforeByGroupId(String groupId);
+
+    int hintOthers(@Param("groupId") String groupId,
+                   @Param("openId") String openId);
 }

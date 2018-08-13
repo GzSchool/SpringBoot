@@ -17,6 +17,8 @@ public class ReturnCardDTO implements Serializable {
 
     private Integer id;
 
+    private String openId;
+
     private String username;
 
     private String userWechat;

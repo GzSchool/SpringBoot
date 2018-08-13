@@ -92,6 +92,10 @@ public class UserGroupServiceImpl implements UserGroupService {
             if (1 != rows) {
                 throw new PeerProjectException("首次分享群名片失败");
             }
+
+            //提示群内其他人有新增用户
+            rows = userGroupMapper.hintOthers(openGId, saveUserGroup.getOpenId());
+
             return openGId;
 
         } else {
@@ -206,4 +210,15 @@ public class UserGroupServiceImpl implements UserGroupService {
 //        }
         return returnCardDTOS;
     }
+
+    @Override
+    public int removeHint(String groupId, String openId) {
+        UserGroup userGroup = new UserGroup();
+        userGroup.setGroupId(groupId);
+        userGroup.setOpenId(openId);
+        userGroup.setUpTime(new Date());
+        userGroup.setHint(1);
+        return userGroupMapper.update(userGroup);
+    }
+
 }
