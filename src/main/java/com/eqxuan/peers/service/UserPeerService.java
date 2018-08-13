@@ -12,4 +12,6 @@ public interface UserPeerService {
     List<ReturnCardDTO> findAllPeerByOpenId(String openId);
 
     boolean checkSave(String openId, String cardId);
+
+    boolean addRemark(String openId, String cardId, String remark);
 }

@@ -110,4 +110,20 @@ public class UserPeerServiceImpl implements UserPeerService {
             return true;
         }
     }
+
+    @Override
+    public boolean addRemark(String openId, String cardId, String remark) {
+        UserPeer checkPeer = userPeerMapper.findOne(openId, Integer.parseInt(cardId));
+        boolean result = false;
+        if(checkPeer != null){
+            checkPeer.setUpTime(new Date());
+            checkPeer.setRemark(remark);
+            int rows = userPeerMapper.update(checkPeer);
+            if (1 != rows) {
+                throw new PeerProjectException("添加备注失败");
+            }
+            result = true;
+        }
+        return result;
+    }
 }
