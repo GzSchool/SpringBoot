@@ -18,8 +18,7 @@ public interface WxTemplateService {
      * @param openId
      * @param saveName
      * @param formId
-     * @param saveTime
      * @return
      */
-    JSONObject saveCardSuccess(String openId, String saveName, String formId, String saveTime);
+    JSONObject saveCardSuccess(String openId, String saveName, String formId);
 }

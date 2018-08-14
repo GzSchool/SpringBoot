@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper
+        namespace="com.eqxuan.peers.mapper.UserFromIdMapper">
+    <resultMap id="UserFromIdMapperResultMap"
+               type="com.eqxuan.peers.dao.UserFromId">
+        <result column="open_id" property="openId"/>
+        <result column="from_id" property="fromId"/>
+        <result column="status" property="status"/>
+        <result column="ct_time" property="ctTime"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        open_id, from_id, status, ct_time
+    </sql>
+
+    <insert id="save" parameterType="com.eqxuan.peers.dao.UserFromId" useGeneratedKeys="true" keyProperty="id">
+        insert into user_from_id
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="null != openId">
+                open_id,
+            </if>
+            <if test="null != fromId">
+                from_id,
+            </if>
+            <if test="null != status">
+                status,
+            </if>
+            <if test="null != ctTime">
+                ct_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="null != openId">
+                #{openId},
+            </if>
+            <if test="null != fromId">
+                #{fromId},
+            </if>
+            <if test="null != status">
+                #{status},
+            </if>
+            <if test="null != ctTime">
+                #{ctTime},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.eqxuan.peers.dao.UserFromId">
+        update user_from_id
+        <set>
+            <if test="null != status">
+                #{status},
+            </if>
+            <if test="null != ctTime">
+                #{ctTime},
+            </if>
+        </set>
+        where open_id=#{openId} and from_id=#{fromId}
+    </update>
+
+    <select id="listUserFromIds" parameterType="com.eqxuan.peers.dao.UserFromId" resultMap="UserFromIdMapperResultMap">
+        select <include refid="Base_Column_List"/>
+        from user_from_id
+        <where>
+            <if test="null != openId">
+                and open_id=#{openId}
+            </if>
+            <if test="null != fromId">
+                and from_id=#{fromId},
+            </if>
+            <if test="null != status">
+                and status=#{status},
+            </if>
+            <if test="null != ctTime">
+                and ct_time=#{ctTime},
+            </if>
+        </where>
+    </select>
+
+    <delete id="delete" parameterType="com.eqxuan.peers.dao.UserFromId">
+        delete from user_from_id
+        where status=#{status} or ct_time=#{ctTime}
+    </delete>
+
+    <select id="getNowFromIdByOpenId" parameterType="com.eqxuan.peers.dao.UserFromId">
+        select <include refid="Base_Column_List"/>
+        from user_from_id
+        where open_id=#{openId} and status=1 and Date(ct_time)between #{ctTime} and now()
+        order by ct_time asc limit 1
+    </select>
+
+</mapper>

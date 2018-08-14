@@ -1,22 +1,30 @@
 package com.eqxuan.peers.service.impl;
 
+import com.eqxuan.peers.dao.User;
 import com.eqxuan.peers.dao.UserCard;
+import com.eqxuan.peers.dao.UserFromId;
 import com.eqxuan.peers.dao.UserPeer;
 import com.eqxuan.peers.dto.ReturnCardDTO;
 import com.eqxuan.peers.enums.PeerCardSaveFlagEnum;
 import com.eqxuan.peers.enums.PeerShareFlagEnum;
 import com.eqxuan.peers.mapper.UserCardMapper;
+import com.eqxuan.peers.mapper.UserFromIdMapper;
+import com.eqxuan.peers.mapper.UserMapper;
 import com.eqxuan.peers.mapper.UserPeerMapper;
 import com.eqxuan.peers.service.UserPeerService;
+import com.eqxuan.peers.service.WxTemplateService;
 import com.eqxuan.peers.vo.CreatePeersVO;
 import com.eqxuan.peers.exception.PeerProjectException;
+import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -31,11 +39,24 @@ public class UserPeerServiceImpl implements UserPeerService {
     @Resource
     private UserCardMapper userCardMapper;
 
+    @Resource
+    private UserMapper userMapper;
+
+    @Resource
+    private WxTemplateService wxTemplateService;
+
+    @Resource
+    private UserFromIdMapper userFromIdMapper;
+
     @Override
     public void saveOrUpdate(CreatePeersVO createPeersVO) {
 
         if (StringUtils.isEmpty(createPeersVO.getOpenId())) {
             throw new PeerProjectException("用户未登陆");
+        }
+        User checkUser = userMapper.findOneByOpenId(createPeersVO.getOpenId());
+        if (null == checkUser) {
+            throw new PeerProjectException("用户未注册");
         }
 
         List<Integer> cardIdList = createPeersVO.getCardIds();
@@ -52,7 +73,6 @@ public class UserPeerServiceImpl implements UserPeerService {
             if (null == checkUserCard) {
                 throw new PeerProjectException("该名片不存在");
             }
-
             //校验当前用户是否保存过当前名片
             UserPeer checkUserPeer = userPeerMapper.findOne(createPeersVO.getOpenId(), cardId);
             saveUserPeer.setCardId(cardId);
@@ -68,10 +88,29 @@ public class UserPeerServiceImpl implements UserPeerService {
                 if (1 != rows) {
                     throw new PeerProjectException("保存名片失败");
                 }
-                    //TODO 消息推送
-//                JSONObject jsonObject = wxTemplateService.saveCardSuccess(checkUserCard.getOpenId(), createPeersVO.getSaveName() , createPeersVO.getFromId(), DateUtil.dateToString(saveUserPeer.getCtTime()));
-//                logger.info("【模板消息推送】：{}", jsonObject);
 
+                Date nowDate = new Date();
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(nowDate);
+                cal.add(Calendar.DAY_OF_MONTH, -7);
+                Date checkDate = cal.getTime();
+
+                UserFromId userFromId = new UserFromId();
+                userFromId.setOpenId(checkUserCard.getOpenId());
+                userFromId.setCtTime(checkDate);
+
+                UserFromId checkFromId = userFromIdMapper.getNowFromIdByOpenId(userFromId);
+                if (null != checkFromId) {
+                    // TODO 消息推送
+                    JSONObject jsonObject = wxTemplateService.saveCardSuccess(checkFromId.getOpenId(), createPeersVO.getSaveName() , checkFromId.getFromId());
+                    logger.info("【模板消息推送】：{}", jsonObject);
+
+                    checkFromId.setStatus(2);
+                    rows = userFromIdMapper.update(checkFromId);
+                    if (1 != rows) {
+                        throw new PeerProjectException("消息模板推送失败");
+                    }
+                }
             } else {
                 saveUserPeer.setUpTime(new Date());
                 saveUserPeer.setId(checkUserPeer.getId());
