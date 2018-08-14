@@ -36,8 +36,8 @@ mybatis:
   mapper-locations:
   - classpath*:sqlmap/*Mapper.xml
   type-aliases-package: org.springboot.sample.entity
-AppId: wx34fefa15f676d944
-AppSecret: f4ce303b50267dc17dc69ae083ae3a98
+AppId: wxff9f09664798581a
+AppSecret: b413741bb1cbdbbe6a77a321b76108bf
 logging:
   pattern:
     console: "%d - %msg%n"
