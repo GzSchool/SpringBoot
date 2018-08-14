@@ -118,15 +118,20 @@ public class UserPeerController {
     public AjaxResultDTO getPeerInfo(String openId, String cardId, HttpServletResponse response) {
         try {
             response.setHeader("Access-Control-Allow-Origin", "*");
-            if(StringUtils.isBlank(openId)){
-                UserCard userCard = new UserCard();
-                userCard.setId(Integer.parseInt(cardId));
-                List<UserCard> userCardList = userCardService.findCardByParam(userCard);
-                if(null != userCardList){
-                    return AjaxResultDTO.success(userCardList.get(0));
+
+            UserCard userCard = new UserCard();
+            userCard.setId(Integer.parseInt(cardId));
+            List<UserCard> userCardList = userCardService.findCardByParam(userCard);
+            if(null != userCardList && userCardList.size() == 1){
+                userCard = userCardList.get(0);
+                if(StringUtils.isBlank(openId) || userCard.getOpenId().equals(openId)){
+                    return AjaxResultDTO.success(userCard);
+                }else{
+                    return AjaxResultDTO.success(userPeerService.getPeerInfo(openId, cardId));
                 }
+            }else{
+                return AjaxResultDTO.failed("当前用户名片信息不存在");
             }
-            return AjaxResultDTO.success(userPeerService.getPeerInfo(openId, cardId));
         } catch (PeerProjectException ppe) {
             return AjaxResultDTO.failed(ppe.getMessage());
         } catch (Exception e) {
