@@ -10,4 +10,13 @@ public interface UserService {
      * @return
      */
     AuthorizeDTO get3rdsession(String code);
+
+    /**
+     * 接口描述：解析用户绑定手机号
+     * @param openId
+     * @param iv
+     * @param encryptedData
+     * @return
+     */
+    String getUserPhone(String openId, String iv, String encryptedData);
 }

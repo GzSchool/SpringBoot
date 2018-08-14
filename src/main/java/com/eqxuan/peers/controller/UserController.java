@@ -60,9 +60,6 @@ public class UserController {
     public AjaxResultDTO makeWxQrCode(String userPhotoUrl, String scene, String page, String openId, HttpServletResponse response) {
         try {
             response.setHeader("Access-Control-Allow-Origin", "*");
-
-            logger.debug("-------------------------------" + System.getProperty("user.dir"));
-
             String pathName = wxQrCodeService.makeWxQrCode(userPhotoUrl, scene, page, openId);
             return AjaxResultDTO.success(pathName);
         } catch (PeerProjectException ppe) {
@@ -70,6 +67,27 @@ public class UserController {
         } catch (Exception e) {
             logger.error("【生成小程序码异常】：{}", e);
             return AjaxResultDTO.failed("生成小程序码异常");
+        }
+    }
+
+    @GetMapping("/getUserPhone")
+    @ResponseBody
+    @ApiOperation(value = "获取用户绑定手机号")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "openId", value = "用户标识", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "iv", value = "偏移量", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "encryptedData", value = "加密信息", required = true, dataType = "String")
+    })
+    public AjaxResultDTO getUserPhone(String openId, String iv, String encryptedData, HttpServletResponse response) {
+        try {
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            String phoneNumber = userService.getUserPhone(openId, iv, encryptedData);
+            return AjaxResultDTO.success(phoneNumber);
+        } catch (PeerProjectException ppe) {
+            return AjaxResultDTO.failed(ppe.getMessage());
+        } catch (Exception e) {
+            logger.error("【解析用户信息异常】：{}", e);
+            return AjaxResultDTO.failed("解析用户信息异常");
         }
     }
 }

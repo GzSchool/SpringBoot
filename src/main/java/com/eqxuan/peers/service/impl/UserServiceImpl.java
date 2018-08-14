@@ -1,11 +1,13 @@
 package com.eqxuan.peers.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.eqxuan.peers.dao.User;
 import com.eqxuan.peers.dto.AuthorizeDTO;
 import com.eqxuan.peers.exception.PeerProjectException;
 import com.eqxuan.peers.mapper.UserMapper;
 import com.eqxuan.peers.service.UserService;
 import com.eqxuan.peers.service.cache.CacheManager;
+import com.eqxuan.peers.utils.WxDecipherUtil;
 import com.eqxuan.peers.utils.WxTemplateUtil;
 import com.eqxuan.peers.vo.WechatOpenId;
 import com.eqxuan.peers.config.MiniAppBean;
@@ -32,6 +34,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private CacheManager cacheManager;
+
+    @Resource
+    private WxDecipherUtil wxDecipherUtil;
 
     @Override
     public AuthorizeDTO get3rdsession(String code) {
@@ -84,5 +89,25 @@ public class UserServiceImpl implements UserService {
             authorizeDTO.setOpenSession(openSession);
             return authorizeDTO;
         }
+    }
+
+    @Override
+    public String getUserPhone(String openId, String iv, String encryptedData) {
+        if (StringUtils.isEmpty(openId) || StringUtils.isEmpty(iv) || StringUtils.isEmpty(encryptedData)) {
+            throw new PeerProjectException("参数缺失");
+        }
+
+        User checkUser = userMapper.findOneByOpenId(openId);
+        if (null == checkUser) {
+            throw new PeerProjectException("用户未注册");
+        }
+
+        JSONObject jsonObject = wxDecipherUtil.getDecipherInfo(encryptedData, checkUser.getSessionKey(), iv);
+        logger.debug("-------------------------" + jsonObject);
+        if (null == jsonObject) {
+            throw new PeerProjectException("解密信息失败");
+        }
+        String phoneNumber = jsonObject.getString("phoneNumber");
+        return phoneNumber;
     }
 }
