@@ -60,7 +60,7 @@ public class UserGroupServiceImpl implements UserGroupService {
         }
 
         // 解密groupId 需要传递encryptedData，iv
-        JSONObject jsonObject = wxDecipherUtil.getGroupId(userGroup.getEncryptedData(), checkUser.getSessionKey(), userGroup.getIv());
+        JSONObject jsonObject = wxDecipherUtil.getDecipherInfo(userGroup.getEncryptedData(), checkUser.getSessionKey(), userGroup.getIv());
 
         if (null == jsonObject) {
             throw new PeerProjectException("获取群ID失败");

@@ -20,7 +20,7 @@ import java.util.Arrays;
 @Service
 public class WxDecipherUtil {
 
-    public JSONObject getGroupId(String encryptedData, String sessionKey, String iv) {
+    public JSONObject getDecipherInfo(String encryptedData, String sessionKey, String iv) {
 
         //加密数据
         byte[] dataByte = Base64.decode(encryptedData);
