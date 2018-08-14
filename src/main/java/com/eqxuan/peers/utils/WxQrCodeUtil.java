@@ -133,7 +133,7 @@ public class WxQrCodeUtil {
             paramJson.put("scene", scene);
             paramJson.put("page", page);
             paramJson.put("width", 430);
-            paramJson.put("auto_color", true);
+            paramJson.put("auto_color", false);
 
             printWriter.write(paramJson.toString());
             // flush输出流的缓冲
