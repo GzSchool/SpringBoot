@@ -125,9 +125,11 @@ public class UserGroupServiceImpl implements UserGroupService {
 
         PageHelper.startPage(pageNum, pageSize);
         List<ReturnCardDTO> returnCardDTOS = userGroupMapper.findCardsOnGroupByOpenId(openId, groupId);
+        List<ReturnCardDTO> saveFalseCard = new ArrayList<ReturnCardDTO>();
         for (ReturnCardDTO returnCard : returnCardDTOS) {
-            if(returnCard.getSaveFlag() == null){
+            if (null == returnCard.getSaveFlag() || PeerCardSaveFlagEnum.SAVE_FLAG_FALSE.getKey() == returnCard.getSaveFlag()) {
                 returnCard.setSaveFlag(PeerCardSaveFlagEnum.SAVE_FLAG_FALSE.getKey());
+                saveFalseCard.add(returnCard);
             }
         }
 
@@ -137,6 +139,7 @@ public class UserGroupServiceImpl implements UserGroupService {
         pageDTO.setResult(pageInfo.getList());
         pageDTO.setPages(pageInfo.getPages());
         pageDTO.setTotal(pageInfo.getTotal());
+        pageDTO.setSaveFalseNum(saveFalseCard.size());
 
         return pageDTO;
     }

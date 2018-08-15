@@ -22,4 +22,5 @@ public class PageDTO {
 
     private List<?> result;
 
+    private Integer saveFalseNum;
 }

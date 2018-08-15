@@ -55,8 +55,8 @@ public class UserGroupController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "openId", value = "当前用户唯一标识", required = true, dataType = "String"),
             @ApiImplicitParam(name = "groupId", value = "当前群ID", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "pageNum", value = "当前页", required = true, dataType = "Integer", defaultValue = "1"),
-            @ApiImplicitParam(name = "pageSize", value = "每页条数", required = true, dataType = "Integer", defaultValue = "10")
+            @ApiImplicitParam(name = "pageNum", value = "当前页", required = true, dataType = "int", defaultValue = "1"),
+            @ApiImplicitParam(name = "pageSize", value = "每页条数", required = true, dataType = "int", defaultValue = "600")
     })
     public AjaxResultDTO findGroupCards(String openId, String groupId, Integer pageNum, Integer pageSize, HttpServletResponse response) {
         try {
