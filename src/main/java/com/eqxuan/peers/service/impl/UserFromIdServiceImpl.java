@@ -24,8 +24,12 @@ public class UserFromIdServiceImpl implements UserFromIdService {
 
     @Override
     public void save(UserFromIdsVO userFromIdsVO) {
-        if (StringUtils.isEmpty(userFromIdsVO.getOpenId()) || 0 == userFromIdsVO.getFromIds().size()) {
+        if (StringUtils.isEmpty(userFromIdsVO.getOpenId())) {
             throw new PeerProjectException("参数异常");
+        }
+
+        if (null == userFromIdsVO.getFromIds() || "".equals(userFromIdsVO.getFromIds()) || 0 == userFromIdsVO.getFromIds().size()) {
+            throw new PeerProjectException("FromId为空");
         }
 
         UserFromId userFromId = new UserFromId();
