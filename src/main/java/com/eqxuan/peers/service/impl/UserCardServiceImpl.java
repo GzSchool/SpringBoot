@@ -41,7 +41,7 @@ public class UserCardServiceImpl implements UserCardService {
     @Override
     public void saveOrUpdate(UserCard userCard) {
 
-        if (StringUtils.isEmpty(userCard.getUserWechat()) || StringUtils.isEmpty(userCard.getUserCompany()) || StringUtils.isEmpty(userCard.getUserCity()) || StringUtils.isEmpty(userCard.getUserJob()) || StringUtils.isEmpty(userCard.getUserIndustry())){
+        if (StringUtils.isEmpty(userCard.getUserPhone()) || StringUtils.isEmpty(userCard.getUserCompany()) || StringUtils.isEmpty(userCard.getUserCity()) || StringUtils.isEmpty(userCard.getUserJob()) || StringUtils.isEmpty(userCard.getUserIndustry())){
             throw new PeerProjectException("必填字段不可为空");
         }
 
