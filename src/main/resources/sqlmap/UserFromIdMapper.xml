@@ -50,10 +50,10 @@
         update user_from_id
         <set>
             <if test="null != status">
-                #{status},
+                status=#{status},
             </if>
             <if test="null != ctTime">
-                #{ctTime},
+                ct_time=#{ctTime},
             </if>
         </set>
         where open_id=#{openId} and from_id=#{fromId}
