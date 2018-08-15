@@ -83,7 +83,7 @@
         where status=#{status} or ct_time=#{ctTime}
     </delete>
 
-    <select id="getNowFromIdByOpenId" parameterType="com.eqxuan.peers.dao.UserFromId">
+    <select id="getNowFromIdByOpenId" parameterType="com.eqxuan.peers.dao.UserFromId" resultMap="UserFromIdMapperResultMap">
         select <include refid="Base_Column_List"/>
         from user_from_id
         where open_id=#{openId} and status=1 and Date(ct_time)between #{ctTime} and now()
