@@ -161,9 +161,12 @@ public class UserGroupServiceImpl implements UserGroupService {
             List<GroupNoSaveNumDTO> noSaveNumList = userGroupMapper.countByNoSave(group.getGroupId(), userGroup.getOpenId());
 
             int saveFalseNum = 0;
+            int saveTrueNum = 0;
             for (GroupNoSaveNumDTO noSaveNum : noSaveNumList) {
                 if (null == noSaveNum.getSaveFlag() || noSaveNum.getSaveFlag().intValue() == PeerCardSaveFlagEnum.SAVE_FLAG_FALSE.getKey()) {
                     saveFalseNum += noSaveNum.getNum();
+                } else {
+                    saveTrueNum += noSaveNum.getNum();
                 }
             }
 
@@ -176,6 +179,7 @@ public class UserGroupServiceImpl implements UserGroupService {
             returnGroupDTO.setCtTime(group.getCtTime());
             returnGroupDTO.setUpTime(group.getUpTime());
             returnGroupDTO.setSaveFalse(saveFalseNum);
+            returnGroupDTO.setSaveTrue(saveTrueNum);
             returnGroupDTO.setBeforeNineImg(beforeNineImg);
             returnGroupDTO.setHint(group.getHint());
             returnGroupDTOS.add(returnGroupDTO);
