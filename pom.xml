@@ -219,7 +219,7 @@
             <scope>provided</scope>
         </dependency>
 
-        <dependency>
+		<dependency>
             <groupId>com.qcloud</groupId>
             <artifactId>cos_api</artifactId>
             <version>5.2.4</version>
@@ -229,9 +229,12 @@
             <groupId>com.qcloud</groupId>
             <artifactId>qcloud-java-sdk</artifactId>
             <version>2.0.1</version>
-        </dependency>
-
-    </dependencies>
+        </dependency>   		<!-- SMS -->
+        <dependency>
+            <groupId>com.github.qcloudsms</groupId>
+            <artifactId>qcloudsms</artifactId>
+            <version>1.0.5</version>
+        </dependency>    </dependencies>
 
     <build>
         <finalName>peers</finalName>
