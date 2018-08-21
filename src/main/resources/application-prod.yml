@@ -49,3 +49,11 @@ logging:
 web:
   upload-path: c:/userImg/
   front-path: c:/userImg/
+
+# 腾讯云对象存储属性
+COS:
+  AppId: 1257190605
+  SecretId: AKIDYR8bqqoBbnAML6Hv0qUt2yf9ORGqoJAs
+  SecretKey: e4FAtPfmfMo0NWR7Zq0xf7JHzSfrqeDY
+  BucketName: gzwh-image-1257190605
+  DomainName: https://gzwh-image-1257190605.cos-website.ap-beijing.myqcloud.com

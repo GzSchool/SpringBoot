@@ -1,5 +1,7 @@
 package com.eqxuan.peers.service;
 
+import org.springframework.web.multipart.MultipartFile;
+
 /**
  * @Auther: zheng guangjing.
  * @Date: 2018/8/12 16:55
@@ -16,4 +18,14 @@ public interface WxQrCodeService {
      * @return
      */
     String makeWxQrCode(String userPhotoUrl, String scene, String page, String openId);
+
+    /**
+     * 图片上传
+     * @param openId
+     * @param cardId
+     * @param multipartFile
+     * @param index
+     * @return
+     */
+    String fileUpload(String openId, String cardId, MultipartFile[] multipartFile, String index);
 }

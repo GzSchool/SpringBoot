@@ -6,9 +6,11 @@ import com.eqxuan.peers.exception.PeerProjectException;
 import com.eqxuan.peers.service.UserService;
 import com.eqxuan.peers.service.WxQrCodeService;
 import io.swagger.annotations.*;
+import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -88,6 +90,26 @@ public class UserController {
         } catch (Exception e) {
             logger.error("【解析用户信息异常】：{}", e);
             return AjaxResultDTO.failed("解析用户信息异常");
+        }
+    }
+
+    @PostMapping("/fileUpload")
+    @ResponseBody
+    @ApiOperation(value = "上传图片")
+    public AjaxResultDTO fileUpload(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    @RequestParam(value = "file", required = false) MultipartFile[] multipartFiles) {
+
+        try {
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            String openId = request.getParameter("openId");
+            String cardId = request.getParameter("cardId");
+            String index = request.getParameter("index");
+            String url = wxQrCodeService.fileUpload(openId, cardId, multipartFiles, index);
+            return AjaxResultDTO.success(url);
+        } catch (Exception e) {
+            logger.error("【上传图片异常】：{}", e);
+            return AjaxResultDTO.failed("上传图片异常");
         }
     }
 }
