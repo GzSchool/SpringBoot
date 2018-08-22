@@ -143,4 +143,11 @@
       FROM user_card uc, user_peer up
       WHERE uc.id=#{cardId} AND up.open_id=#{openId} AND uc.id=up.card_id
     </select>
+
+    <!--
+    <delete id="deleteByCardId">
+        delete from user_peer
+        where  card_id=#{cardId}
+    </delete>
+    -->
 </mapper>

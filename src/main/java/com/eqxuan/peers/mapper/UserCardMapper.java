@@ -57,6 +57,4 @@ public interface UserCardMapper {
 	 * @auther: Mature
 	 */
     List<ReturnCardDTO> findCardListByOpenId(@Param("openId") String openId);
-
-
 }

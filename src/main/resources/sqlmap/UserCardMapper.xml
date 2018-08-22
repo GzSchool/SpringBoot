@@ -264,9 +264,12 @@
     <select id="findCardListByOpenId" resultType="com.eqxuan.peers.dto.ReturnCardDTO">
         SELECT uc.id as id, uc.username as username, uc.user_wechat as userWechat, uc.user_company as userCompany, uc.user_industry as userIndustry, uc.user_city as userCity,
           uc.user_job as userJob, uc.user_img as userImg, uc.user_phone as userPhone, uc.user_email as userEmail, uc.synopsis as synopsis, uc.demand as demand, uc.resources as resources,
-          uc.give_like_num as giveLikeNum, uc.card_type as cardType, uc.prepare as prepare, uc.home_page as homePage, uc.company_page as companyPage, count(1) AS saveNum
-        FROM user_card uc, user_peer up
-        WHERE uc.open_id = #{openId} AND up.card_id = uc.id
+          uc.give_like_num as giveLikeNum, uc.card_type as cardType, uc.prepare as prepare, uc.home_page as homePage, uc.company_page as companyPage, count(up.id) AS saveNum
+        FROM user_card uc
+        LEFT JOIN user_peer up
+        ON uc.id = up.card_id
+        WHERE uc.open_id = #{openId}
+        GROUP BY uc.id
         ORDER BY uc.ct_time ASC
     </select>
 
@@ -355,4 +358,11 @@
        where CONCAT(uc.username, uc.user_wechat, uc.user_company, uc.user_industry, uc.user_city, uc.user_job)
        like CONCAT('%',#{param},'%' ) and up.open_id = #{openId} and uc.id=up.card_id and up.save_flag=2
     </select>
+
+    <!--
+    <delete id="deleteById">
+        delete from user_card
+        where id=#{cardId}
+    </delete>
+    -->
 </mapper>

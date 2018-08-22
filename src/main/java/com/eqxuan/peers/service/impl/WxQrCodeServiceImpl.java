@@ -37,22 +37,23 @@ public class WxQrCodeServiceImpl implements WxQrCodeService {
             if (StringUtils.isEmpty(userPhotoUrl) || StringUtils.isEmpty(openId) || StringUtils.isEmpty(scene) || StringUtils.isEmpty(openId)) {
                 throw new PeerProjectException("参数缺失");
             }
-            //String pathName = "/userImg/" + openId + ".png";
             AccessToken accessToken = WxTemplateUtil.getAccessToken(miniAppBean.getAppId(), miniAppBean.getAppSecret());
 
-            //开始制作个性化小程序码（获取用户头像）
+            // 开始制作个性化小程序码（获取用户头像）
             InputStream photoInputStream = WxQrCodeUtil.getInputStream(userPhotoUrl);
-            //图像缩放
+            // 图像缩放
             BufferedImage zoomPhoto = WxQrCodeUtil.zoomPhoto(photoInputStream, 192, 192);
-            //图像截为圆形（用来代替小程序码的中央LOGO）
+            // 图像截为圆形（用来代替小程序码的中央LOGO）
             BufferedImage centerImg = WxQrCodeUtil.circle(zoomPhoto);
-            //获取小程序码
+            // 获取小程序码
             InputStream miniQrCodeInputStream = WxQrCodeUtil.miniQrCode(accessToken.getAccessToken(), scene, page);
-            //替换后的小程序码
+            // 替换后的小程序码
             String fileName = cardId + "-" + index + ".png";
             File file = WxQrCodeUtil.makeInRound(miniQrCodeInputStream, centerImg, fileName);
 
             String returnUrl = cosFileUploadUtil.picCOS(file, openId, cardId, index);
+            // 删除临时文件
+            file.delete();
             return returnUrl;
         } catch (Exception e) {
             throw new PeerProjectException("上传图片异常");

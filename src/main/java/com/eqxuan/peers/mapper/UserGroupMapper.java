@@ -85,4 +85,10 @@ public interface UserGroupMapper {
      */
     int hintOthers(@Param("groupId") String groupId,
                    @Param("openId") String openId);
+
+    /**
+     * 接口描述：根据cardId删除关联信息
+     * @param cardId
+     */
+    //void deleteByCardId(Integer cardId);
 }
