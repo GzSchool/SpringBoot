@@ -36,6 +36,13 @@ mybatis:
   type-aliases-package: org.springboot.sample.entity
 AppId: wxff9f09664798581a
 AppSecret: b413741bb1cbdbbe6a77a321b76108bf
+
+# 腾讯云对象存储属性
+COS:
+  AppId: 1257190605
+  SecretId: AKIDYR8bqqoBbnAML6Hv0qUt2yf9ORGqoJAs
+  SecretKey: e4FAtPfmfMo0NWR7Zq0xf7JHzSfrqeDY
+  BucketName: gzwh-2018-1257190605
 #logging:
 #  pattern:
 #    console: "%d - %msg%n"
