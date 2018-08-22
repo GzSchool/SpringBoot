@@ -1,6 +1,8 @@
 package com.eqxuan.peers.dao;
 
+import io.swagger.annotations.ApiModel;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -89,5 +91,8 @@ public class UserCard implements Serializable {
      * 公司主页
      */
     private String companyPage;
+
+    /** 用户名片相册 .*/
+    private String photo;
 
 }

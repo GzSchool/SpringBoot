@@ -34,4 +34,17 @@ public interface UserCardService {
      * @return
      */
     List<ReturnCardDTO> findAllByPeerAndParam(String param, String openId);
+
+    /**
+     * 接口描述：添加用户名片
+     * @param userCard
+     * @return
+     */
+    int save(UserCard userCard);
+
+    /**
+     * 接口描述：修改用户接口
+     * @param userCard
+     */
+    void update(UserCard userCard);
 }

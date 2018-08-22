@@ -1,13 +1,11 @@
 package com.eqxuan.peers.controller;
 
 import com.eqxuan.peers.config.SmsConfig;
-import com.eqxuan.peers.dao.UserCard;
 import com.eqxuan.peers.dto.AjaxResultDTO;
 import com.eqxuan.peers.exception.PeerProjectException;
 import com.eqxuan.peers.service.cache.impl.RedisService;
 import com.eqxuan.peers.service.sms.SmsService;
 import com.eqxuan.peers.utils.RandomUtil;
-import com.github.qcloudsms.SmsSingleSenderResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -15,7 +13,6 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

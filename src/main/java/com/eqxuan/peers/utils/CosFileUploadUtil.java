@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 import java.util.Date;
 
@@ -26,6 +29,15 @@ public class CosFileUploadUtil {
     @Autowired
     private CosConfig cosConfig;
 
+    /**
+     * 上传文件到对象服务器
+     * @param cosFile
+     * @param openId
+     * @param cardId
+     * @param index
+     * @return
+     * @throws Exception
+     */
     public String picCOS (File cosFile, String openId, String cardId, String index) throws Exception {
 
         COSCredentials cred = new BasicCOSCredentials(cosConfig.getSecretId(), cosConfig.getSecretKey());
@@ -50,5 +62,36 @@ public class CosFileUploadUtil {
         }
         String returnUrl = cosConfig.getDomainName() + "/" + key;
         return returnUrl;
+    }
+
+    /**
+     * MultipartFile 转换为 File
+     * @param ins
+     * @param file
+     */
+    public void inputStreamToFile(InputStream ins, File file) {
+        OutputStream os = null;
+        try {
+            os = new FileOutputStream(file);
+            int bytesRead = 0;
+            byte[] buffer = new byte[8192];
+            while ((bytesRead = ins.read(buffer, 0, 8192)) != -1) {
+                os.write(buffer, 0, bytesRead);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (null != os) {
+                    os.close();
+                }
+                if (null != ins) {
+                    ins.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
