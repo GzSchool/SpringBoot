@@ -222,4 +222,19 @@ public class UserCardServiceImpl implements UserCardService {
         //添加到缓存
         cacheManager.cacheUserCard(updateUserCard);
     }
+
+    @Override
+    public List<ReturnCardDTO> findCardListByOpenId(String openId) {
+        if (StringUtils.isEmpty(openId)) {
+            throw new PeerProjectException("参数缺失");
+        }
+
+        User checkUser = userMapper.findOneByOpenId(openId);
+        if (null == checkUser) {
+            throw new PeerProjectException("用户未注册");
+        }
+
+        List<ReturnCardDTO> returnCardDTOS = userCardMapper.findCardListByOpenId(openId);
+        return returnCardDTOS;
+    }
 }

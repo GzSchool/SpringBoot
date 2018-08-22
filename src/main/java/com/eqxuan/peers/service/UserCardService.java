@@ -47,4 +47,11 @@ public interface UserCardService {
      * @param userCard
      */
     void update(UserCard userCard);
+
+    /**
+     * 查询个人名片列表
+     * @param openId
+     * @return
+     */
+    List<ReturnCardDTO> findCardListByOpenId(String openId);
 }

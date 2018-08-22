@@ -188,4 +188,11 @@
         FROM user_group ug, user_card uc
         WHERE ug.group_id=#{groupId} AND ug.open_id=uc.open_id LIMIT 0,9
     </select>
+
+    <!--
+    <delete id="deleteByCardId">
+        delete from user_group
+        where card_id=#{cardId}
+    </delete>
+    -->
 </mapper>

@@ -135,4 +135,21 @@ public class UserCardController {
             return AjaxResultDTO.failed("用户修改名片异常");
         }
     }
+
+    @GetMapping("/findCardList")
+    @ResponseBody
+    @ApiOperation(value = "查询用户的名片集合")
+    @ApiImplicitParam(name = "openId", value = "当前用户唯一标识", required = true, dataType = "String")
+    public AjaxResultDTO findCardList(String openId, HttpServletResponse response) {
+        try {
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            List<ReturnCardDTO> returnCardDTOS = userCardService.findCardListByOpenId(openId);
+            return AjaxResultDTO.success(returnCardDTOS);
+        } catch (PeerProjectException ppe) {
+            return AjaxResultDTO.failed(ppe.getMessage());
+        } catch (Exception e) {
+            logger.error("【查询用户的名片集合异常】：{}", e);
+            return AjaxResultDTO.failed("查询用户的名片集合异常");
+        }
+    }
 }
