@@ -69,8 +69,6 @@ public class UserServiceImpl implements UserService {
                 throw new PeerProjectException("添加用户信息失败");
             }
 
-            cacheManager.cacheEmptyUserCard(wechatOpenId.getOpenId());
-
             authorizeDTO.setOpenId(wechatOpenId.getOpenId());
             authorizeDTO.setOpenSession(openSession);
             return authorizeDTO;

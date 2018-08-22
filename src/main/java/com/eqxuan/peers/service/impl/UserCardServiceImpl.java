@@ -104,12 +104,12 @@ public class UserCardServiceImpl implements UserCardService {
     }
 
     @Override
-    public UserCard findOneByOpenId(String openId) {
+    public UserCard findOneById(String id) {
 
-        if (StringUtils.isEmpty(openId)) {
+        if (StringUtils.isEmpty(id)) {
             throw new PeerProjectException("用户未登陆");
         }
-        UserCard userCard = cacheManager.getUserCardByOpenId(openId);
+        UserCard userCard = cacheManager.getUserCardById(id);
         if (null == userCard) {
             throw new PeerProjectException("您还未添加名片");
         }

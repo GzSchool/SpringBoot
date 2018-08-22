@@ -15,10 +15,10 @@ public interface UserCardService {
 
     /**
      * 接口描述：根据用户标识查询名片信息
-     * @param openId
+     * @param id
      * @return
      */
-    UserCard findOneByOpenId(String openId);
+    UserCard findOneById(String id);
 
     /**
      * 接口描述：根据入参查询名片信息

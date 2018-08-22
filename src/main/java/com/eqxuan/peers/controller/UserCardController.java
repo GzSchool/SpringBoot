@@ -47,14 +47,14 @@ public class UserCardController {
         }
     }
 
-    @GetMapping("/findOneByOpenId")
+    @GetMapping("/findCardById")
     @ResponseBody
-    @ApiOperation(value = "根据openId获取用户卡片信息")
-    @ApiImplicitParam(name = "openId", value = "微信用户唯一标识", required = true, dataType = "String")
-    public AjaxResultDTO findOneByOpenId(String openId, HttpServletResponse response) {
+    @ApiOperation(value = "获取用户卡片信息")
+    @ApiImplicitParam(name = "id", value = "名片ID", required = true, dataType = "String")
+    public AjaxResultDTO findCardById(String id, HttpServletResponse response) {
         try {
             response.setHeader("Access-Control-Allow-Origin", "*");
-            UserCard userCard = userCardService.findOneByOpenId(openId);
+            UserCard userCard = userCardService.findOneById(id);
             return AjaxResultDTO.success(userCard);
         } catch(PeerProjectException ppe) {
             return AjaxResultDTO.failed(ppe.getMessage());
