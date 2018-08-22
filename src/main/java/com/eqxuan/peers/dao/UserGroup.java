@@ -22,6 +22,9 @@ public class UserGroup {
     /** 用户标识.*/
     private String openId;
 
+    /** 用户名片标识.*/
+    private String cardId;
+
     /** 冗余字段，重构时可删除.*/
     private String appId;
 

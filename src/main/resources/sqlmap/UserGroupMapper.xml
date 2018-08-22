@@ -6,6 +6,7 @@
                type="com.eqxuan.peers.dao.UserGroup">
         <id column="group_id" property="groupId"/>
         <result column="open_id" property="openId"/>
+        <result column="card_id" property="cardId"/>
         <result column="app_id" property="appId"/>
         <result column="del_flag" property="delFlag"/>
         <result column="ct_time" property="ctTime"/>
@@ -14,7 +15,7 @@
         <result column="hint" property="hint"/>
     </resultMap>
     <sql id="Base_Column_List">
-        group_id, open_id, app_id, del_flag, ct_time, up_time, prepare, hint
+        group_id, open_id, card_id, app_id, del_flag, ct_time, up_time, prepare, hint
     </sql>
 
     <insert id="save" parameterType="com.eqxuan.peers.dao.UserGroup" useGeneratedKeys="true" keyProperty="id">
@@ -24,6 +25,9 @@
                 group_id,
             </if>
             <if test="null != openId">
+                card_id,
+            </if>
+            <if test="null != cardId">
                 open_id,
             </if>
             <if test="null != appId">
@@ -48,6 +52,9 @@
             </if>
             <if test="null != openId">
                 #{openId},
+            </if>
+            <if test="null != cardId">
+                #{cardId},
             </if>
             <if test="null != appId">
                 #{appId},
@@ -89,7 +96,7 @@
                 hint=#{hint},
             </if>
         </set>
-        where open_id=#{openId} and group_id=#{groupId}
+        where open_id=#{openId} and group_id=#{groupId} and card_id=#{cardId}
     </update>
 
     <update id="hintOthers">
@@ -101,7 +108,7 @@
     <select id="findOneById" resultMap="UserGroupMapperResultMap">
         select <include refid="Base_Column_List"/>
         from user_group
-        where open_id=#{openId} and group_id=#{groupId}
+        where open_id=#{openId} and group_id=#{groupId} and card_id=#{cardId}
     </select>
 
     <select id="findUserGroupByParam" parameterType="com.eqxuan.peers.dao.UserGroup" resultMap="UserGroupMapperResultMap">

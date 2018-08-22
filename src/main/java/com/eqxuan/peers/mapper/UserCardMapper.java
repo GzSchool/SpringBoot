@@ -49,4 +49,14 @@ public interface UserCardMapper {
      * @return
      */
 	List<ReturnCardDTO> findAllByPeerAndParam(@Param("param") String param,
-                                              @Param("openId") String openId);}
+                                              @Param("openId") String openId);
+
+	/**
+	 * @Description: 查询个人名片列表
+	 *
+	 * @auther: Mature
+	 */
+    List<ReturnCardDTO> findCardListByOpenId(@Param("openId") String openId);
+
+
+}

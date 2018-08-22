@@ -65,4 +65,9 @@ public class ReturnCardDTO implements Serializable {
 
     private String remark;
 
+    /**
+     * 保存数量
+     */
+    private Integer saveNum;
+
 }

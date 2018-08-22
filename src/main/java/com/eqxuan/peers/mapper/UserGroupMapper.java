@@ -30,7 +30,8 @@ public interface UserGroupMapper {
      * @return
      */
     UserGroup findOneById(@Param("openId") String openId,
-                          @Param("groupId") String groupId);
+                          @Param("groupId") String groupId,
+                          @Param("cardId") String cardId);
 
     /**
      * 接口描述：查询群列表

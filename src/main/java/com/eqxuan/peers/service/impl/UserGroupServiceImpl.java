@@ -81,7 +81,7 @@ public class UserGroupServiceImpl implements UserGroupService {
             saveUserGroup.setPrepare(GroupShareFlagEnum.FLAG_BY_ME.getKey());
         }
 
-        UserGroup checkUserGroup = userGroupMapper.findOneById(userGroup.getOtherOpenId(), openGId);
+        UserGroup checkUserGroup = userGroupMapper.findOneById(userGroup.getOtherOpenId(), openGId, userGroup.getCardId());
 
         int rows;
         if (null == checkUserGroup) {
