@@ -261,6 +261,15 @@
         where open_id=#{openId}
     </select>
 
+    <select id="findCardListByOpenId" resultType="com.eqxuan.peers.dto.ReturnCardDTO">
+        SELECT uc.id as id, uc.username as username, uc.user_wechat as userWechat, uc.user_company as userCompany, uc.user_industry as userIndustry, uc.user_city as userCity,
+          uc.user_job as userJob, uc.user_img as userImg, uc.user_phone as userPhone, uc.user_email as userEmail, uc.synopsis as synopsis, uc.demand as demand, uc.resources as resources,
+          uc.give_like_num as giveLikeNum, uc.card_type as cardType, uc.prepare as prepare, uc.home_page as homePage, uc.company_page as companyPage, count(1) AS saveNum
+        FROM user_card uc, user_peer up
+        WHERE uc.open_id = #{openId} AND up.card_id = uc.id
+        ORDER BY uc.ct_time ASC
+    </select>
+
     <select id="findCardByParam" parameterType="com.eqxuan.peers.dao.UserCard" resultMap="UserCardMapperResultMap">
         select <include refid="Base_Column_List"/>
         from user_card

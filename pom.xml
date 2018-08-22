@@ -229,12 +229,16 @@
             <groupId>com.qcloud</groupId>
             <artifactId>qcloud-java-sdk</artifactId>
             <version>2.0.1</version>
-        </dependency>   		<!-- SMS -->
+        </dependency>
+
+        <!-- SMS -->
         <dependency>
             <groupId>com.github.qcloudsms</groupId>
             <artifactId>qcloudsms</artifactId>
             <version>1.0.5</version>
-        </dependency>    </dependencies>
+        </dependency>
+
+    </dependencies>
 
     <build>
         <finalName>peers</finalName>
