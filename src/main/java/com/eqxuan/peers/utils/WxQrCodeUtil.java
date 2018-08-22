@@ -151,9 +151,9 @@ public class WxQrCodeUtil {
      * 接口描述：替换小程序码中的中央LOGO
      * @param miniQrCodeInputStream 小程序码原码
      * @param centerImg 用来替换小程序码的中央图片
-     * @param pathName 保存路径
+     * @param fileName 图片名称
      */
-    public static String makeInRound(InputStream miniQrCodeInputStream, BufferedImage centerImg, String pathName){
+    public static File makeInRound(InputStream miniQrCodeInputStream, BufferedImage centerImg, String fileName){
         try {
             //读取小程序码
             BufferedImage appletImg = ImageIO.read(miniQrCodeInputStream);
@@ -163,25 +163,15 @@ public class WxQrCodeUtil {
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
-            //获取化圆后的缩放图片，用来替换小程序码的中央图案
+            //获取圆形的缩放图片，用来替换小程序码的中央图案
             g2d.drawImage(centerImg.getScaledInstance(centerImg.getWidth(), centerImg.getHeight(), Image.SCALE_SMOOTH), (appletImg.getWidth() - centerImg.getWidth()) / 2, (appletImg.getHeight() - centerImg.getHeight()) / 2, null);
 
             // 关闭资源
             g2d.dispose();
             //生成新的小程序码
-
-            File file = new File(pathName);
-            File fileParent = file.getParentFile();
-            //判断是否存在
-            if (!fileParent.exists()) {
-                //创建父目录文件
-                fileParent.mkdirs();
-            }
-            file.createNewFile();
-
+            File file = new File(fileName);
             ImageIO.write(appletImg, "png", file);
-            String newWxQrCode = file.getCanonicalPath();
-            return newWxQrCode;
+            return file;
         } catch (Exception e) {
             e.printStackTrace();
             return null;

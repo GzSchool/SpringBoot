@@ -143,7 +143,7 @@
       select uc.id as id, uc.username as username, uc.user_wechat as userWechat, uc.user_company as userCompany, uc.user_industry as userIndustry,
         uc.user_city as userCity, uc.user_job as userJob, uc.user_img as userImg, uc.user_phone as userPhone, uc.user_email as userEmail,
         uc.synopsis as synopsis, uc.demand as demand, uc.resources as resources, uc.give_like_num as giveLikeNum ,uc.card_type as cardType, up.save_flag as saveFlag,
-        uc.home_page as homePage, uc.company_page as companyPage
+        uc.home_page as homePage, uc.company_page as companyPage, uc.photo as photo
         from user_group ug, user_card uc
         LEFT JOIN user_peer up
         ON up.open_id=#{openId} AND uc.id = up.card_id
@@ -165,7 +165,7 @@
         select uc.id as id, uc.username as username, uc.user_wechat as userWechat, uc.user_company as userCompany, uc.user_industry as userIndustry,
         uc.user_city as userCity, uc.user_job as userJob, uc.user_img as userImg, uc.user_phone as userPhone, uc.user_email as userEmail,
         uc.synopsis as synopsis, uc.demand as demand, uc.resources as resources, uc.give_like_num as giveLikeNum , uc.card_type as cardType,up.save_flag as saveFlag,
-        uc.home_page as homePage, uc.company_page as companyPage
+        uc.home_page as homePage, uc.company_page as companyPage, uc.photo as photo
         from user_group ug, user_card uc
         LEFT JOIN user_peer up
         ON up.open_id=#{openId} AND uc.id = up.card_id

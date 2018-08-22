@@ -101,4 +101,38 @@ public class UserCardController {
             return AjaxResultDTO.failed("搜索名片异常");
         }
     }
+
+    @PostMapping("/saveCard")
+    @ResponseBody
+    @ApiOperation(value = "用户添加名片")
+    public AjaxResultDTO saveCard(@RequestBody @ApiParam(name = "用户卡片对象",value = "传入Json格式的值", required = true) UserCard userCard,
+                                  HttpServletResponse response) {
+        try {
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            int cardId = userCardService.save(userCard);
+            return AjaxResultDTO.success(cardId);
+        } catch (PeerProjectException ppe) {
+            return AjaxResultDTO.failed(ppe.getMessage());
+        } catch (Exception e) {
+            logger.error("【用户添加名片异常】：{}", e);
+            return AjaxResultDTO.failed("用户添加名片异常");
+        }
+    }
+
+    @PostMapping("/updateCard")
+    @ResponseBody
+    @ApiOperation(value = "用户修改名片")
+    public AjaxResultDTO updateCard(@RequestBody @ApiParam(name = "用户卡片对象",value = "传入Json格式的值", required = true) UserCard userCard,
+                                    HttpServletResponse response) {
+        try {
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            userCardService.update(userCard);
+            return AjaxResultDTO.success();
+        } catch (PeerProjectException ppe) {
+            return AjaxResultDTO.failed(ppe.getMessage());
+        } catch (Exception e) {
+            logger.error("【用户修改名片异常】：{}", e);
+            return AjaxResultDTO.failed("用户修改名片异常");
+        }
+    }
 }

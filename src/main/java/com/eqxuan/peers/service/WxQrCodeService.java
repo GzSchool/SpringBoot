@@ -15,9 +15,11 @@ public interface WxQrCodeService {
      * @param scene 参数
      * @param page 跳转位置
      * @param openId 当前用户ID
+     * @param cardId 当前名片ID
+     * @param index 图片别名
      * @return
      */
-    String makeWxQrCode(String userPhotoUrl, String scene, String page, String openId);
+    String makeWxQrCode(String userPhotoUrl, String scene, String page, String openId, String cardId, String index);
 
     /**
      * 图片上传
