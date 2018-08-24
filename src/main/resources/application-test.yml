@@ -17,14 +17,12 @@ spring:
       max-active: 400 #指定连接池中最大的活跃连接数.
       max-wait: 10000 #指定连接池等待连接返回的最大等待时间，毫秒单位.
       min-idle: 100 #指定必须保持连接的最小值
-  resources:
-      static-locations: file:${web.upload-path},file:${web.front-path}
 
   # redis配置
   redis:
-    database: 1 #数据库名称，默认为db0
-    host: 123.206.64.219 #服务器地址
-    password: #数据库密码
+    database: 0 #数据库名称，默认为db0
+    host: 180.97.243.16 #服务器地址
+    password: gzwh20180618# #数据库密码
     port: 6379  #连接端口号
     pool:
       max-active: 8 # 连接池最大连接数（使用负值表示没有限制）
@@ -48,8 +46,9 @@ SMS:
   AppKey: edd6cfa10c3ab1e2a3e4d936aa398ef1
   sign: 名片Live
   code:
-    templateID: 177929
+    templateID: 177929  #短信验证码模板
 
+#日志
 logging:
   pattern:
     console: "%d - %msg%n"
@@ -57,10 +56,6 @@ logging:
   level.com.eqxuan: debug
   path: logs/
   file: eqxuan-peers.log
-
-web:
-  upload-path: c:/userImg/
-  front-path: c:/userImg/
 
 # 腾讯云对象存储属性
 COS:
