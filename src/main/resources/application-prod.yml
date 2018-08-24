@@ -62,5 +62,5 @@ COS:
   AppId: 1257190605
   SecretId: AKIDYR8bqqoBbnAML6Hv0qUt2yf9ORGqoJAs
   SecretKey: e4FAtPfmfMo0NWR7Zq0xf7JHzSfrqeDY
-  BucketName: gzwh-image-1257190605
-  DomainName: https://gzwh-image-1257190605.cos-website.ap-beijing.myqcloud.com
+  BucketName: cardlive-image-1257190605
+  DomainName: https://cardlive-image-1257190605.cos-website.ap-beijing.myqcloud.com
