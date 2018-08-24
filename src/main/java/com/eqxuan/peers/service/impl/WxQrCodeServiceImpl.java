@@ -1,7 +1,9 @@
 package com.eqxuan.peers.service.impl;
 
 import com.eqxuan.peers.config.MiniAppBean;
+import com.eqxuan.peers.dao.UserCard;
 import com.eqxuan.peers.exception.PeerProjectException;
+import com.eqxuan.peers.mapper.UserCardMapper;
 import com.eqxuan.peers.service.WxQrCodeService;
 import com.eqxuan.peers.utils.CosFileUploadUtil;
 import com.eqxuan.peers.utils.WxQrCodeUtil;
@@ -16,6 +18,10 @@ import javax.annotation.Resource;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @Auther: zheng guangjing.
@@ -30,6 +36,9 @@ public class WxQrCodeServiceImpl implements WxQrCodeService {
 
     @Resource
     private CosFileUploadUtil cosFileUploadUtil;
+
+    @Resource
+    private UserCardMapper userCardMapper;
 
     @Override
     public String makeWxQrCode(String userPhotoUrl, String scene, String page, String openId, String cardId, String index) {
@@ -61,9 +70,25 @@ public class WxQrCodeServiceImpl implements WxQrCodeService {
     }
 
     @Override
-    public String fileUpload(String openId, String cardId, MultipartFile[] multipartFiles, String index) {
+    public synchronized List<String> fileUpload(String openId, String cardId, MultipartFile[] multipartFiles, String index) {
         try {
-            StringBuffer stringBuffer = new StringBuffer();
+
+            if (StringUtils.isEmpty(openId) || StringUtils.isEmpty(cardId) || StringUtils.isEmpty(index)) {
+                throw new PeerProjectException("参数缺失");
+            }
+            if (null == multipartFiles || "".equals(multipartFiles)) {
+                throw new PeerProjectException("获取图片失败 ");
+            }
+
+            UserCard checkUserCard = userCardMapper.findById(Integer.parseInt(cardId));
+            if (null == checkUserCard) {
+                throw new PeerProjectException("名片不存在");
+            }
+            if (!checkUserCard.getOpenId().equals(openId)) {
+                throw new PeerProjectException("该名片不属于你，不能修改");
+            }
+
+            StringBuffer stringBuffer = new StringBuffer(checkUserCard.getPhoto());
             for (int i = 0; i < multipartFiles.length; i++) {
                 File file = null;
                 if (multipartFiles[i].equals("") || multipartFiles[i].getSize() <= 0) {
@@ -73,13 +98,83 @@ public class WxQrCodeServiceImpl implements WxQrCodeService {
                     file = new File(multipartFiles[i].getOriginalFilename());
                     cosFileUploadUtil.inputStreamToFile(inputStream, file);
                 }
-                stringBuffer.append(cosFileUploadUtil.picCOS(file, openId, cardId, index) + ",");
+                String imgUrl = cosFileUploadUtil.picCOS(file, openId, cardId, index);
+
+                if ("touxiang".equals(index)) {
+                    checkUserCard.setUserImg(imgUrl);
+                    int rows = userCardMapper.update(checkUserCard);
+                    if (1 != rows) {
+                        throw new PeerProjectException("上传头像失败");
+                    }
+                } else {
+                    if (StringUtils.isEmpty(stringBuffer.toString())) {
+                        checkUserCard.setPhoto(stringBuffer.append(imgUrl + ";").toString());
+                        int rows = userCardMapper.update(checkUserCard);
+                        if (1 != rows) {
+                            throw new PeerProjectException("上传相册失败");
+                        }
+                    } else {
+                        String[] photoUrls = stringBuffer.toString().split(";");
+                        if (!Arrays.asList(photoUrls).contains(imgUrl)) {
+                            checkUserCard.setPhoto(stringBuffer.append(imgUrl + ";").toString());
+                            int rows = userCardMapper.update(checkUserCard);
+                            if (1 != rows) {
+                                throw new PeerProjectException("上传相册失败");
+                            }
+                        }
+                    }
+                }
                 File del = new File(file.toURI());
                 del.delete();
             }
-            return stringBuffer.toString();
+
+            String[] result = stringBuffer.toString().split(";");
+            List<String> urls = Arrays.asList(result);
+            return urls;
         } catch (Exception e) {
             throw new PeerProjectException("上传图片异常");
         }
+    }
+
+    @Override
+    public void delFile(String delFileUrl, String openId, String cardId) {
+
+        if (StringUtils.isEmpty(delFileUrl) || StringUtils.isEmpty(openId) || StringUtils.isEmpty(cardId)) {
+            throw new PeerProjectException("参数缺失");
+        }
+
+        UserCard checkUserCard = userCardMapper.findById(Integer.parseInt(cardId));
+        if (null == checkUserCard) {
+            throw new PeerProjectException("该名片不存在");
+        }
+        if (!checkUserCard.getOpenId().equals(openId)) {
+            throw new PeerProjectException("改名片不属于你，不能修改");
+        }
+
+        String[] photoUrls = checkUserCard.getPhoto().split(";");
+
+        List<String> stringPhotos = Arrays.asList(photoUrls);
+        List<String> photoList = new ArrayList<String>(stringPhotos);
+        Iterator<String> iterator = photoList.iterator();
+        while (iterator.hasNext()) {
+            String photo = iterator.next();
+            if (photo.equals(delFileUrl)) {
+                iterator.remove();
+            }
+        }
+        StringBuffer stringBuffer = new StringBuffer();
+        for (String residueUrl : photoList) {
+            stringBuffer.append(residueUrl + ";");
+        }
+
+        checkUserCard.setPhoto(stringBuffer.toString());
+        int rows = userCardMapper.update(checkUserCard);
+        if (1 != rows) {
+            throw new PeerProjectException("删除文件异常");
+        }
+
+        String[] index = delFileUrl.split("com/");
+
+        cosFileUploadUtil.delFileCOS(index[1]);
     }
 }

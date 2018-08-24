@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * @author: zheng guangjing.
@@ -58,7 +59,7 @@ public class FileController {
     @PostMapping("/fileUpload")
     @ResponseBody
     @ApiOperation(value = "上传图片")
-    public AjaxResultDTO fileUpload(HttpServletRequest request,
+    public List<String> fileUpload(HttpServletRequest request,
                                     HttpServletResponse response,
                                     @RequestParam(value = "file", required = false) MultipartFile[] multipartFiles) {
         try {
@@ -66,11 +67,32 @@ public class FileController {
             String openId = request.getParameter("openId");
             String cardId = request.getParameter("cardId");
             String index = request.getParameter("index");
-            String url = wxQrCodeService.fileUpload(openId, cardId, multipartFiles, index);
-            return AjaxResultDTO.success(url);
+            List<String> photoUrlVOS = wxQrCodeService.fileUpload(openId, cardId, multipartFiles, index);
+            return photoUrlVOS;
         } catch (Exception e) {
             logger.error("【上传图片异常】：{}", e);
-            return AjaxResultDTO.failed("上传图片异常");
+            return null;
+        }
+    }
+
+    @GetMapping("/delFile")
+    @ResponseBody
+    @ApiOperation(value = "删除文件")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "delFileUrl", value = "文件地址", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "openId", value = "用户标识", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "cardId", value = "名片ID", required = true, dataType = "String")
+    })
+    public AjaxResultDTO delFile(String delFileUrl, String openId, String cardId, HttpServletResponse response) {
+        try {
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            wxQrCodeService.delFile(delFileUrl, openId, cardId);
+            return AjaxResultDTO.success();
+        } catch (PeerProjectException ppe) {
+            return AjaxResultDTO.failed(ppe.getMessage());
+        } catch (Exception e) {
+            logger.error("【删除文件异常】：{}", e);
+            return AjaxResultDTO.failed("删除文件异常");
         }
     }
 }

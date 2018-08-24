@@ -258,7 +258,7 @@
     <select id="findOneByOpenId" resultMap="UserCardMapperResultMap">
         select <include refid="Base_Column_List"/>
         from user_card
-        where open_id=#{openId}
+        where open_id=#{openId} and del_flag=1
     </select>
 
     <select id="findCardListByOpenId" resultType="com.eqxuan.peers.dto.ReturnCardDTO">

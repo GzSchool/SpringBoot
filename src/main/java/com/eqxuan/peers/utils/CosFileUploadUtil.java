@@ -65,6 +65,22 @@ public class CosFileUploadUtil {
     }
 
     /**
+     * 文件删除
+     * @param key 文件名称
+     */
+    public void delFileCOS(String key) {
+        COSCredentials cred = new BasicCOSCredentials(cosConfig.getSecretId(), cosConfig.getSecretKey());
+
+        // 设置bucket的区域，COS区域简称，参考腾讯云 官网
+        // https://cloud.tencent.com/document/product/436/6224
+        ClientConfig clientConfig = new ClientConfig(new Region("ap-beijing"));
+        // 生成cos客户端
+        COSClient cosClient = new COSClient(cred, clientConfig);
+
+        cosClient.deleteObject(cosConfig.getBucketName(), key);
+    }
+
+    /**
      * MultipartFile 转换为 File
      * @param ins
      * @param file

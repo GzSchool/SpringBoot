@@ -2,6 +2,8 @@ package com.eqxuan.peers.service;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 /**
  * @Auther: zheng guangjing.
  * @Date: 2018/8/12 16:55
@@ -29,5 +31,13 @@ public interface WxQrCodeService {
      * @param index
      * @return
      */
-    String fileUpload(String openId, String cardId, MultipartFile[] multipartFile, String index);
+    List<String> fileUpload(String openId, String cardId, MultipartFile[] multipartFile, String index);
+
+    /**
+     * 删除文件
+     * @param delFileUrl
+     * @param openId
+     * @param cardId
+     */
+    void delFile(String delFileUrl, String openId, String cardId);
 }
