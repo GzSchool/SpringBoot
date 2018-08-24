@@ -75,12 +75,18 @@ public class UserGroupController {
 
     @GetMapping("/findUserGroupByParam")
     @ResponseBody
-    @ApiOperation(value = "根据用户传入的参数查询指定信息")
-    public AjaxResultDTO findUserGroupByParam(
-            @ApiParam(name = "用户传递的对象", value = "传入的JSON值", required = true) UserGroup userGroup,
-            HttpServletResponse response) {
+    @ApiOperation(value = "查询用户群列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "openId", value = "当前用户", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "prepare", value = "用户名片是否本人主动分享到群（1-本人操作，2-他人操作）", required = true, dataType = "String")
+
+    })
+    public AjaxResultDTO findUserGroupByParam(String openId, String prepare, HttpServletResponse response) {
         try {
             response.setHeader("Access-Control-Allow-Origin", "*");
+            UserGroup userGroup = new UserGroup();
+            userGroup.setOpenId(openId);
+            userGroup.setPrepare(prepare);
             List<ReturnGroupDTO> returnGroupDTOS = userGroupService.findUserGroupByParam(userGroup);
             return AjaxResultDTO.success(returnGroupDTOS);
         } catch(PeerProjectException ppe) {

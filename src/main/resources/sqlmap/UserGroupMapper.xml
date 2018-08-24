@@ -77,6 +77,9 @@
     <update id="update" parameterType="com.eqxuan.peers.dao.UserGroup">
         update user_group
         <set>
+            <if test="null != cardId">
+                card_id=#{cardId},
+            </if>
             <if test="null != appId">
                 app_id=#{appId},
             </if>
@@ -96,7 +99,7 @@
                 hint=#{hint},
             </if>
         </set>
-        where open_id=#{openId} and group_id=#{groupId} and card_id=#{cardId}
+        where open_id=#{openId} and group_id=#{groupId}
     </update>
 
     <update id="hintOthers">
