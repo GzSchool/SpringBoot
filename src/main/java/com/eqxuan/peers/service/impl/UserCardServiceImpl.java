@@ -107,7 +107,7 @@ public class UserCardServiceImpl implements UserCardService {
     public UserCard findOneById(String id) {
 
         if (StringUtils.isEmpty(id)) {
-            throw new PeerProjectException("用户未登陆");
+            throw new PeerProjectException("请选择您要查看的名片");
         }
         UserCard userCard = cacheManager.getUserCardById(id);
         if (null == userCard) {
@@ -157,6 +157,7 @@ public class UserCardServiceImpl implements UserCardService {
         }
         UserCard queryUserCard = new UserCard();
         queryUserCard.setOpenId(userCard.getOpenId());
+        queryUserCard.setDelFlag(1);
         List<UserCard> userCardList = userCardMapper.findCardByParam(queryUserCard);
         // 单人创建名片最大数
         int cardNum = 5;

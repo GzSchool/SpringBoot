@@ -5,6 +5,7 @@ import com.eqxuan.peers.dao.UserCard;
 import com.eqxuan.peers.exception.PeerProjectException;
 import com.eqxuan.peers.mapper.UserCardMapper;
 import com.eqxuan.peers.service.WxQrCodeService;
+import com.eqxuan.peers.service.cache.CacheManager;
 import com.eqxuan.peers.utils.CosFileUploadUtil;
 import com.eqxuan.peers.utils.WxQrCodeUtil;
 import com.eqxuan.peers.utils.WxTemplateUtil;
@@ -39,6 +40,9 @@ public class WxQrCodeServiceImpl implements WxQrCodeService {
 
     @Resource
     private UserCardMapper userCardMapper;
+
+    @Resource
+    private CacheManager cacheManager;
 
     @Override
     public String makeWxQrCode(String userPhotoUrl, String scene, String page, String openId, String cardId, String index) {
@@ -88,7 +92,7 @@ public class WxQrCodeServiceImpl implements WxQrCodeService {
                 throw new PeerProjectException("该名片不属于你，不能修改");
             }
 
-            StringBuffer stringBuffer = new StringBuffer(checkUserCard.getPhoto());
+            StringBuffer stringBuffer = new StringBuffer();
             for (int i = 0; i < multipartFiles.length; i++) {
                 File file = null;
                 if (multipartFiles[i].equals("") || multipartFiles[i].getSize() <= 0) {
@@ -101,18 +105,21 @@ public class WxQrCodeServiceImpl implements WxQrCodeService {
                 String imgUrl = cosFileUploadUtil.picCOS(file, openId, cardId, index);
 
                 if ("touxiang".equals(index)) {
+                    stringBuffer = new StringBuffer(imgUrl);
                     checkUserCard.setUserImg(imgUrl);
                     int rows = userCardMapper.update(checkUserCard);
                     if (1 != rows) {
                         throw new PeerProjectException("上传头像失败");
                     }
                 } else {
+                    stringBuffer = new StringBuffer(checkUserCard.getPhoto());
                     if (StringUtils.isEmpty(stringBuffer.toString())) {
                         checkUserCard.setPhoto(stringBuffer.append(imgUrl + ";").toString());
                         int rows = userCardMapper.update(checkUserCard);
                         if (1 != rows) {
                             throw new PeerProjectException("上传相册失败");
                         }
+
                     } else {
                         String[] photoUrls = stringBuffer.toString().split(";");
                         if (!Arrays.asList(photoUrls).contains(imgUrl)) {
@@ -124,6 +131,9 @@ public class WxQrCodeServiceImpl implements WxQrCodeService {
                         }
                     }
                 }
+                // 更新缓存
+                cacheManager.cacheUserCard(checkUserCard);
+
                 File del = new File(file.toURI());
                 del.delete();
             }
@@ -172,6 +182,9 @@ public class WxQrCodeServiceImpl implements WxQrCodeService {
         if (1 != rows) {
             throw new PeerProjectException("删除文件异常");
         }
+
+        // 更新缓存
+        cacheManager.cacheUserCard(checkUserCard);
 
         String[] index = delFileUrl.split("com/");
 
