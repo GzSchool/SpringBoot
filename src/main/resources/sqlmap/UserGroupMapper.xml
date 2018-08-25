@@ -6,16 +6,14 @@
                type="com.eqxuan.peers.dao.UserGroup">
         <id column="group_id" property="groupId"/>
         <result column="open_id" property="openId"/>
-        <result column="card_id" property="cardId"/>
-        <result column="app_id" property="appId"/>
         <result column="del_flag" property="delFlag"/>
         <result column="ct_time" property="ctTime"/>
         <result column="up_time" property="upTime"/>
-        <result column="prepare" property="prepare"/>
+        <result column="share" property="share"/>
         <result column="hint" property="hint"/>
     </resultMap>
     <sql id="Base_Column_List">
-        group_id, open_id, card_id, app_id, del_flag, ct_time, up_time, prepare, hint
+        group_id, open_id, del_flag, ct_time, up_time, share, hint
     </sql>
 
     <insert id="save" parameterType="com.eqxuan.peers.dao.UserGroup" useGeneratedKeys="true" keyProperty="id">
@@ -24,14 +22,8 @@
             <if test="null != groupId">
                 group_id,
             </if>
-            <if test="null != cardId">
-                card_id,
-            </if>
             <if test="null != openId">
                 open_id,
-            </if>
-            <if test="null != appId">
-                app_id,
             </if>
             <if test="null != delFlag">
                 del_flag,
@@ -42,8 +34,8 @@
             <if test="null != upTime">
                 up_time
             </if>
-            <if test="null != prepare">
-                prepare
+            <if test="null != share">
+                share
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -52,12 +44,6 @@
             </if>
             <if test="null != openId">
                 #{openId},
-            </if>
-            <if test="null != cardId">
-                #{cardId},
-            </if>
-            <if test="null != appId">
-                #{appId},
             </if>
             <if test="null != delFlag">
                 #{delFlag},
@@ -68,8 +54,8 @@
             <if test="null != upTime">
                 #{upTime},
             </if>
-            <if test="null != prepare">
-                #{prepare},
+            <if test="null != share">
+                #{share},
             </if>
         </trim>
     </insert>
@@ -77,12 +63,6 @@
     <update id="update" parameterType="com.eqxuan.peers.dao.UserGroup">
         update user_group
         <set>
-            <if test="null != cardId">
-                card_id=#{cardId},
-            </if>
-            <if test="null != appId">
-                app_id=#{appId},
-            </if>
             <if test="null != delFlag">
                 del_flag=#{delFlag},
             </if>
@@ -92,14 +72,14 @@
             <if test="null != upTime">
                 up_time=#{upTime},
             </if>
-            <if test="null != prepare">
-                prepare=#{prepare},
+            <if test="null != share">
+                share=#{share},
             </if>
             <if test="null != hint">
                 hint=#{hint},
             </if>
         </set>
-        where open_id=#{openId} and group_id=#{groupId}
+        where open_id=#{openId} AND group_id=#{groupId}
     </update>
 
     <update id="hintOthers">
@@ -108,95 +88,23 @@
         WHERE group_id=#{groupId} AND open_id != #{openId};
     </update>
 
-    <select id="findOneById" resultMap="UserGroupMapperResultMap">
+    <select id="findGroup" resultMap="UserGroupMapperResultMap">
         select <include refid="Base_Column_List"/>
         from user_group
-        where open_id=#{openId} and group_id=#{groupId} and card_id=#{cardId}
+        where open_id=#{openId} AND group_id=#{groupId}
     </select>
 
-    <select id="findUserGroupByParam" parameterType="com.eqxuan.peers.dao.UserGroup" resultMap="UserGroupMapperResultMap">
+    <select id="findUserGroupList" parameterType="com.eqxuan.peers.dao.UserGroup" resultMap="UserGroupMapperResultMap">
         select <include refid="Base_Column_List"/>
         from user_group
         <where>
             <if test="null != openId">
-                and open_id=#{openId}
+                AND open_id=#{openId}
             </if>
-            <if test="null != groupId">
-                and group_id=#{groupId}
-            </if>
-            <if test="null != appId">
-                and app_id=#{appId}
-            </if>
-            <if test="null != delFlag">
-                and del_flag=#{delFlag}
-            </if>
-            <if test="null != ctTime">
-                and ct_time=#{ctTime}
-            </if>
-            <if test="null != upTime">
-                and up_time=#{upTime}
-            </if>
-            <if test="null != prepare">
-                and prepare=#{prepare}
+            <if test="null != share">
+                AND share=#{share}
             </if>
         </where>
     </select>
 
-    <select id="findCardsOnGroupByOpenId" resultType="com.eqxuan.peers.dto.ReturnCardDTO">
-      select uc.id as id, uc.username as username, uc.user_wechat as userWechat, uc.user_company as userCompany, uc.user_industry as userIndustry,
-        uc.user_city as userCity, uc.user_job as userJob, uc.user_img as userImg, uc.user_phone as userPhone, uc.user_email as userEmail,
-        uc.synopsis as synopsis, uc.demand as demand, uc.resources as resources, uc.give_like_num as giveLikeNum ,uc.card_type as cardType, up.save_flag as saveFlag,
-        uc.home_page as homePage, uc.company_page as companyPage, uc.photo as photo
-        from user_group ug, user_card uc
-        LEFT JOIN user_peer up
-        ON up.open_id=#{openId} AND uc.id = up.card_id
-        where  ug.open_id!=#{openId} AND ug.group_id=#{groupId} AND uc.open_id=ug.open_id
-        order by up.save_flag asc
-    </select>
-
-    <!--
-    <select id="findAllGroupCardByParam" resultType="com.eqxuan.peers.dto.ReturnCardDTO">
-       select uc.id as id, uc.username as username, uc.user_wechat as userWechat, uc.user_company as userCompany, uc.user_industry as userIndustry, uc.user_city as userCity,
-       uc.user_job as userJob, uc.user_img as userImg, uc.user_phone as userPhone, uc.user_email as userEmail, uc.synopsis as synopsis, uc.demand as demand,
-       uc.resources as resources, uc.give_like_num as giveLikeNum, uc.prepare as prepare
-       from user_card uc, user_group ug
-       where CONCAT(uc.username, uc.user_wechat, uc.user_company, uc.user_industry, uc.user_city, uc.user_job)
-       like CONCAT('%',#{param},'%' ) and ug.group_id = #{groupId} AND ug.open_id!= #{openId} AND uc.open_id=ug.open_id order by CONVERT( uc.prepare USING gbk ) COLLATE gbk_chinese_ci ASC
-    </select>
-    -->
-    <select id="findAllGroupCardByParam" resultType="com.eqxuan.peers.dto.ReturnCardDTO">
-        select uc.id as id, uc.username as username, uc.user_wechat as userWechat, uc.user_company as userCompany, uc.user_industry as userIndustry,
-        uc.user_city as userCity, uc.user_job as userJob, uc.user_img as userImg, uc.user_phone as userPhone, uc.user_email as userEmail,
-        uc.synopsis as synopsis, uc.demand as demand, uc.resources as resources, uc.give_like_num as giveLikeNum , uc.card_type as cardType,up.save_flag as saveFlag,
-        uc.home_page as homePage, uc.company_page as companyPage, uc.photo as photo
-        from user_group ug, user_card uc
-        LEFT JOIN user_peer up
-        ON up.open_id=#{openId} AND uc.id = up.card_id
-        where CONCAT(uc.username, uc.user_wechat, uc.user_company, uc.user_industry, uc.user_city, uc.user_job)
-        like CONCAT('%',#{param},'%') and ug.group_id=#{groupId} AND ug.open_id!=#{openId} AND uc.open_id=ug.open_id
-        order by CONVERT( uc.prepare USING gbk ) COLLATE gbk_chinese_ci ASC
-    </select>
-    
-    <select id="countByNoSave" resultType="com.eqxuan.peers.dto.GroupNoSaveNumDTO">
-        select up.save_flag as saveFlag, COUNT(1) as num
-        from user_group ug, user_card uc
-        LEFT JOIN user_peer up
-        ON up.open_id=#{openId} AND uc.id = up.card_id
-        WHERE ug.open_id!=#{openId} AND ug.group_id=#{groupId} AND uc.open_id=ug.open_id
-        GROUP BY up.save_flag
-    </select>
-
-    <select id="getNineBeforeByGroupId" resultType="String">
-        SELECT uc.user_img as userImg
-        FROM user_group ug, user_card uc
-        WHERE ug.group_id=#{groupId} AND ug.open_id=uc.open_id AND uc.del_falg = 1
-        LIMIT 0,9
-    </select>
-
-    <!--
-    <delete id="deleteByCardId">
-        delete from user_group
-        where card_id=#{cardId}
-    </delete>
-    -->
 </mapper>
