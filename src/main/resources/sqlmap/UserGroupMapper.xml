@@ -189,7 +189,8 @@
     <select id="getNineBeforeByGroupId" resultType="String">
         SELECT uc.user_img as userImg
         FROM user_group ug, user_card uc
-        WHERE ug.group_id=#{groupId} AND ug.open_id=uc.open_id LIMIT 0,9
+        WHERE ug.group_id=#{groupId} AND ug.open_id=uc.open_id AND uc.del_falg = 1
+        LIMIT 0,9
     </select>
 
     <!--
