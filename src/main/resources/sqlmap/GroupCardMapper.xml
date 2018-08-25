@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.eqxuan.peers.mapper.GroupCardMapper">
+
+    <resultMap id="GroupCardMapperResultMap" type="com.eqxuan.peers.dao.GroupCard">
+        <id column="group_id" property="groupId"/>
+        <result column="open_id" property="openId"/>
+        <result column="card_id" property="cardId"/>
+        <result column="ct_time" property="ctTime"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        group_id, open_id, card_id, ct_time
+    </sql>
+
+    <insert id="save" parameterType="com.eqxuan.peers.dao.GroupCard" useGeneratedKeys="true" keyProperty="id">
+        insert into group_card
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="null != groupId">
+                group_id,
+            </if>
+            <if test="null != openId">
+                open_id,
+            </if>
+            <if test="null != cardId">
+                card_id,
+            </if>
+            <if test="null != ctTime">
+                ct_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="null != groupId">
+                #{groupId},
+            </if>
+            <if test="null != openId">
+                #{openId},
+            </if>
+            <if test="null != cardId">
+                #{cardId},
+            </if>
+            <if test="null != ctTime">
+                #{ctTime},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="countSaveOrNot" resultType="com.eqxuan.peers.dto.GroupNoSaveNumDTO">
+        select up.save_flag as saveFlag, COUNT(1) as num
+        from group_card gc, user_card uc
+        LEFT JOIN user_peer up
+        ON up.open_id=#{openId} AND uc.id = up.card_id
+        WHERE gc.group_id=#{groupId} AND uc.id=gc.card_id AND gc.open_id!=#{openId}
+        GROUP BY up.save_flag;
+    </select>
+
+    <select id="getNinePhotoByGroupId" resultType="String">
+        SELECT DISTINCT(uc.user_img) AS userImg
+        FROM group_card gc, user_card uc
+        WHERE gc.group_id=#{groupId} AND gc.open_id=uc.open_id AND uc.del_falg = 1
+        ORDER BY gc.ct_time ASC
+        LIMIT 0,9
+    </select>
+
+    <select id="getOwnerCardsOnGroup" resultType="com.eqxuan.peers.dto.ReturnCardDTO">
+        SELECT uc.id as id, uc.username as username, uc.user_wechat as userWechat, uc.user_company as userCompany, uc.user_industry as userIndustry,
+          uc.user_city as userCity, uc.user_job as userJob, uc.user_img as userImg, uc.user_phone as userPhone, uc.user_email as userEmail,
+          uc.synopsis as synopsis, uc.demand as demand, uc.resources as resources, uc.give_like_num as giveLikeNum ,uc.card_type as cardType,
+          uc.home_page as homePage, uc.company_page as companyPage, uc.photo as photo
+        FROM group_card gc, user_card uc
+        WHERE gc.group_id=#{groupId} AND gc.open_id=#{openId} AND gc.card_id=uc.id AND uc.del_flag=1
+    </select>
+
+    <select id="getCardsOnGroup" resultType="com.eqxuan.peers.dto.ReturnCardDTO">
+        select uc.id as id, uc.username as username, uc.user_wechat as userWechat, uc.user_company as userCompany, uc.user_industry as userIndustry,
+          uc.user_city as userCity, uc.user_job as userJob, uc.user_img as userImg, uc.user_phone as userPhone, uc.user_email as userEmail,
+          uc.synopsis as synopsis, uc.demAND as demAND, uc.resources as resources, uc.give_like_num as giveLikeNum ,uc.card_type as cardType, up.save_flag as saveFlag,
+          uc.home_page as homePage, uc.company_page as companyPage, uc.photo as photo
+        from group_card gc, user_card uc
+        LEFT JOIN user_peer up
+        ON up.open_id=#{openId} AND uc.id = up.card_id
+        where gc.group_id=#{groupId} AND uc.id=gc.card_id AND gc.open_id!=#{openId}
+        order by up.save_flag asc
+    </select>
+
+    <select id="findAllGroupCardByParam" resultType="com.eqxuan.peers.dto.ReturnCardDTO">
+        select uc.id as id, uc.username as username, uc.user_wechat as userWechat, uc.user_company as userCompany, uc.user_industry as userIndustry,
+          uc.user_city as userCity, uc.user_job as userJob, uc.user_img as userImg, uc.user_phone as userPhone, uc.user_email as userEmail,
+          uc.synopsis as synopsis, uc.demAND as demAND, uc.resources as resources, uc.give_like_num as giveLikeNum , uc.card_type as cardType,up.save_flag as saveFlag,
+          uc.home_page as homePage, uc.company_page as companyPage, uc.photo as photo
+        from group_card gc, user_card uc
+        LEFT JOIN user_peer up
+        ON up.open_id=#{openId} AND uc.id = up.card_id
+        where gc.group_id=#{groupId} AND gc.open_id!=#{openId} AND uc.id=gc.card_id
+        AND CONCAT(uc.username, uc.user_wechat, uc.user_company, uc.user_industry, uc.user_city, uc.user_job)like CONCAT('%',#{param},'%')
+        order by CONVERT( uc.prepare USING gbk ) COLLATE gbk_chinese_ci ASC
+    </select>
+
+</mapper>
