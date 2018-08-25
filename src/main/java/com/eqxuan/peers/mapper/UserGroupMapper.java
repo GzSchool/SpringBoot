@@ -25,13 +25,14 @@ public interface UserGroupMapper {
 
     /**
      * 接口描述：查询当前群信息
-     * @param openId 当前用户标识
-     * @param groupId 当前群ID
+     * @param openId
+     * @param groupId
+     * @param cardId
      * @return
      */
     UserGroup findOneById(@Param("openId") String openId,
                           @Param("groupId") String groupId,
-                          @Param("cardId") String cardId);
+                          @Param("cardId") Integer cardId);
 
     /**
      * 接口描述：查询群列表
@@ -47,7 +48,6 @@ public interface UserGroupMapper {
      * @return
      */
     List<ReturnCardDTO> findCardsOnGroupByOpenId(@Param("openId") String openId,
-
                                                  @Param("groupId") String groupId);
 
     /**
