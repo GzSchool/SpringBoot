@@ -29,17 +29,10 @@ public class UserGroup {
 
     private Date upTime;
 
+    /** 分享来源（1-本人分享，2-他人分享）.*/
     private String share;
 
-    /** 微信加密信息（非表字段）.*/
-    private String encryptedData;
-
-    /** 偏移量（非表字段）.*/
-    private String iv;
-
-    /** 他人OpenId（非表字段）.*/
-    private String otherOpenId;
-
+    /** 红点提示信息 1:有提示  0:无提示.*/
     private Integer hint;
 
 }

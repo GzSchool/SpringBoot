@@ -7,6 +7,7 @@ import com.eqxuan.peers.dto.ReturnCardDTO;
 import com.eqxuan.peers.exception.PeerProjectException;
 import com.eqxuan.peers.service.UserGroupService;
 import com.eqxuan.peers.dto.ReturnGroupDTO;
+import com.eqxuan.peers.vo.UserGroupVO;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,7 +87,8 @@ public class UserGroupController {
             response.setHeader("Access-Control-Allow-Origin", "*");
             UserGroup userGroup = new UserGroup();
             userGroup.setOpenId(openId);
-            userGroup.setPrepare(prepare);
+            // TODO 查询share为1，及用户自己主动分享的群列表
+            userGroup.setShare(prepare);
             List<ReturnGroupDTO> returnGroupDTOS = userGroupService.findUserGroupByParam(userGroup);
             return AjaxResultDTO.success(returnGroupDTOS);
         } catch(PeerProjectException ppe) {
@@ -117,4 +119,22 @@ public class UserGroupController {
             return AjaxResultDTO.failed("参数群查询名片异常");
         }
     }
+
+    @PostMapping("/save")
+    @ResponseBody
+    @ApiOperation(value = "名片分享到群")
+    public AjaxResultDTO save(@RequestBody @ApiParam(name = "用户群对象", value = "传入的JSON值", required = true) UserGroupVO userGroupVO,
+                              HttpServletResponse response) {
+        try {
+            response.setHeader("Access-Control-Allow-Origin", "*");
+
+            return AjaxResultDTO.success();
+        } catch (PeerProjectException ppe) {
+            return AjaxResultDTO.failed(ppe.getMessage());
+        } catch (Exception e) {
+            logger.error("【名片分享异常】：{}", e);
+            return AjaxResultDTO.failed("名片分享异常");
+        }
+    }
+
 }

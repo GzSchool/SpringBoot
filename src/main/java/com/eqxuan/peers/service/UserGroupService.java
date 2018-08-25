@@ -4,6 +4,7 @@ import com.eqxuan.peers.dao.UserGroup;
 import com.eqxuan.peers.dto.PageDTO;
 import com.eqxuan.peers.dto.ReturnCardDTO;
 import com.eqxuan.peers.dto.ReturnGroupDTO;
+import com.eqxuan.peers.vo.UserGroupVO;
 
 import java.util.List;
 
@@ -49,4 +50,11 @@ public interface UserGroupService {
      * @return
      */
     int removeHint(String groupId, String openId);
+
+    /**
+     * 接口描述：用户分享名片到群（新）
+     * @param userGroupVO
+     * @return
+     */
+    String save(UserGroupVO userGroupVO);
 }

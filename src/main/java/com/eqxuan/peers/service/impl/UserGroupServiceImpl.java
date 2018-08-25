@@ -1,6 +1,7 @@
 package com.eqxuan.peers.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.eqxuan.peers.dao.GroupCard;
 import com.eqxuan.peers.dao.User;
 import com.eqxuan.peers.dao.UserGroup;
 import com.eqxuan.peers.dto.GroupNoSaveNumDTO;
@@ -11,6 +12,7 @@ import com.eqxuan.peers.mapper.UserGroupMapper;
 import com.eqxuan.peers.mapper.UserMapper;
 import com.eqxuan.peers.service.UserGroupService;
 import com.eqxuan.peers.utils.WxDecipherUtil;
+import com.eqxuan.peers.vo.UserGroupVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.eqxuan.peers.config.MiniAppBean;
@@ -220,5 +222,54 @@ public class UserGroupServiceImpl implements UserGroupService {
         userGroup.setHint(0);
         return userGroupMapper.update(userGroup);
     }
+
+    /**
+     * 接口描述：用户分享名片到群（新）
+     * @param userGroupVO
+     * @return
+     */
+    @Override
+    public String save(UserGroupVO userGroupVO) {
+
+        // 校验用户信息
+        User checkUser = userMapper.findOneByOpenId(userGroupVO.getMyOpenId());
+        if (null == checkUser) {
+            throw new PeerProjectException("用户未注册");
+        }
+        // 解密微信加密信息，获取openGId（群ID）
+        JSONObject jsonObject = wxDecipherUtil.getDecipherInfo(userGroupVO.getEncryptedData(), checkUser.getSessionKey(), userGroupVO.getIv());
+        if (null == jsonObject) {
+            throw new PeerProjectException("获取群ID失败");
+        }
+        String openGId = jsonObject.getString("openGId");
+        System.out.println("##################获取openGId：" + openGId);
+        // 判断分享的是否是他人名片
+        UserGroup saveUserGroup = new UserGroup();
+        int rows;
+        saveUserGroup.setOpenId(userGroupVO.getOtherOpenId());
+        saveUserGroup.setGroupId(openGId);
+        saveUserGroup.setCtTime(new Date());
+        if (!userGroupVO.getMyOpenId().equals(userGroupVO.getOtherOpenId())) {
+            saveUserGroup.setShare(GroupShareFlagEnum.FLAG_BY_OTHER.getKey());
+        } else {
+            saveUserGroup.setShare(GroupShareFlagEnum.FLAG_BY_ME.getKey());
+        }
+        
+        //userGroupMapper.
+
+        rows = userGroupMapper.save(saveUserGroup);
+        if (1 != rows) {
+            throw new PeerProjectException("用户绑定群异常");
+        }
+
+        // 判断名片是否在群中保存
+        GroupCard checkGroupCard = null;
+        if (null == checkGroupCard) {
+
+        }
+
+        return null;
+    }
+
 
 }
