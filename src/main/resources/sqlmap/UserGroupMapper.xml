@@ -24,10 +24,10 @@
             <if test="null != groupId">
                 group_id,
             </if>
-            <if test="null != openId">
+            <if test="null != cardId">
                 card_id,
             </if>
-            <if test="null != cardId">
+            <if test="null != openId">
                 open_id,
             </if>
             <if test="null != appId">
