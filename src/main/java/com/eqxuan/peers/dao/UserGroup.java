@@ -23,7 +23,7 @@ public class UserGroup {
     private String openId;
 
     /** 用户名片标识.*/
-    private String cardId;
+    private Integer cardId;
 
     /** 冗余字段，重构时可删除.*/
     private String appId;
