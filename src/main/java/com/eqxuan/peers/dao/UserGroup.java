@@ -22,12 +22,6 @@ public class UserGroup {
     /** 用户标识.*/
     private String openId;
 
-    /** 用户名片标识.*/
-    private Integer cardId;
-
-    /** 冗余字段，重构时可删除.*/
-    private String appId;
-
     /** 删除标识（1-未删除，2-已删除，默认未删除）.*/
     private Integer delFlag;
 
@@ -35,7 +29,7 @@ public class UserGroup {
 
     private Date upTime;
 
-    private String prepare;
+    private String share;
 
     /** 微信加密信息（非表字段）.*/
     private String encryptedData;
