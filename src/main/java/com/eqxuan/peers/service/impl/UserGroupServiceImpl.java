@@ -8,6 +8,7 @@ import com.eqxuan.peers.dto.GroupNoSaveNumDTO;
 import com.eqxuan.peers.dto.PageDTO;
 import com.eqxuan.peers.dto.ReturnCardDTO;
 import com.eqxuan.peers.enums.PeerCardSaveFlagEnum;
+import com.eqxuan.peers.mapper.GroupCardMapper;
 import com.eqxuan.peers.mapper.UserGroupMapper;
 import com.eqxuan.peers.mapper.UserMapper;
 import com.eqxuan.peers.service.UserGroupService;
@@ -23,6 +24,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -49,71 +51,82 @@ public class UserGroupServiceImpl implements UserGroupService {
     @Resource
     private WxDecipherUtil wxDecipherUtil;
 
-    @Override
-    public String saveOrUpdate(UserGroup userGroup) {
+    @Resource
+    private GroupCardMapper groupCardMapper;
 
-        if (StringUtils.isEmpty(userGroup.getOpenId()) || StringUtils.isEmpty(userGroup.getOtherOpenId()) || StringUtils.isEmpty(userGroup.getEncryptedData()) || StringUtils.isEmpty(userGroup.getIv())) {
-            throw new PeerProjectException("参数缺失");
-        }
+//    @Override
+//    public String saveOrUpdate(UserGroup userGroup) {
+//
+//        if (StringUtils.isEmpty(userGroup.getOpenId()) || StringUtils.isEmpty(userGroup.getOtherOpenId()) || StringUtils.isEmpty(userGroup.getEncryptedData()) || StringUtils.isEmpty(userGroup.getIv())) {
+//            throw new PeerProjectException("参数缺失");
+//        }
+//
+//        User checkUser = userMapper.findOneByOpenId(userGroup.getOpenId());
+//        if (null == checkUser) {
+//            throw new PeerProjectException("用户未注册");
+//        }
+//
+//        // 解密groupId 需要传递encryptedData，iv
+//        JSONObject jsonObject = wxDecipherUtil.getDecipherInfo(userGroup.getEncryptedData(), checkUser.getSessionKey(), userGroup.getIv());
+//
+//        if (null == jsonObject) {
+//            throw new PeerProjectException("获取群ID失败");
+//        }
+//
+//        String openGId = jsonObject.getString("openGId");
+//        System.out.println("##################获取openGId：" + openGId);
+//
+//        UserGroup saveUserGroup = new UserGroup();
+//        //判断是否分享的是他人的名片
+//        if (!userGroup.getOtherOpenId().equals(userGroup.getOpenId())) {
+//            BeanUtils.copyProperties(userGroup, saveUserGroup);
+//            saveUserGroup.setOpenId(userGroup.getOtherOpenId());
+//            saveUserGroup.setPrepare(GroupShareFlagEnum.FLAG_BY_OTHER.getKey());
+//        } else {
+//            BeanUtils.copyProperties(userGroup, saveUserGroup);
+//            saveUserGroup.setOpenId(userGroup.getOpenId());
+//            saveUserGroup.setPrepare(GroupShareFlagEnum.FLAG_BY_ME.getKey());
+//        }
+//
+//        UserGroup checkUserGroup = userGroupMapper.findOneById(userGroup.getOtherOpenId(), openGId, userGroup.getCardId());
+//
+//        int rows;
+//        if (null == checkUserGroup) {
+//            saveUserGroup.setAppId(miniAppBean.getAppId());
+//            saveUserGroup.setCtTime(new Date());
+//            saveUserGroup.setGroupId(openGId);
+//            rows = userGroupMapper.save(saveUserGroup);
+//            if (1 != rows) {
+//                throw new PeerProjectException("首次分享群名片失败");
+//            }
+//
+//            //提示群内其他人有新增用户
+//            rows = userGroupMapper.hintOthers(openGId, saveUserGroup.getOpenId());
+//
+//            return openGId;
+//
+//        } else {
+//            saveUserGroup.setUpTime(new Date());
+//            saveUserGroup.setGroupId(openGId);
+//            if (!checkUserGroup.getPrepare().equals(GroupShareFlagEnum.FLAG_BY_OTHER.getKey())) {
+//                saveUserGroup.setPrepare(checkUserGroup.getPrepare());
+//            }
+//            rows = userGroupMapper.update(saveUserGroup);
+//            if (1 != rows) {
+//                throw new PeerProjectException("分享群名片失败");
+//            }
+//            return openGId;
+//        }
+//    }
 
-        User checkUser = userMapper.findOneByOpenId(userGroup.getOpenId());
-        if (null == checkUser) {
-            throw new PeerProjectException("用户未注册");
-        }
-
-        // 解密groupId 需要传递encryptedData，iv
-        JSONObject jsonObject = wxDecipherUtil.getDecipherInfo(userGroup.getEncryptedData(), checkUser.getSessionKey(), userGroup.getIv());
-
-        if (null == jsonObject) {
-            throw new PeerProjectException("获取群ID失败");
-        }
-
-        String openGId = jsonObject.getString("openGId");
-        System.out.println("##################获取openGId：" + openGId);
-
-        UserGroup saveUserGroup = new UserGroup();
-        //判断是否分享的是他人的名片
-        if (!userGroup.getOtherOpenId().equals(userGroup.getOpenId())) {
-            BeanUtils.copyProperties(userGroup, saveUserGroup);
-            saveUserGroup.setOpenId(userGroup.getOtherOpenId());
-            saveUserGroup.setPrepare(GroupShareFlagEnum.FLAG_BY_OTHER.getKey());
-        } else {
-            BeanUtils.copyProperties(userGroup, saveUserGroup);
-            saveUserGroup.setOpenId(userGroup.getOpenId());
-            saveUserGroup.setPrepare(GroupShareFlagEnum.FLAG_BY_ME.getKey());
-        }
-
-        UserGroup checkUserGroup = userGroupMapper.findOneById(userGroup.getOtherOpenId(), openGId, userGroup.getCardId());
-
-        int rows;
-        if (null == checkUserGroup) {
-            saveUserGroup.setAppId(miniAppBean.getAppId());
-            saveUserGroup.setCtTime(new Date());
-            saveUserGroup.setGroupId(openGId);
-            rows = userGroupMapper.save(saveUserGroup);
-            if (1 != rows) {
-                throw new PeerProjectException("首次分享群名片失败");
-            }
-
-            //提示群内其他人有新增用户
-            rows = userGroupMapper.hintOthers(openGId, saveUserGroup.getOpenId());
-
-            return openGId;
-
-        } else {
-            saveUserGroup.setUpTime(new Date());
-            saveUserGroup.setGroupId(openGId);
-            if (!checkUserGroup.getPrepare().equals(GroupShareFlagEnum.FLAG_BY_OTHER.getKey())) {
-                saveUserGroup.setPrepare(checkUserGroup.getPrepare());
-            }
-            rows = userGroupMapper.update(saveUserGroup);
-            if (1 != rows) {
-                throw new PeerProjectException("分享群名片失败");
-            }
-            return openGId;
-        }
-    }
-
+    /**
+     * 接口描述：查询群内 除当前用户以外的所有名片 分页（改）
+     * @param openId
+     * @param groupId
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
     @Override
     public PageDTO findCardsOnGroupByOpenId(String openId, String groupId, Integer pageNum, Integer pageSize) {
 
@@ -126,16 +139,16 @@ public class UserGroupServiceImpl implements UserGroupService {
         }
 
         PageHelper.startPage(pageNum, pageSize);
-        List<ReturnCardDTO> returnCardDTOS = userGroupMapper.findCardsOnGroupByOpenId(openId, groupId);
+        List<ReturnCardDTO> returnCardDTOList = groupCardMapper.getCardsOnGroup(groupId, openId);
         List<ReturnCardDTO> saveFalseCard = new ArrayList<ReturnCardDTO>();
-        for (ReturnCardDTO returnCard : returnCardDTOS) {
-            if (null == returnCard.getSaveFlag() || PeerCardSaveFlagEnum.SAVE_FLAG_FALSE.getKey() == returnCard.getSaveFlag()) {
-                returnCard.setSaveFlag(PeerCardSaveFlagEnum.SAVE_FLAG_FALSE.getKey());
-                saveFalseCard.add(returnCard);
+        for (ReturnCardDTO returnCardDTO : returnCardDTOList) {
+            if (null == returnCardDTO.getSaveFlag() || PeerCardSaveFlagEnum.SAVE_FLAG_FALSE.getKey() == returnCardDTO.getSaveFlag()) {
+                returnCardDTO.setSaveFlag(PeerCardSaveFlagEnum.SAVE_FLAG_FALSE.getKey());
+                saveFalseCard.add(returnCardDTO);
             }
         }
 
-        PageInfo<ReturnCardDTO> pageInfo = new PageInfo<ReturnCardDTO>(returnCardDTOS);
+        PageInfo<ReturnCardDTO> pageInfo = new PageInfo<ReturnCardDTO>(returnCardDTOList);
 
         PageDTO pageDTO = new PageDTO();
         pageDTO.setResult(pageInfo.getList());
@@ -146,52 +159,59 @@ public class UserGroupServiceImpl implements UserGroupService {
         return pageDTO;
     }
 
-    @Override
-    public List<ReturnGroupDTO> findUserGroupByParam(UserGroup userGroup) {
+//    @Override
+//    public List<ReturnGroupDTO> findUserGroupByParam(UserGroup userGroup) {
+//
+//        if (StringUtils.isEmpty(userGroup.getOpenId())) {
+//            throw new PeerProjectException("用户未登陆");
+//        }
+//
+//        if (StringUtils.isEmpty(userGroup.getPrepare())) {
+//            throw new PeerProjectException("参数Prepare不可为空");
+//        }
+//
+//        //查询当前用户所有的群
+//        List<UserGroup> userGroupList = userGroupMapper.findUserGroupByParam(userGroup);
+//        List<ReturnGroupDTO> returnGroupDTOS = new ArrayList<ReturnGroupDTO>(userGroupList.size());
+//
+//        for (UserGroup group : userGroupList) {
+//
+//            List<GroupNoSaveNumDTO> noSaveNumList = userGroupMapper.countByNoSave(group.getGroupId(), userGroup.getOpenId());
+//
+//            int saveFalseNum = 0;
+//            int saveTrueNum = 0;
+//            for (GroupNoSaveNumDTO noSaveNum : noSaveNumList) {
+//                if (null == noSaveNum.getSaveFlag() || noSaveNum.getSaveFlag().intValue() == PeerCardSaveFlagEnum.SAVE_FLAG_FALSE.getKey()) {
+//                    saveFalseNum += noSaveNum.getNum();
+//                } else {
+//                    saveTrueNum += noSaveNum.getNum();
+//                }
+//            }
+//
+//            List<String> beforeNineImg = userGroupMapper.getNineBeforeByGroupId(group.getGroupId());
+//
+//            ReturnGroupDTO returnGroupDTO = new ReturnGroupDTO();
+//
+//            returnGroupDTO.setGroupId(group.getGroupId());
+//            returnGroupDTO.setOpenId(userGroup.getOpenId());
+//            returnGroupDTO.setCtTime(group.getCtTime());
+//            returnGroupDTO.setUpTime(group.getUpTime());
+//            returnGroupDTO.setSaveFalse(saveFalseNum);
+//            returnGroupDTO.setSaveTrue(saveTrueNum);
+//            returnGroupDTO.setBeforeNineImg(beforeNineImg);
+//            returnGroupDTO.setHint(group.getHint());
+//            returnGroupDTOS.add(returnGroupDTO);
+//        }
+//        return returnGroupDTOS;
+//    }
 
-        if (StringUtils.isEmpty(userGroup.getOpenId())) {
-            throw new PeerProjectException("用户未登陆");
-        }
-
-        if (StringUtils.isEmpty(userGroup.getPrepare())) {
-            throw new PeerProjectException("参数Prepare不可为空");
-        }
-
-        //查询当前用户所有的群
-        List<UserGroup> userGroupList = userGroupMapper.findUserGroupByParam(userGroup);
-        List<ReturnGroupDTO> returnGroupDTOS = new ArrayList<ReturnGroupDTO>(userGroupList.size());
-
-        for (UserGroup group : userGroupList) {
-
-            List<GroupNoSaveNumDTO> noSaveNumList = userGroupMapper.countByNoSave(group.getGroupId(), userGroup.getOpenId());
-
-            int saveFalseNum = 0;
-            int saveTrueNum = 0;
-            for (GroupNoSaveNumDTO noSaveNum : noSaveNumList) {
-                if (null == noSaveNum.getSaveFlag() || noSaveNum.getSaveFlag().intValue() == PeerCardSaveFlagEnum.SAVE_FLAG_FALSE.getKey()) {
-                    saveFalseNum += noSaveNum.getNum();
-                } else {
-                    saveTrueNum += noSaveNum.getNum();
-                }
-            }
-
-            List<String> beforeNineImg = userGroupMapper.getNineBeforeByGroupId(group.getGroupId());
-
-            ReturnGroupDTO returnGroupDTO = new ReturnGroupDTO();
-
-            returnGroupDTO.setGroupId(group.getGroupId());
-            returnGroupDTO.setOpenId(userGroup.getOpenId());
-            returnGroupDTO.setCtTime(group.getCtTime());
-            returnGroupDTO.setUpTime(group.getUpTime());
-            returnGroupDTO.setSaveFalse(saveFalseNum);
-            returnGroupDTO.setSaveTrue(saveTrueNum);
-            returnGroupDTO.setBeforeNineImg(beforeNineImg);
-            returnGroupDTO.setHint(group.getHint());
-            returnGroupDTOS.add(returnGroupDTO);
-        }
-        return returnGroupDTOS;
-    }
-
+    /**
+     * 接口描述：搜索群内名片 （改）
+     * @param groupId
+     * @param openId
+     * @param param
+     * @return
+     */
     @Override
     public List<ReturnCardDTO> findAllGroupCardByParam(String groupId, String openId, String param) {
 
@@ -203,16 +223,22 @@ public class UserGroupServiceImpl implements UserGroupService {
             throw new PeerProjectException("参数缺失");
         }
 
-        List<ReturnCardDTO> returnCardDTOS = userGroupMapper.findAllGroupCardByParam(groupId, openId, param);
+        List<ReturnCardDTO> returnCardDTOList = groupCardMapper.findAllGroupCardByParam(groupId, openId, param);
 
-        for (ReturnCardDTO returnCardDTO : returnCardDTOS) {
+        for (ReturnCardDTO returnCardDTO : returnCardDTOList) {
             if (null == returnCardDTO.getSaveFlag()) {
                 returnCardDTO.setSaveFlag(PeerCardSaveFlagEnum.SAVE_FLAG_FALSE.getKey());
             }
         }
-        return returnCardDTOS;
+        return returnCardDTOList;
     }
 
+    /**
+     * 接口描述：去除红点通知
+     * @param groupId
+     * @param openId
+     * @return
+     */
     @Override
     public int removeHint(String groupId, String openId) {
         UserGroup userGroup = new UserGroup();
@@ -229,6 +255,7 @@ public class UserGroupServiceImpl implements UserGroupService {
      * @return
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public String save(UserGroupVO userGroupVO) {
 
         // 校验用户信息
@@ -254,22 +281,102 @@ public class UserGroupServiceImpl implements UserGroupService {
         } else {
             saveUserGroup.setShare(GroupShareFlagEnum.FLAG_BY_ME.getKey());
         }
-        
-        //userGroupMapper.
-
-        rows = userGroupMapper.save(saveUserGroup);
-        if (1 != rows) {
-            throw new PeerProjectException("用户绑定群异常");
+        // 用户-群 关系绑定
+        UserGroup checkUserGroup = userGroupMapper.findGroup(userGroupVO.getOtherOpenId(), openGId);
+        if (null == checkUserGroup) {
+            rows = userGroupMapper.save(saveUserGroup);
+            if (1 != rows) {
+                throw new PeerProjectException("用户绑定群失败");
+            }
+        } else {
+            // 判断是否已经是本人分享名片到群
+            if (!checkUserGroup.getShare().equals(GroupShareFlagEnum.FLAG_BY_OTHER.getKey())) {
+                saveUserGroup.setShare(GroupShareFlagEnum.FLAG_BY_ME.getKey());
+                rows = userGroupMapper.update(saveUserGroup);
+                if (1 != rows) {
+                    throw new PeerProjectException("用户绑定群失败");
+                }
+            }
         }
 
+        // 用户-群 绑定后，需要将用户发送的 名片与群 绑定
         // 判断名片是否在群中保存
-        GroupCard checkGroupCard = null;
+        GroupCard checkGroupCard = groupCardMapper.findOne(openGId, userGroupVO.getOtherOpenId(), userGroupVO.getCardId());
         if (null == checkGroupCard) {
-
+            GroupCard saveGroupCard = new GroupCard();
+            saveGroupCard.setGroupId(openGId);
+            saveGroupCard.setOpenId(userGroupVO.getOtherOpenId());
+            saveGroupCard.setCardId(Integer.parseInt(userGroupVO.getCardId()));
+            saveGroupCard.setCtTime(new Date());
+            rows = groupCardMapper.save(saveGroupCard);
+            if (1 != rows) {
+                throw new PeerProjectException("名片绑定群失败");
+            }
+            //提示群内其他人有新增用户
+            userGroupMapper.hintOthers(openGId, saveUserGroup.getOpenId());
+        } else {
+            return openGId;
         }
-
-        return null;
+        return openGId;
     }
 
+    /**
+     * 接口描述：查询群列表（新）
+     * @param openId
+     * @param share
+     * @return
+     */
+    @Override
+    public List<ReturnGroupDTO> findUserGroupList(String openId, String share) {
 
+        if (StringUtils.isEmpty(openId) || StringUtils.isEmpty(share)) {
+            throw new PeerProjectException("参数缺失");
+        }
+
+        List<UserGroup> userGroupList = userGroupMapper.findUserGroupList(openId, share);
+        List<ReturnGroupDTO> returnGroupDTOList = new ArrayList<ReturnGroupDTO>(userGroupList.size());
+        for (UserGroup userGroup : userGroupList) {
+            // 查询每个群前九张不重复的头像
+            List<String> photoList = groupCardMapper.getNinePhotoByGroupId(userGroup.getGroupId());
+            // 查询当前用户每个群的名片保存数量
+            List<GroupNoSaveNumDTO> saveOrNotNum = groupCardMapper.countSaveOrNot(userGroup.getGroupId(), userGroup.getOpenId());
+            int saveFalseNum = 0;
+            int saveTrueNum = 0;
+            for (GroupNoSaveNumDTO noSaveNum : saveOrNotNum) {
+                if (null == noSaveNum.getSaveFlag() || noSaveNum.getSaveFlag().intValue() == PeerCardSaveFlagEnum.SAVE_FLAG_FALSE.getKey()) {
+                    saveFalseNum += noSaveNum.getNum();
+                } else {
+                    saveTrueNum += noSaveNum.getNum();
+                }
+            }
+            ReturnGroupDTO returnGroupDTO = new ReturnGroupDTO();
+            returnGroupDTO.setGroupId(userGroup.getGroupId());
+            returnGroupDTO.setOpenId(userGroup.getOpenId());
+            returnGroupDTO.setCtTime(userGroup.getCtTime());
+            returnGroupDTO.setSaveTrue(saveTrueNum);
+            returnGroupDTO.setSaveFalse(saveFalseNum);
+            returnGroupDTO.setBeforeNineImg(photoList);
+            returnGroupDTO.setHint(userGroup.getHint());
+
+            returnGroupDTOList.add(returnGroupDTO);
+        }
+        return returnGroupDTOList;
+    }
+
+    /**
+     * 接口描述：群内个人名片（新）
+     * @param groupId
+     * @param openId
+     * @return
+     */
+    @Override
+    public List<ReturnCardDTO> getOwnerCardsOnGroup(String groupId, String openId) {
+
+        if (StringUtils.isEmpty(groupId) || StringUtils.isEmpty(openId)) {
+            throw new PeerProjectException("参数缺失");
+        }
+        List<ReturnCardDTO> returnCardDTOList = groupCardMapper.getOwnerCardsOnGroup(groupId, openId);
+
+        return returnCardDTOList;
+    }
 }

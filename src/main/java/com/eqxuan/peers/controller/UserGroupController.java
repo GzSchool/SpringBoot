@@ -32,27 +32,27 @@ public class UserGroupController {
     @Resource
     private UserGroupService userGroupService;
 
-    @PostMapping("/saveOrUpdate")
-    @ResponseBody
-    @ApiOperation(value = "添加用户群列表")
-    public AjaxResultDTO saveOrUpdate(
-            @RequestBody @ApiParam(name = "用户群对象", value = "传入的JSON值", required = true) UserGroup userGroup,
-            HttpServletResponse response) {
-        try {
-            response.setHeader("Access-Control-Allow-Origin", "*");
-            String returnGroupId = userGroupService.saveOrUpdate(userGroup);
-            return AjaxResultDTO.success(returnGroupId);
-        } catch(PeerProjectException ppe) {
-            return AjaxResultDTO.failed(ppe.getMessage());
-        } catch(Exception e) {
-            logger.error("【群绑定异常】：{}", e);
-            return AjaxResultDTO.failed("群分享异常");
-        }
-    }
+//    @PostMapping("/saveOrUpdate")
+//    @ResponseBody
+//    @ApiOperation(value = "添加用户群列表")
+//    public AjaxResultDTO saveOrUpdate(
+//            @RequestBody @ApiParam(name = "用户群对象", value = "传入的JSON值", required = true) UserGroup userGroup,
+//            HttpServletResponse response) {
+//        try {
+//            response.setHeader("Access-Control-Allow-Origin", "*");
+//            String returnGroupId = userGroupService.saveOrUpdate(userGroup);
+//            return AjaxResultDTO.success(returnGroupId);
+//        } catch(PeerProjectException ppe) {
+//            return AjaxResultDTO.failed(ppe.getMessage());
+//        } catch(Exception e) {
+//            logger.error("【群绑定异常】：{}", e);
+//            return AjaxResultDTO.failed("群分享异常");
+//        }
+//    }
 
     @GetMapping("/findGroupCards")
     @ResponseBody
-    @ApiOperation(value = "查询指定群中，不包含当前用户的所有名片（分页）")
+    @ApiOperation(value = "查询指定群中，不包含当前用户的所有名片 分页 （改）")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "openId", value = "当前用户唯一标识", required = true, dataType = "String"),
             @ApiImplicitParam(name = "groupId", value = "当前群ID", required = true, dataType = "String"),
@@ -74,34 +74,34 @@ public class UserGroupController {
         }
     }
 
-    @GetMapping("/findUserGroupByParam")
-    @ResponseBody
-    @ApiOperation(value = "查询用户群列表")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "openId", value = "当前用户", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "prepare", value = "用户名片是否本人主动分享到群（1-本人操作，2-他人操作）", required = true, dataType = "String")
-
-    })
-    public AjaxResultDTO findUserGroupByParam(String openId, String prepare, HttpServletResponse response) {
-        try {
-            response.setHeader("Access-Control-Allow-Origin", "*");
-            UserGroup userGroup = new UserGroup();
-            userGroup.setOpenId(openId);
-            // TODO 查询share为1，及用户自己主动分享的群列表
-            userGroup.setShare(prepare);
-            List<ReturnGroupDTO> returnGroupDTOS = userGroupService.findUserGroupByParam(userGroup);
-            return AjaxResultDTO.success(returnGroupDTOS);
-        } catch(PeerProjectException ppe) {
-            return AjaxResultDTO.failed(ppe.getMessage());
-        } catch(Exception e) {
-            logger.error("【查询群列表异常】：{}", e);
-            return AjaxResultDTO.failed("查询群列表异常");
-        }
-    }
+//    @GetMapping("/findUserGroupByParam")
+//    @ResponseBody
+//    @ApiOperation(value = "查询用户群列表")
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "openId", value = "当前用户", required = true, dataType = "String"),
+//            @ApiImplicitParam(name = "prepare", value = "用户名片是否本人主动分享到群（1-本人操作，2-他人操作）", required = true, dataType = "String")
+//
+//    })
+//    public AjaxResultDTO findUserGroupByParam(String openId, String prepare, HttpServletResponse response) {
+//        try {
+//            response.setHeader("Access-Control-Allow-Origin", "*");
+//            UserGroup userGroup = new UserGroup();
+//            userGroup.setOpenId(openId);
+//            // TODO 查询share为1，及用户自己主动分享的群列表
+//            userGroup.setShare(prepare);
+//            List<ReturnGroupDTO> returnGroupDTOS = userGroupService.findUserGroupByParam(userGroup);
+//            return AjaxResultDTO.success(returnGroupDTOS);
+//        } catch(PeerProjectException ppe) {
+//            return AjaxResultDTO.failed(ppe.getMessage());
+//        } catch(Exception e) {
+//            logger.error("【查询群列表异常】：{}", e);
+//            return AjaxResultDTO.failed("查询群列表异常");
+//        }
+//    }
 
     @GetMapping("/findAllGroupCardByParam")
     @ResponseBody
-    @ApiOperation(value = "群内模糊搜索")
+    @ApiOperation(value = "群内模糊搜索（改）")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "groupId", value = "当前群组ID", required = true, dataType = "String"),
             @ApiImplicitParam(name = "openId", value = "当前用户ID", required = true, dataType = "String"),
@@ -122,13 +122,13 @@ public class UserGroupController {
 
     @PostMapping("/save")
     @ResponseBody
-    @ApiOperation(value = "名片分享到群")
+    @ApiOperation(value = "名片分享到群（新）")
     public AjaxResultDTO save(@RequestBody @ApiParam(name = "用户群对象", value = "传入的JSON值", required = true) UserGroupVO userGroupVO,
                               HttpServletResponse response) {
         try {
             response.setHeader("Access-Control-Allow-Origin", "*");
-
-            return AjaxResultDTO.success();
+            String openGId = userGroupService.save(userGroupVO);
+            return AjaxResultDTO.success(openGId);
         } catch (PeerProjectException ppe) {
             return AjaxResultDTO.failed(ppe.getMessage());
         } catch (Exception e) {
@@ -137,4 +137,45 @@ public class UserGroupController {
         }
     }
 
+    @GetMapping("/findUserGroupList")
+    @ResponseBody
+    @ApiOperation(value = "查询用户群列表（新）")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "openId", value = "当前用户", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "share", value = "用户名片是否本人主动分享到群（1-本人操作，2-他人操作）", required = true, dataType = "String")
+
+    })
+    public AjaxResultDTO findUserGroupList(String openId, String share, HttpServletResponse response) {
+        try {
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            List<ReturnGroupDTO> returnGroupDTOList = userGroupService.findUserGroupList(openId, share);
+            return AjaxResultDTO.success(returnGroupDTOList);
+        } catch (PeerProjectException ppe) {
+            return AjaxResultDTO.failed(ppe.getMessage());
+        } catch (Exception e) {
+            logger.error("【查询群列表异常】：{}", e);
+            return AjaxResultDTO.failed("查询群列表异常");
+        }
+    }
+
+    @GetMapping("/getOwnerCardsOnGroup")
+    @ResponseBody
+    @ApiOperation(value = "群内个人名片（新）")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "groupId", value = "当前群ID", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "openId", value = "用户标识", required = true, dataType = "String")
+
+    })
+    public AjaxResultDTO getOwnerCardsOnGroup(String groupId, String openId, HttpServletResponse response) {
+        try {
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            List<ReturnCardDTO> returnCardDTOList = userGroupService.getOwnerCardsOnGroup(groupId, openId);
+            return AjaxResultDTO.success(returnCardDTOList);
+        } catch (PeerProjectException ppe) {
+            return AjaxResultDTO.failed(ppe.getMessage());
+        } catch (Exception e) {
+            logger.error("【查询群内个人名片异常】：{}", e);
+            return AjaxResultDTO.failed("查询群内个人名片异常");
+        }
+    }
 }

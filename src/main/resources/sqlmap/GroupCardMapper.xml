@@ -57,7 +57,7 @@
     <select id="getNinePhotoByGroupId" resultType="String">
         SELECT DISTINCT(uc.user_img) AS userImg
         FROM group_card gc, user_card uc
-        WHERE gc.group_id=#{groupId} AND gc.open_id=uc.open_id AND uc.del_falg = 1
+        WHERE gc.group_id=#{groupId} AND gc.open_id=uc.open_id AND uc.del_flag = 1
         ORDER BY gc.ct_time ASC
         LIMIT 0,9
     </select>
@@ -94,6 +94,12 @@
         where gc.group_id=#{groupId} AND gc.open_id!=#{openId} AND uc.id=gc.card_id
         AND CONCAT(uc.username, uc.user_wechat, uc.user_company, uc.user_industry, uc.user_city, uc.user_job)like CONCAT('%',#{param},'%')
         order by CONVERT( uc.prepare USING gbk ) COLLATE gbk_chinese_ci ASC
+    </select>
+
+    <select id="findOne" resultMap="GroupCardMapperResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM group_card
+        WHERE group_id=#{groupId} AND open_id=#{openId} AND card_id=#{cardId}
     </select>
 
 </mapper>

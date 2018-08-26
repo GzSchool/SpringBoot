@@ -1,5 +1,6 @@
 package com.eqxuan.peers.mapper;
 
+import com.eqxuan.peers.dao.GroupCard;
 import com.eqxuan.peers.dto.GroupNoSaveNumDTO;
 import com.eqxuan.peers.dto.ReturnCardDTO;
 import org.apache.ibatis.annotations.Param;
@@ -12,6 +13,13 @@ import java.util.List;
  * @date 2018/8/25 18:07
  */
 public interface GroupCardMapper {
+
+	/**
+	 * 接口描述：保存 名片-群 关系
+	 * @param groupCard
+	 * @return
+	 */
+	int save(GroupCard groupCard);
 
 	/**
 	 * 接口描述：查询群内保存状态的数目
@@ -35,7 +43,8 @@ public interface GroupCardMapper {
 	 * @param openId 当前用户标识
 	 * @return
 	 */
-	List<ReturnCardDTO> getOwnerCardsOnGroup(String groupId, String openId);
+	List<ReturnCardDTO> getOwnerCardsOnGroup(@Param("groupId") String groupId,
+											 @Param("openId") String openId);
 
 	/**
 	 * 接口描述：群内名片列表
@@ -43,7 +52,8 @@ public interface GroupCardMapper {
 	 * @param openId 当前用户标识
 	 * @return
 	 */
-	List<ReturnCardDTO> getCardsOnGroup(String groupId, String openId);
+	List<ReturnCardDTO> getCardsOnGroup(@Param("groupId") String groupId,
+										@Param("openId") String openId);
 
 	/**
 	 * 接口描述：搜索群内名片
@@ -55,4 +65,16 @@ public interface GroupCardMapper {
 	List<ReturnCardDTO> findAllGroupCardByParam(@Param("groupId") String groupId,
 												@Param("openId") String openId,
 												@Param("param") String param);
+
+	/**
+	 * 接口描述：查询单条数据
+	 * @param groupId
+	 * @param openId
+	 * @param cardId
+	 * @return
+	 */
+	GroupCard findOne(@Param("groupId") String groupId,
+					  @Param("openId") String openId,
+					  @Param("cardId") String cardId);
+
 }

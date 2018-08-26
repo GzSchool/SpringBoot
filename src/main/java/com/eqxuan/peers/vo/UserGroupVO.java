@@ -23,9 +23,6 @@ public class UserGroupVO {
     /** 分享名片ID.*/
     private String cardId;
 
-    /** 分享来源.*/
-    private String share;
-
     /** 加密信息.*/
     private String encryptedData;
 
