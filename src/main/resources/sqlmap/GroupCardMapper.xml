@@ -57,7 +57,6 @@
     <select id="getNinePhotoByGroupId" resultType="String">
         SELECT DISTINCT(uc.user_img) AS userImg
         FROM group_card gc, user_card uc
-
         WHERE gc.group_id=#{groupId} AND gc.card_id=uc.id AND uc.del_flag = 1
         ORDER BY gc.ct_time ASC
         LIMIT 0,9
