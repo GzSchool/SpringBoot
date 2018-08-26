@@ -86,7 +86,7 @@ public class UserGroupController {
             response.setHeader("Access-Control-Allow-Origin", "*");
             UserGroup userGroup = new UserGroup();
             userGroup.setOpenId(openId);
-            userGroup.setPrepare(prepare);
+            userGroup.setShare(prepare);
             List<ReturnGroupDTO> returnGroupDTOS = userGroupService.findUserGroupByParam(userGroup);
             return AjaxResultDTO.success(returnGroupDTOS);
         } catch(PeerProjectException ppe) {
