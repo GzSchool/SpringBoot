@@ -138,6 +138,5 @@ public class UserPeerController {
             logger.error("【检验当前用户是否绑定名片异常】：{}", e);
             return AjaxResultDTO.failed("检验当前用户是否绑定名片异常");
         }
-
     }
 }

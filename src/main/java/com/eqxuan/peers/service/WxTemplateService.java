@@ -16,9 +16,10 @@ public interface WxTemplateService {
     /**
      * 保存同行信息后消息推送模板
      * @param openId
+     * @param cardId
      * @param saveName
      * @param formId
      * @return
      */
-    JSONObject saveCardSuccess(String openId, String saveName, String formId);
+    JSONObject saveCardSuccess(String openId, String cardId, String saveName, String formId);
 }

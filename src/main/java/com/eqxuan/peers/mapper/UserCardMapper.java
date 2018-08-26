@@ -26,7 +26,7 @@ public interface UserCardMapper {
      * @param openId 用户标识
      * @return
      */
-    UserCard findOneByOpenId(String openId);
+    List<UserCard> findOneByOpenId(String openId);
 
     /**
      * 接口描述：根据入参查询名片信息

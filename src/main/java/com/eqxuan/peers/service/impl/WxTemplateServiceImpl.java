@@ -39,7 +39,7 @@ public class WxTemplateServiceImpl implements WxTemplateService {
         //表单ID
         wechatTemplate.setForm_id(formId);
         //模板ID
-        wechatTemplate.setTemplate_id("Vvu6DzbmdxY9uW9w2gXp8SblGrlQWjbgjNfyGBfG-a4");
+        wechatTemplate.setTemplate_id(miniAppBean.getMakeTemplateID());
         wechatTemplate.setPage("pages/findmore/findmore");
 
         Map<String, TemplateData> data = new HashMap<String, TemplateData>(2);
@@ -54,11 +54,11 @@ public class WxTemplateServiceImpl implements WxTemplateService {
     }
 
     @Override
-    public JSONObject saveCardSuccess(String openId, String saveName, String formId) {
+    public JSONObject saveCardSuccess(String openId, String cardId, String saveName, String formId) {
 
-        UserCard checkUserCard = userCardMapper.findOneByOpenId(openId);
+        UserCard checkUserCard = userCardMapper.findById(Integer.parseInt(cardId));
         if (null == checkUserCard) {
-            throw new PeerProjectException("用户为添加名片");
+            throw new PeerProjectException("用户未添加名片");
         }
 
         WechatTemplate wechatTemplate = new WechatTemplate();
@@ -67,7 +67,7 @@ public class WxTemplateServiceImpl implements WxTemplateService {
         //表单ID
         wechatTemplate.setForm_id(formId);
         //模板ID
-        wechatTemplate.setTemplate_id("oHvrg4KpfQv4PpZYKxFbxweP9YTz-GtWCnNrm2kzE0I");
+        wechatTemplate.setTemplate_id(miniAppBean.getSaveTemplateID());
         wechatTemplate.setPage("pages/findmore/findmore");
 
         Map<String, TemplateData> data = new HashMap<String, TemplateData>(3);

@@ -63,7 +63,6 @@ public class WxQrCodeServiceImpl implements WxQrCodeService {
             // 替换后的小程序码
             String fileName = cardId + "-" + index + ".png";
             File file = WxQrCodeUtil.makeInRound(miniQrCodeInputStream, centerImg, fileName);
-
             String returnUrl = cosFileUploadUtil.picCOS(file, openId, cardId, index);
             // 删除临时文件
             file.delete();
@@ -113,22 +112,10 @@ public class WxQrCodeServiceImpl implements WxQrCodeService {
                     }
                 } else {
                     stringBuffer = new StringBuffer(checkUserCard.getPhoto());
-                    if (StringUtils.isEmpty(stringBuffer.toString())) {
-                        checkUserCard.setPhoto(stringBuffer.append(imgUrl + ";").toString());
-                        int rows = userCardMapper.update(checkUserCard);
-                        if (1 != rows) {
-                            throw new PeerProjectException("上传相册失败");
-                        }
-
-                    } else {
-                        String[] photoUrls = stringBuffer.toString().split(";");
-                        if (!Arrays.asList(photoUrls).contains(imgUrl)) {
-                            checkUserCard.setPhoto(stringBuffer.append(imgUrl + ";").toString());
-                            int rows = userCardMapper.update(checkUserCard);
-                            if (1 != rows) {
-                                throw new PeerProjectException("上传相册失败");
-                            }
-                        }
+                    checkUserCard.setPhoto(stringBuffer.append(imgUrl).append(";").toString());
+                    int rows = userCardMapper.update(checkUserCard);
+                    if (1 != rows) {
+                        throw new PeerProjectException("上传相册失败");
                     }
                 }
                 // 更新缓存
@@ -137,7 +124,6 @@ public class WxQrCodeServiceImpl implements WxQrCodeService {
                 File del = new File(file.toURI());
                 del.delete();
             }
-
             String[] result = stringBuffer.toString().split(";");
             List<String> urls = Arrays.asList(result);
             return urls;
@@ -174,7 +160,7 @@ public class WxQrCodeServiceImpl implements WxQrCodeService {
         }
         StringBuffer stringBuffer = new StringBuffer();
         for (String residueUrl : photoList) {
-            stringBuffer.append(residueUrl + ";");
+            stringBuffer.append(residueUrl).append(";");
         }
 
         checkUserCard.setPhoto(stringBuffer.toString());
@@ -187,7 +173,6 @@ public class WxQrCodeServiceImpl implements WxQrCodeService {
         cacheManager.cacheUserCard(checkUserCard);
 
         String[] index = delFileUrl.split("com/");
-
         cosFileUploadUtil.delFileCOS(index[1]);
     }
 }

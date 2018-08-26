@@ -8,12 +8,6 @@ import java.util.List;
 public interface UserCardService {
 
     /**
-     * 接口描述：保存或修改名片信息
-     * @param userCard
-     */
-    void saveOrUpdate(UserCard userCard);
-
-    /**
      * 接口描述：根据用户标识查询名片信息
      * @param id
      * @return

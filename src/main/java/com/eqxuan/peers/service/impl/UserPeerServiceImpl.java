@@ -100,8 +100,8 @@ public class UserPeerServiceImpl implements UserPeerService {
 
                 UserFromId checkFromId = userFromIdMapper.getNowFromIdByOpenId(userFromId);
                 if (null != checkFromId) {
-                    // TODO 消息推送
-                    JSONObject jsonObject = wxTemplateService.saveCardSuccess(checkFromId.getOpenId(), createPeersVO.getSaveName() , checkFromId.getFromId());
+                    // 消息推送
+                    JSONObject jsonObject = wxTemplateService.saveCardSuccess(checkFromId.getOpenId(), String.valueOf(cardId), createPeersVO.getSaveName(), checkFromId.getFromId());
                     logger.info("【模板消息推送】：{}", jsonObject);
 
                     checkFromId.setStatus(2);
@@ -130,7 +130,6 @@ public class UserPeerServiceImpl implements UserPeerService {
         }
 
         List<ReturnCardDTO> returnCardDTOS = userPeerMapper.findAllPeerByOpenId(openId);
-
         return returnCardDTOS;
     }
 
