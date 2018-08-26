@@ -13,10 +13,16 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 public class MiniAppBean {
 
-    @Value("${AppId}")
+    @Value("${WxMini.AppId}")
     private String appId;
 
-    @Value("${AppSecret}")
+    @Value("${WxMini.AppSecret}")
     private String appSecret;
+
+    @Value("${WxMini.MakeTemplateID}")
+    private String makeTemplateID;
+
+    @Value("${WxMini.SaveTemplateID}")
+    private String saveTemplateID;
 
 }

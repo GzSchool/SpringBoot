@@ -1,6 +1,5 @@
 package com.eqxuan.peers.controller;
 
-import com.eqxuan.peers.dao.UserGroup;
 import com.eqxuan.peers.dto.AjaxResultDTO;
 import com.eqxuan.peers.dto.PageDTO;
 import com.eqxuan.peers.dto.ReturnCardDTO;
@@ -32,25 +31,6 @@ public class UserGroupController {
     @Resource
     private UserGroupService userGroupService;
 
-
-//    @PostMapping("/saveOrUpdate")
-//    @ResponseBody
-//    @ApiOperation(value = "添加用户群列表")
-//    public AjaxResultDTO saveOrUpdate(
-//            @RequestBody @ApiParam(name = "用户群对象", value = "传入的JSON值", required = true) UserGroup userGroup,
-//            HttpServletResponse response) {
-//        try {
-//            response.setHeader("Access-Control-Allow-Origin", "*");
-//            String returnGroupId = userGroupService.saveOrUpdate(userGroup);
-//            return AjaxResultDTO.success(returnGroupId);
-//        } catch(PeerProjectException ppe) {
-//            return AjaxResultDTO.failed(ppe.getMessage());
-//        } catch(Exception e) {
-//            logger.error("【群绑定异常】：{}", e);
-//            return AjaxResultDTO.failed("群分享异常");
-//        }
-//    }
-
     @GetMapping("/findGroupCards")
     @ResponseBody
     @ApiOperation(value = "查询指定群中，不包含当前用户的所有名片 分页 （改）")
@@ -74,32 +54,6 @@ public class UserGroupController {
             return AjaxResultDTO.failed("查询群名片列表异常");
         }
     }
-
-
-//    @GetMapping("/findUserGroupByParam")
-//    @ResponseBody
-//    @ApiOperation(value = "查询用户群列表")
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "openId", value = "当前用户", required = true, dataType = "String"),
-//            @ApiImplicitParam(name = "prepare", value = "用户名片是否本人主动分享到群（1-本人操作，2-他人操作）", required = true, dataType = "String")
-//
-//    })
-//    public AjaxResultDTO findUserGroupByParam(String openId, String prepare, HttpServletResponse response) {
-//        try {
-//            response.setHeader("Access-Control-Allow-Origin", "*");
-//            UserGroup userGroup = new UserGroup();
-//            userGroup.setOpenId(openId);
-//            // TODO 查询share为1，及用户自己主动分享的群列表
-//            userGroup.setShare(prepare);
-//            List<ReturnGroupDTO> returnGroupDTOS = userGroupService.findUserGroupByParam(userGroup);
-//            return AjaxResultDTO.success(returnGroupDTOS);
-//        } catch(PeerProjectException ppe) {
-//            return AjaxResultDTO.failed(ppe.getMessage());
-//        } catch(Exception e) {
-//            logger.error("【查询群列表异常】：{}", e);
-//            return AjaxResultDTO.failed("查询群列表异常");
-//        }
-//    }
 
     @GetMapping("/findAllGroupCardByParam")
     @ResponseBody

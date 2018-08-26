@@ -29,24 +29,6 @@ public class UserCardController {
     @Resource
     private UserCardService userCardService;
 
-    @PostMapping("/saveOrUpdate")
-    @ResponseBody
-    @ApiOperation(value = "保存用户卡片信息")
-    public AjaxResultDTO saveOrUpdate(
-            @RequestBody @ApiParam(name = "用户卡片对象",value = "传入Json格式的值", required = true) UserCard userCard,
-            HttpServletResponse response) {
-        try {
-            response.setHeader("Access-Control-Allow-Origin", "*");
-            userCardService.saveOrUpdate(userCard);
-            return AjaxResultDTO.success();
-        } catch(PeerProjectException ppe) {
-            return AjaxResultDTO.failed(ppe.getMessage());
-        } catch(Exception e) {
-            logger.error("【修改名片异常】：{}", e);
-            return AjaxResultDTO.failed("修改名片异常");
-        }
-    }
-
     @GetMapping("/findCardById")
     @ResponseBody
     @ApiOperation(value = "获取用户卡片信息")

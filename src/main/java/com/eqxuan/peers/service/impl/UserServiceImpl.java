@@ -6,7 +6,6 @@ import com.eqxuan.peers.dto.AuthorizeDTO;
 import com.eqxuan.peers.exception.PeerProjectException;
 import com.eqxuan.peers.mapper.UserMapper;
 import com.eqxuan.peers.service.UserService;
-import com.eqxuan.peers.service.cache.CacheManager;
 import com.eqxuan.peers.utils.WxDecipherUtil;
 import com.eqxuan.peers.utils.WxTemplateUtil;
 import com.eqxuan.peers.vo.WechatOpenId;
@@ -31,9 +30,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private MiniAppBean miniAppBean;
-
-    @Autowired
-    private CacheManager cacheManager;
 
     @Resource
     private WxDecipherUtil wxDecipherUtil;
