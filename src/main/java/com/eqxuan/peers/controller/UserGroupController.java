@@ -32,6 +32,7 @@ public class UserGroupController {
     @Resource
     private UserGroupService userGroupService;
 
+
 //    @PostMapping("/saveOrUpdate")
 //    @ResponseBody
 //    @ApiOperation(value = "添加用户群列表")
@@ -73,6 +74,7 @@ public class UserGroupController {
             return AjaxResultDTO.failed("查询群名片列表异常");
         }
     }
+
 
 //    @GetMapping("/findUserGroupByParam")
 //    @ResponseBody
@@ -157,6 +159,7 @@ public class UserGroupController {
             return AjaxResultDTO.failed("查询群列表异常");
         }
     }
+
 
     @GetMapping("/getOwnerCardsOnGroup")
     @ResponseBody
