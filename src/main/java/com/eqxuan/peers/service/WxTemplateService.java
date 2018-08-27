@@ -5,7 +5,7 @@ import net.sf.json.JSONObject;
 public interface WxTemplateService {
 
     /**
-     *用户创建名片后消息通知
+     * 用户创建名片后消息通知
      * @param openId
      * @param formId
      * @param makeTime

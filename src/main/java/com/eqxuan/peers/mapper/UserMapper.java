@@ -2,8 +2,6 @@ package com.eqxuan.peers.mapper;
 
 import com.eqxuan.peers.dao.User;
 
-import java.util.List;
-
 public interface UserMapper {
 
     /**

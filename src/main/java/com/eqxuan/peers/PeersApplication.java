@@ -18,6 +18,10 @@ public class PeersApplication {
         SpringApplication.run(PeersApplication.class, args);
     }
 
+    /**
+     * 上传文件大小限制
+     * @return
+     */
     @Bean
     public MultipartConfigElement multipartConfigElement() {
         MultipartConfigFactory factory = new MultipartConfigFactory();

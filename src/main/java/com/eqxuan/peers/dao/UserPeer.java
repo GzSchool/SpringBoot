@@ -42,9 +42,7 @@ public class UserPeer {
 
     private String prepare;
 
-    /**
-     * 同行姓名备注
-     */
+    /** 同行姓名备注.*/
     private String remark;
 
 }

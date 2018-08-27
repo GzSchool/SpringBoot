@@ -37,8 +37,11 @@ mybatis:
   type-aliases-package: org.springboot.sample.entity
 
 #小程序
-AppId: wxff9f09664798581a
-AppSecret: b413741bb1cbdbbe6a77a321b76108bf
+WxMini:
+  AppId: wx34fefa15f676d944
+  AppSecret: f4ce303b50267dc17dc69ae083ae3a98
+  MakeTemplateID: kW19kb8Tq0WdL-cFQq61pJjToO7fRL7Vs1MIk06c-cA
+  SaveTemplateID: Xl-42LMy09DsvtarIk5DFe6qLc_sxwQnQs5h5VnQ_qU
 
 #短信
 SMS:

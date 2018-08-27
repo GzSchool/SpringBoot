@@ -7,7 +7,7 @@ import lombok.ToString;
 /**
  * @author: zheng guangjing.
  * @date: 2018/8/25 18:28
- * @description: description
+ * @description: 用户 - 群 绑定信息
  */
 @ToString
 @Getter

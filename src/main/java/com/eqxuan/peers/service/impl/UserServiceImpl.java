@@ -34,6 +34,11 @@ public class UserServiceImpl implements UserService {
     @Resource
     private WxDecipherUtil wxDecipherUtil;
 
+    /**
+     * 接口描述：用户授权接口
+     * @param code
+     * @return
+     */
     @Override
     public AuthorizeDTO get3rdsession(String code) {
 
@@ -88,6 +93,13 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * 接口描述：解析用户绑定手机号
+     * @param openId
+     * @param iv
+     * @param encryptedData
+     * @return
+     */
     @Override
     public String getUserPhone(String openId, String iv, String encryptedData) {
         if (StringUtils.isEmpty(openId) || StringUtils.isEmpty(iv) || StringUtils.isEmpty(encryptedData)) {

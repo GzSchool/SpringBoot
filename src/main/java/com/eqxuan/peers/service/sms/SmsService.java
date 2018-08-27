@@ -1,7 +1,6 @@
 package com.eqxuan.peers.service.sms;
 
 import com.alibaba.fastjson.JSONException;
-import com.eqxuan.peers.config.SmsConfig;
 import com.github.qcloudsms.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,8 +1,6 @@
 package com.eqxuan.peers.mapper;
 
 import com.eqxuan.peers.dao.UserGroup;
-import com.eqxuan.peers.dto.GroupNoSaveNumDTO;
-import com.eqxuan.peers.dto.ReturnCardDTO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

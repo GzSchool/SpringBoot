@@ -1,19 +1,12 @@
 package com.eqxuan.peers.service.cache.impl;
 
 import com.eqxuan.peers.dao.UserCard;
-import com.eqxuan.peers.dto.ReturnCardDTO;
 import com.eqxuan.peers.service.cache.CacheManager;
-import com.eqxuan.peers.vo.CreatePeersVO;
 import com.eqxuan.peers.mapper.UserCardMapper;
-import com.eqxuan.peers.mapper.UserPeerMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @Auther: Mature

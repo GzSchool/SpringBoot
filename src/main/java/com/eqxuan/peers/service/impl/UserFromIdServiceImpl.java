@@ -22,6 +22,10 @@ public class UserFromIdServiceImpl implements UserFromIdService {
     @Resource
     private UserFromIdMapper userFromIdMapper;
 
+    /**
+     *  接口描述：收集用户fromIds
+     * @param userFromIdsVO
+     */
     @Override
     public void save(UserFromIdsVO userFromIdsVO) {
         if (StringUtils.isEmpty(userFromIdsVO.getOpenId())) {

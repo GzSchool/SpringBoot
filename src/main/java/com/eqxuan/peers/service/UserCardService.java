@@ -43,7 +43,7 @@ public interface UserCardService {
     void update(UserCard userCard);
 
     /**
-     * 查询个人名片列表
+     * 接口描述：查询个人名片列表
      * @param openId
      * @return
      */

@@ -10,7 +10,7 @@ import com.eqxuan.peers.vo.UserFromIdsVO;
 public interface UserFromIdService {
 
     /**
-     * 收集用户fromIds
+     * 接口描述：收集用户fromIds
      * @param userFromIdsVO
      */
     void save(UserFromIdsVO userFromIdsVO);

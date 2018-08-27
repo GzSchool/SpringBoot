@@ -19,9 +19,11 @@ public class MiniAppBean {
     @Value("${WxMini.AppSecret}")
     private String appSecret;
 
+    /** 名片创建消息模板ID.*/
     @Value("${WxMini.MakeTemplateID}")
     private String makeTemplateID;
 
+    /** 名片保存消息模板ID.*/
     @Value("${WxMini.SaveTemplateID}")
     private String saveTemplateID;
 

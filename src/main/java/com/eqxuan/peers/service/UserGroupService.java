@@ -1,6 +1,5 @@
 package com.eqxuan.peers.service;
 
-import com.eqxuan.peers.dao.UserGroup;
 import com.eqxuan.peers.dto.PageDTO;
 import com.eqxuan.peers.dto.ReturnCardDTO;
 import com.eqxuan.peers.dto.ReturnGroupDTO;

@@ -1,8 +1,6 @@
 package com.eqxuan.peers.dao;
 
-import io.swagger.annotations.ApiModel;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 

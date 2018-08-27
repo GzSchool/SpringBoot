@@ -30,6 +30,13 @@ public class WxTemplateServiceImpl implements WxTemplateService {
     @Resource
     private UserCardMapper userCardMapper;
 
+    /**
+     * 用户创建名片后消息通知
+     * @param openId
+     * @param formId
+     * @param makeTime
+     * @return
+     */
     @Override
     public JSONObject makeCardSuccess(String openId, String formId, String makeTime) {
 
@@ -53,6 +60,14 @@ public class WxTemplateServiceImpl implements WxTemplateService {
         return jsonObject;
     }
 
+    /**
+     * 保存同行信息后消息推送模板
+     * @param openId
+     * @param cardId
+     * @param saveName
+     * @param formId
+     * @return
+     */
     @Override
     public JSONObject saveCardSuccess(String openId, String cardId, String saveName, String formId) {
 

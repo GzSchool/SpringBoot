@@ -38,6 +38,11 @@ public class UserCardServiceImpl implements UserCardService {
     @Resource
     private UserMapper userMapper;
 
+    /**
+     * 接口描述：根据用户标识查询名片信息
+     * @param id
+     * @return
+     */
     @Override
     public UserCard findOneById(String id) {
 
@@ -51,6 +56,11 @@ public class UserCardServiceImpl implements UserCardService {
         return userCard;
     }
 
+    /**
+     * 接口描述：根据入参查询名片信息
+     * @param userCard
+     * @return
+     */
     @Override
     public List<UserCard> findCardByParam(UserCard userCard) {
 
@@ -59,6 +69,12 @@ public class UserCardServiceImpl implements UserCardService {
         return userCardList;
     }
 
+    /**
+     * 接口描述：在当前用户的名片夹进行搜索操作
+     * @param param
+     * @param openId
+     * @return
+     */
     @Override
     public List<ReturnCardDTO> findAllByPeerAndParam(String param, String openId) {
 
@@ -75,6 +91,11 @@ public class UserCardServiceImpl implements UserCardService {
         return returnCardDTOS;
     }
 
+    /**
+     * 接口描述：添加用户名片
+     * @param userCard
+     * @return
+     */
     @Override
     public int save(UserCard userCard) {
 
@@ -117,6 +138,10 @@ public class UserCardServiceImpl implements UserCardService {
         return saveUserCard.getId();
     }
 
+    /**
+     * 接口描述：修改用户接口
+     * @param userCard
+     */
     @Override
     public void update(UserCard userCard) {
 
@@ -159,6 +184,11 @@ public class UserCardServiceImpl implements UserCardService {
         cacheManager.cacheUserCard(updateUserCard);
     }
 
+    /**
+     * 接口描述：查询个人名片列表
+     * @param openId
+     * @return
+     */
     @Override
     public List<ReturnCardDTO> findCardListByOpenId(String openId) {
         if (StringUtils.isEmpty(openId)) {
